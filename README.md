@@ -38,7 +38,7 @@ Please refer to the [*Unreal Engine 4*](https://github.com/EpicGames/UnrealEngin
 + [Leaderboards](https://developer.oculus.com/documentation/unreal/ps-leaderboards/)
 
 ## Legal
-*OculusPlatformBP Plugin* by ItsNotMeTrustMe *(Brian Edward Hicks)* of InnerLoop LLC, 2020
-This plugin was not created by, or in partnership with, Oculus or Epic Games.
-No guarantees are made about anything. Use at your own risk.
+*OculusPlatformBP Plugin* by ItsNotMeTrustMe *(Brian Edward Hicks)* of InnerLoop LLC, 2020<br>
+This plugin was not created by, or in partnership with, Oculus or Epic Games.<br>
+No guarantees are made about anything. Use at your own risk.<br>
 Please drink responsibly.
