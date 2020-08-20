@@ -25,10 +25,7 @@ Please refer to the [*Unreal Engine 4*](https://github.com/EpicGames/UnrealEngin
 *(UE4 includes Oculus Platform SDK 1.40 by default. It is recommended to update to v19 to access all features and bug fixes.)*
 
 ## Installation
-*Optional*
-0) Update [*Oculus Platform SDK*](https://developer.oculus.com/downloads/package/oculus-platform-sdk/) to latest version (v19).
-
-*Required*
+*Optional* Update [*Oculus Platform SDK*](https://developer.oculus.com/downloads/package/oculus-platform-sdk/) to latest version (v19).
 1) Place the *'OculusPlatformBP'* folder in *'Engine/Plugins/Marketplace'* or your project's *'Plugins'* folder<br>
 2) Regenerate project files<br>
 3) Compile engine<br>
