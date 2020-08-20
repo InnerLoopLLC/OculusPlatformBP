@@ -21,7 +21,7 @@ Please refer to the [*Unreal Engine 4*](https://github.com/EpicGames/UnrealEngin
 *(Much of this has not been fully tested. So, please tell me if something is broken.)*
 * **Unreal Engine** - [4.25.3-Oculus](https://github.com/Oculus-VR/UnrealEngine)
 * **Platforms** - Win64, Android *(note: not yet tested on Android) (todo: test on Android)*
-* **Oculus Platform SDK** - [v19](https://developer.oculus.com/downloads/package/oculus-platform-sdk/)
+* **Oculus Platform SDK** - [v19](https://developer.oculus.com/downloads/package/oculus-platform-sdk/)<br>
 *(UE4 includes Oculus Platform SDK 1.40 by default. It is recommended to update to v19 to access all features and bug fixes.)*
 
 ## Installation
