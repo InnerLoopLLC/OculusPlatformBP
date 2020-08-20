@@ -34,7 +34,8 @@ Please refer to the [*Unreal Engine 4*](https://github.com/EpicGames/UnrealEngin
 6) Use *OculusPlatformBP* to do cool stuff
 
 ## Currently Implemented Modules
-+ Rich Presence/Destinations (
++ [Rich Presence/Destinations](https://developer.oculus.com/documentation/unreal/ps-rich-presence/)
++ [Leaderboards](https://developer.oculus.com/documentation/unreal/ps-leaderboards/)
 
 ## Legal
 *OculusPlatformBP Plugin* by ItsNotMeTrustMe *(Brian Edward Hicks)* of InnerLoop LLC, 2020
