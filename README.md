@@ -33,7 +33,7 @@ Please refer to the [*Unreal Engine 4*](https://github.com/EpicGames/UnrealEngin
 5) Check Oculus Entitlement
 6) Use *OculusPlatformBP* to do cool stuff
 
-## Currently Implemented Modules
+## Modules
 + [Rich Presence/Destinations](https://developer.oculus.com/documentation/unreal/ps-rich-presence/)
 + [Leaderboards](https://developer.oculus.com/documentation/unreal/ps-leaderboards/)
 
