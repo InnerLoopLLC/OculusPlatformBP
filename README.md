@@ -10,7 +10,7 @@ A library of UE4 Blueprint nodes for Oculus Platform functions.
 + ...an attempt to integrate the Oculus Platform SDK into existing UE4 systems.
 + ...an expansion of the existing SDK.
 + ...a simplification or explanation of the existing SDK.
-+ ...completed. Most of the modules have not been implemented yet.
++ ...completed. Most of the modules have **not** been implemented yet.
 
 This means you'll find blueprint nodes for the functions included in the [*Oculus Platform SDK*](https://developer.oculus.com/reference/platform/v19/).
 But that's pretty much it. No direct support is offered, but I'll try my best to answer questions.
