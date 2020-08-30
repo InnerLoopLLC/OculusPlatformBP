@@ -2,6 +2,20 @@
 
 #pragma once
 
+#include "CoreGlobals.h"
+#include "CoreMinimal.h"
+#include "EngineGlobals.h"
+#include "Engine/Engine.h"
+
+#include "Kismet/BlueprintFunctionLibrary.h"
+#include "UObject/ObjectMacros.h"
+
+#include "Online.h"
+#include "OnlineSubsystem.h"
+#include "OnlineSubsystemOculus.h"
+
+#include <ThirdParty\Oculus\LibOVRPlatform\LibOVRPlatform\include\OVR_Platform.h>
+
 #include "Modules/ModuleManager.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogOculusPlatformBP, Log, All);
@@ -20,3 +34,25 @@ public:
 		return FModuleManager::Get().IsModuleLoaded("OculusPlatformBP");
 	}
 };
+
+// OVR_RichPresenceExtraContext.h (https://developer.oculus.com/reference/platform/v19/o_v_r_rich_presence_extra_context_8h/)
+UENUM(BlueprintType)
+enum class EOBPRichPresenceExtraContext : uint8
+{
+	Unknown,
+	None,
+	CurrentCapacity,
+	StartedAgo,
+	EndingIn,
+	LookingForMatch
+};
+
+UENUM(BlueprintType)
+enum class EOBPUserPresenceStatus : uint8
+{
+	Unknown,
+	Online,
+	Offline
+};
+
+void OBPPlatformVersionError(FString NodeName, FString RequiredPlatformVersion);

@@ -2,29 +2,80 @@
 
 #include "OBPLeaderboard.h"
 
+/*
 UOBPLeaderboard::UOBPLeaderboard(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 }
 
 // --------------------
-// Leaderboard Functions
+// Leaderboard.h
 // --------------------
 
-UOBPLeaderboard* Leaderboard::CreateLeaderboard(UObject* WorldContextObject)
+// not yet implemented
+UOBPLeaderboard* CreateLeaderboard(UObject* WorldContextObject)
 {
 	return NewObject<UOBPLeaderboard>();
 }
 
 FString UOBPLeaderboard::GetApiName()
 {
+	// requires OculusPlatfromSDK v18 (1.50) or later; default UE4 distribution = 1.40
+#if PLATFORM_MINOR_VERSION >= 50
 	return ovr_Leaderboard_GetApiName(ovrLeaderboardHandle);
+#endif
+}
+
+
+// --------------------
+// LeaderboardEntry.h
+// --------------------
+
+UOBPLeaderboardEntry::UOBPLeaderboardEntry(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+}
+
+UOBPLeaderboardEntry* CreateLeaderboardEntry(UObject* WorldContextObject)
+{
+	return NewObject<UOBPLeaderboardEntry>();
+}
+
+FString UOBPLeaderboardEntry::GetExtraData()
+{
+	return ovr_LeaderboardEntry_GetExtraData(ovrLeaderboardEntryHandle);
+}
+
+int UOBPLeaderboardEntry::GetExtraDataLength()
+{
+	return ovr_LeaderboardEntry_GetExtraDataLength(ovrLeaderboardEntryHandle);
+}
+
+int UOBPLeaderboardEntry::GetRank()
+{
+	return ovr_LeaderboardEntry_GetRank(ovrLeaderboardEntryHandle);
+}
+
+int64 UOBPLeaderboardEntry::GetScore()
+{
+	return ovr_LeaderboardEntry_GetScore(ovrLeaderboardEntryHandle);
+}
+
+int64 UOBPLeaderboardEntry::GetTimestamp()
+{
+	return ovr_LeaderboardEntry_GetTimestamp(ovrLeaderboardEntryHandle);
+}
+
+void UOBPLeaderboardEntry::GetUser()
+{
+	// returns ovrUserHandle // need to implement ovrUser.h
+	//ovr_LeaderboardEntry_GetUser(ovrLeaderboardEntryHandle);
 }
 
 // --------------------
 // Leaderboard Requests
 // --------------------
-
+/*
 void UOBPLeaderboard::GetLeaderboardEntries()
 {
 	ovrRequest RequestId = ovr_Leaderboard_GetEntries(const char* leaderboardName, int limit, ovrLeaderboardFilterType filter, ovrLeaderboardStartAt startAt);
@@ -59,6 +110,7 @@ void UOBPLeaderboard::GetLeaderboardEntriesAfterRank()
 	}));
 }
 
+// not yet implemented
 // requires OculusPlatfromSDK v16 (1.48) or later; default UE4 distribution = 1.40
 #if PLATFORM_MINOR_VERSION >= 48
 void UOBPLeaderboard::GetLeaderboardEntriesByIds()
@@ -129,3 +181,4 @@ void UOBPLeaderboard::WriteLeaderboardEntry()
 		}
 	}));
 }
+*/

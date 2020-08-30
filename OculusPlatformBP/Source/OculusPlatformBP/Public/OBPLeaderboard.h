@@ -3,22 +3,9 @@
 #pragma once
 
 #include "OculusPlatformBP.h"
+//#include "OBPLeaderboard.generated.h"
 
-#include "CoreGlobals.h"
-#include "CoreMinimal.h"
-#include "EngineGlobals.h"
-#include "Engine/Engine.h"
-
-#include "Kismet/BlueprintFunctionLibrary.h"
-#include "UObject/ObjectMacros.h"
-
-#include "Online.h"
-#include "OnlineSubsystem.h"
-#include "OnlineSubsystemOculus.h"
-
-#include <ThirdParty\Oculus\LibOVRPlatform\LibOVRPlatform\include\OVR_Platform.h>
-
-#include "OBPLeaderboard.generated.h"
+/*
 
 UENUM(BlueprintType)
 enum class EOBPLeaderboardFilterType : uint8
@@ -38,6 +25,8 @@ enum class EOBPLeaderboardStartAt : uint8
 	Unknown
 };
 
+
+/*
 UCLASS(BlueprintType)
 class OCULUSPLATFORMBP_API UOBPLeaderboard : public UBlueprintFunctionLibrary
 {
@@ -47,10 +36,13 @@ class OCULUSPLATFORMBP_API UOBPLeaderboard : public UBlueprintFunctionLibrary
 public:
 
 	// --------------------
-	// Leaderboard Object Properties
+	// Leaderboard.h
 	// --------------------
 	
-	// Leaderboard
+// not yet implemented
+// requires OculusPlatfromSDK v18 (1.50) or later; default UE4 distribution = 1.40
+
+// Leaderboard Struct
 	ovrLeaderboard* ovrLeaderboardHandle;
 
 	// Leaderboard Update Status
@@ -67,7 +59,7 @@ public:
 		FString GetApiName();
 
 	// --------------------
-	// Enum Leaderboard Filter Type (https://developer.oculus.com/reference/platform/1.40/o_v_r_rich_presence_options_8h)
+	// Enum Leaderboard Filter Type
 	// --------------------
 
 	//OVRPL_PUBLIC_FUNCTION(constchar*) ovrLeaderboardFilterType_ToString(ovrLeaderboardFilterType value);
@@ -76,7 +68,7 @@ public:
 
 
 	// --------------------
-	// Enum Leaderboard Start At (https://developer.oculus.com/reference/platform/1.40/o_v_r_rich_presence_options_8h)
+	// Enum Leaderboard Start At
 	// --------------------
 	
 	//OVRPL_PUBLIC_FUNCTION(constchar*) ovrLeaderboardStartAt_ToString(ovrLeaderboardStartAt value);
@@ -84,7 +76,7 @@ public:
 	//OVRPL_PUBLIC_FUNCTION(ovrLeaderboardStartAt) ovrLeaderboardStartAt_FromString(constchar* str);
 
 	// --------------------
-	// Leaderboard Update Status (https://developer.oculus.com/reference/platform/v19/o_v_r_leaderboard_update_status_8h)
+	// Leaderboard Update Status
 	// --------------------
 
 	OVRP_PUBLIC_FUNCTION(bool)         ovr_LeaderboardUpdateStatus_GetDidUpdate(const ovrLeaderboardUpdateStatusHandle obj);
@@ -92,7 +84,7 @@ public:
 	OVRP_PUBLIC_FUNCTION(unsignedint) ovr_LeaderboardUpdateStatus_GetUpdatedChallengeIdsSize(const ovrLeaderboardUpdateStatusHandle obj);
 
 	// --------------------
-	// Leaderboard Requests (https://developer.oculus.com/reference/platform/v19/o_v_r_requests_leaderboard_8h/)
+	// Leaderboard Requests
 	// --------------------
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
@@ -101,11 +93,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
 		void GetLeaderboardEntriesAfterRank();
 
+	// not yet implemented
 	// requires OculusPlatfromSDK v16 (1.48) or later; default UE4 distribution = 1.40
-#if PLATFORM_MINOR_VERSION >= 48
+
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
 		void GetLeaderboardEntriesByIds();
-#endif
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
 		void GetNextLeaderboardEntries();;
@@ -117,7 +109,7 @@ public:
 		void WriteLeaderboardEntry();
 };
 
-/*
+
 UCLASS(BlueprintType)
 class OCULUSPLATFORMBP_API UOBPLeaderboardEntry : public UBlueprintFunctionLibrary
 {
@@ -156,15 +148,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
 		void GetUser();
+};	
 
-	OVRP_PUBLIC_FUNCTION(constchar*)       ovr_LeaderboardEntry_GetExtraData(const ovrLeaderboardEntryHandle obj);
-	OVRP_PUBLIC_FUNCTION(unsignedint)       ovr_LeaderboardEntry_GetExtraDataLength(const ovrLeaderboardEntryHandle obj);
-	OVRP_PUBLIC_FUNCTION(int)                ovr_LeaderboardEntry_GetRank(const ovrLeaderboardEntryHandle obj);
-	OVRP_PUBLIC_FUNCTION(longlong)          ovr_LeaderboardEntry_GetScore(const ovrLeaderboardEntryHandle obj);
-	OVRP_PUBLIC_FUNCTION(unsignedlonglong) ovr_LeaderboardEntry_GetTimestamp(const ovrLeaderboardEntryHandle obj);
-	OVRP_PUBLIC_FUNCTION(ovrUserHandle)      ovr_LeaderboardEntry_GetUser(const ovrLeaderboardEntryHandle obj);
-};
-
+/*
 UCLASS(BlueprintType)
 class OCULUSPLATFORMBP_API UOBPLeaderboardEntryArray : public UBlueprintFunctionLibrary
 {
@@ -214,6 +200,4 @@ public:
 	OVRP_PUBLIC_FUNCTION(unsignedlonglong)        ovr_LeaderboardEntryArray_GetTotalCount(const ovrLeaderboardEntryArrayHandle obj);
 	OVRP_PUBLIC_FUNCTION(bool)                      ovr_LeaderboardEntryArray_HasNextPage(const ovrLeaderboardEntryArrayHandle obj);
 	OVRP_PUBLIC_FUNCTION(bool)                      ovr_LeaderboardEntryArray_HasPreviousPage(const ovrLeaderboardEntryArrayHandle obj);
-};
-
-*/
+};*/

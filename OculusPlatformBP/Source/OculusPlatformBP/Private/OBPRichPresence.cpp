@@ -8,7 +8,7 @@ UOBPRichPresence::UOBPRichPresence(const FObjectInitializer& ObjectInitializer)
 }
 
 // --------------------
-// Rich Presense Functions
+// Rich Presence Functions
 // --------------------
 
 UOBPRichPresence* UOBPRichPresence::CreateRichPresenceOptions(UObject* WorldContextObject)
@@ -16,19 +16,19 @@ UOBPRichPresence* UOBPRichPresence::CreateRichPresenceOptions(UObject* WorldCont
 	return NewObject<UOBPRichPresence>();
 }
 
-void UOBPRichPresence::DestroyRichPresenseOptions()
+void UOBPRichPresence::DestroyRichPresenceOptions()
 {
 	ovr_RichPresenceOptions_Destroy(OvrRichPresenceOptions);
 }
 
-void UOBPRichPresence::SetApiName(const FString RichPresenseApiName)
+void UOBPRichPresence::SetApiName(const FString RichPresenceApiName)
 {
-	ovr_RichPresenceOptions_SetApiName(OvrRichPresenceOptions, TCHAR_TO_ANSI(*RichPresenseApiName));
+	ovr_RichPresenceOptions_SetApiName(OvrRichPresenceOptions, TCHAR_TO_ANSI(*RichPresenceApiName));
 }
 
-void UOBPRichPresence::SetArgsString(const FString RichPresenseApiKey, const FString RichPresenseApiValue)
+void UOBPRichPresence::SetArgsString(const FString RichPresenceApiKey, const FString RichPresenceApiValue)
 {
-	ovr_RichPresenceOptions_SetArgsString(OvrRichPresenceOptions, TCHAR_TO_ANSI(*RichPresenseApiKey), TCHAR_TO_ANSI(*RichPresenseApiValue));
+	ovr_RichPresenceOptions_SetArgsString(OvrRichPresenceOptions, TCHAR_TO_ANSI(*RichPresenceApiKey), TCHAR_TO_ANSI(*RichPresenceApiValue));
 }
 
 void UOBPRichPresence::ClearArgs()
@@ -36,19 +36,19 @@ void UOBPRichPresence::ClearArgs()
 	ovr_RichPresenceOptions_ClearArgs(OvrRichPresenceOptions);
 }
 
-void UOBPRichPresence::SetCurrentCapacity(const int32 RichPresenseCurrentCapacity)
+void UOBPRichPresence::SetCurrentCapacity(const int32 RichPresenceCurrentCapacity)
 {
-	ovr_RichPresenceOptions_SetCurrentCapacity(OvrRichPresenceOptions, RichPresenseCurrentCapacity);
+	ovr_RichPresenceOptions_SetCurrentCapacity(OvrRichPresenceOptions, RichPresenceCurrentCapacity);
 }
 
-void UOBPRichPresence::SetDeeplinkMessageOverride(const FString RichPresenseDeeplinkMessage)
+void UOBPRichPresence::SetDeeplinkMessageOverride(const FString RichPresenceDeeplinkMessage)
 {
-	ovr_RichPresenceOptions_SetDeeplinkMessageOverride(OvrRichPresenceOptions, TCHAR_TO_ANSI(*RichPresenseDeeplinkMessage));
+	ovr_RichPresenceOptions_SetDeeplinkMessageOverride(OvrRichPresenceOptions, TCHAR_TO_ANSI(*RichPresenceDeeplinkMessage));
 }
 
-void UOBPRichPresence::SetEndTime(const int64 RichPresenseEndTime)
+void UOBPRichPresence::SetEndTime(const int64 RichPresenceEndTime)
 {
-	ovr_RichPresenceOptions_SetEndTime(OvrRichPresenceOptions, RichPresenseEndTime);
+	ovr_RichPresenceOptions_SetEndTime(OvrRichPresenceOptions, RichPresenceEndTime);
 }
 
 void UOBPRichPresence::SetExtraContext(EOBPRichPresenceExtraContext RichPresenceExtraContext)
@@ -76,33 +76,33 @@ void UOBPRichPresence::SetExtraContext(EOBPRichPresenceExtraContext RichPresence
 	}
 }
 
-void UOBPRichPresence::SetIsIdle(const bool RichPresenseIsIdle)
+void UOBPRichPresence::SetIsIdle(const bool RichPresenceIsIdle)
 {
-	ovr_RichPresenceOptions_SetIsIdle(OvrRichPresenceOptions, RichPresenseIsIdle);
+	ovr_RichPresenceOptions_SetIsIdle(OvrRichPresenceOptions, RichPresenceIsIdle);
 }
 
-void UOBPRichPresence::SetIsJoinable(const bool RichPresenseIsJoinable)
+void UOBPRichPresence::SetIsJoinable(const bool RichPresenceIsJoinable)
 {
-	ovr_RichPresenceOptions_SetIsJoinable(OvrRichPresenceOptions, RichPresenseIsJoinable);
+	ovr_RichPresenceOptions_SetIsJoinable(OvrRichPresenceOptions, RichPresenceIsJoinable);
 }
 
-void UOBPRichPresence::SetJoinableId(const FString RichPresenseJoinableId)
+void UOBPRichPresence::SetJoinableId(const FString RichPresenceJoinableId)
 {
-	ovr_RichPresenceOptions_SetJoinableId(OvrRichPresenceOptions, TCHAR_TO_ANSI(*RichPresenseJoinableId));
+	ovr_RichPresenceOptions_SetJoinableId(OvrRichPresenceOptions, TCHAR_TO_ANSI(*RichPresenceJoinableId));
 }
 
-void UOBPRichPresence::SetMaxCapacity(const int RichPresenseMaxCapacity)
+void UOBPRichPresence::SetMaxCapacity(const int RichPresenceMaxCapacity)
 {
-	ovr_RichPresenceOptions_SetMaxCapacity(OvrRichPresenceOptions, RichPresenseMaxCapacity);
+	ovr_RichPresenceOptions_SetMaxCapacity(OvrRichPresenceOptions, RichPresenceMaxCapacity);
 }
 
-void UOBPRichPresence::SetStartTime(const int64 RichPresenseStartTime)
+void UOBPRichPresence::SetStartTime(const int64 RichPresenceStartTime)
 {
-	ovr_RichPresenceOptions_SetStartTime(OvrRichPresenceOptions, RichPresenseStartTime);
+	ovr_RichPresenceOptions_SetStartTime(OvrRichPresenceOptions, RichPresenceStartTime);
 }
 
-// --------------------
-// Rich Presense Extra Context
+/*/ --------------------
+// Rich Presence Extra Context
 // --------------------
 
 FString UOBPRichPresence::ExtraContext_ToString(EOBPRichPresenceExtraContext RichPresenceExtraContext)
@@ -162,9 +162,10 @@ EOBPRichPresenceExtraContext UOBPRichPresence::ExtraContext_FromString(FString R
 		break;
 	}
 }
+*/
 
 // --------------------
-// Rich Presense Requests
+// OVR_RichPresenceRequests.h
 // --------------------
 
 void UOBPRichPresence::ClearRichPresence()
@@ -184,10 +185,10 @@ void UOBPRichPresence::ClearRichPresence()
 	}));
 }
 
-// requires OculusPlatfromSDK v12 (1.44) or later; default UE4 distribution = 1.40
-#if PLATFORM_MINOR_VERSION >= 44
+// requires OculusPlatfromSDK v12 (1.44) or later
 void UOBPRichPresence::GetDestinations()
 {
+#if PLATFORM_MINOR_VERSION >= 44
 	ovrRequest RequestId = ovr_RichPresence_GetDestinations();
 
 	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
@@ -201,13 +202,15 @@ void UOBPRichPresence::GetDestinations()
 			UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got Destinations"));
 		}
 	}));
-}
+#else
+	OBPPlatformVersionError("GetDestinations", "v12");
 #endif
+}
 
-// requires OculusPlatfromSDK v12 (1.44) or later; default UE4 distribution = 1.40
-#if PLATFORM_MINOR_VERSION >= 44
+// requires OculusPlatfromSDK v12 (1.44) or later
 void UOBPRichPresence::GetNextDestinationArrayPage()
 {
+#if PLATFORM_MINOR_VERSION >= 44
 	ovrRequest RequestId = ovr_RichPresence_GetNextDestinationArrayPage(OvrRichPresenceStruct);
 
 	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
@@ -221,8 +224,10 @@ void UOBPRichPresence::GetNextDestinationArrayPage()
 			UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got Next Destination Array Page"));
 		}
 	}));
-}
+#else
+	OBPPlatformVersionError("GetNextDestinationArrayPage", "v12");
 #endif
+}
 
 void UOBPRichPresence::SetRichPresence()
 {
