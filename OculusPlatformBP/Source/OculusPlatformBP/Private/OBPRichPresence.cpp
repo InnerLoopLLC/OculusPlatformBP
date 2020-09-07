@@ -2,7 +2,7 @@
 
 #include "OBPRichPresence.h"
 
-UOBPRichPresence::UOBPRichPresence(const FObjectInitializer& ObjectInitializer)
+UOBP_RichPresence::UOBP_RichPresence(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 }
@@ -11,92 +11,92 @@ UOBPRichPresence::UOBPRichPresence(const FObjectInitializer& ObjectInitializer)
 // Rich Presence Functions
 // --------------------
 
-UOBPRichPresence* UOBPRichPresence::CreateRichPresenceOptions(UObject* WorldContextObject)
+UOBP_RichPresence* UOBP_RichPresence::CreateRichPresenceOptions(UObject* WorldContextObject)
 {
-	return NewObject<UOBPRichPresence>();
+	return NewObject<UOBP_RichPresence>();
 }
 
-void UOBPRichPresence::DestroyRichPresenceOptions()
+void UOBP_RichPresence::DestroyRichPresenceOptions()
 {
 	ovr_RichPresenceOptions_Destroy(OvrRichPresenceOptions);
 }
 
-void UOBPRichPresence::SetApiName(const FString RichPresenceApiName)
+void UOBP_RichPresence::SetApiName(const FString RichPresenceApiName)
 {
 	ovr_RichPresenceOptions_SetApiName(OvrRichPresenceOptions, TCHAR_TO_ANSI(*RichPresenceApiName));
 }
 
-void UOBPRichPresence::SetArgsString(const FString RichPresenceApiKey, const FString RichPresenceApiValue)
+void UOBP_RichPresence::SetArgsString(const FString RichPresenceApiKey, const FString RichPresenceApiValue)
 {
 	ovr_RichPresenceOptions_SetArgsString(OvrRichPresenceOptions, TCHAR_TO_ANSI(*RichPresenceApiKey), TCHAR_TO_ANSI(*RichPresenceApiValue));
 }
 
-void UOBPRichPresence::ClearArgs()
+void UOBP_RichPresence::ClearArgs()
 {
 	ovr_RichPresenceOptions_ClearArgs(OvrRichPresenceOptions);
 }
 
-void UOBPRichPresence::SetCurrentCapacity(const int32 RichPresenceCurrentCapacity)
+void UOBP_RichPresence::SetCurrentCapacity(const int32 RichPresenceCurrentCapacity)
 {
 	ovr_RichPresenceOptions_SetCurrentCapacity(OvrRichPresenceOptions, RichPresenceCurrentCapacity);
 }
 
-void UOBPRichPresence::SetDeeplinkMessageOverride(const FString RichPresenceDeeplinkMessage)
+void UOBP_RichPresence::SetDeeplinkMessageOverride(const FString RichPresenceDeeplinkMessage)
 {
 	ovr_RichPresenceOptions_SetDeeplinkMessageOverride(OvrRichPresenceOptions, TCHAR_TO_ANSI(*RichPresenceDeeplinkMessage));
 }
 
-void UOBPRichPresence::SetEndTime(const int64 RichPresenceEndTime)
+void UOBP_RichPresence::SetEndTime(const int64 RichPresenceEndTime)
 {
 	ovr_RichPresenceOptions_SetEndTime(OvrRichPresenceOptions, RichPresenceEndTime);
 }
 
-void UOBPRichPresence::SetExtraContext(EOBPRichPresenceExtraContext RichPresenceExtraContext)
+void UOBP_RichPresence::SetExtraContext(EOBP_RichPresenceExtraContext RichPresenceExtraContext)
 {
 	switch (RichPresenceExtraContext)
 	{
-	case EOBPRichPresenceExtraContext::Unknown:
+	case EOBP_RichPresenceExtraContext::Unknown:
 		ovr_RichPresenceOptions_SetExtraContext(OvrRichPresenceOptions, ovrRichPresenceExtraContext_Unknown);
 		break;
-	case EOBPRichPresenceExtraContext::None:
+	case EOBP_RichPresenceExtraContext::None:
 		ovr_RichPresenceOptions_SetExtraContext(OvrRichPresenceOptions, ovrRichPresenceExtraContext_None);
 		break;
-	case EOBPRichPresenceExtraContext::CurrentCapacity:
+	case EOBP_RichPresenceExtraContext::CurrentCapacity:
 		ovr_RichPresenceOptions_SetExtraContext(OvrRichPresenceOptions, ovrRichPresenceExtraContext_CurrentCapacity);
 		break;
-	case EOBPRichPresenceExtraContext::StartedAgo:
+	case EOBP_RichPresenceExtraContext::StartedAgo:
 		ovr_RichPresenceOptions_SetExtraContext(OvrRichPresenceOptions, ovrRichPresenceExtraContext_StartedAgo);
 		break;
-	case EOBPRichPresenceExtraContext::EndingIn:
+	case EOBP_RichPresenceExtraContext::EndingIn:
 		ovr_RichPresenceOptions_SetExtraContext(OvrRichPresenceOptions, ovrRichPresenceExtraContext_EndingIn);
 		break;
-	case EOBPRichPresenceExtraContext::LookingForMatch:
+	case EOBP_RichPresenceExtraContext::LookingForMatch:
 		ovr_RichPresenceOptions_SetExtraContext(OvrRichPresenceOptions, ovrRichPresenceExtraContext_LookingForAMatch);
 		break;
 	}
 }
 
-void UOBPRichPresence::SetIsIdle(const bool RichPresenceIsIdle)
+void UOBP_RichPresence::SetIsIdle(const bool RichPresenceIsIdle)
 {
 	ovr_RichPresenceOptions_SetIsIdle(OvrRichPresenceOptions, RichPresenceIsIdle);
 }
 
-void UOBPRichPresence::SetIsJoinable(const bool RichPresenceIsJoinable)
+void UOBP_RichPresence::SetIsJoinable(const bool RichPresenceIsJoinable)
 {
 	ovr_RichPresenceOptions_SetIsJoinable(OvrRichPresenceOptions, RichPresenceIsJoinable);
 }
 
-void UOBPRichPresence::SetJoinableId(const FString RichPresenceJoinableId)
+void UOBP_RichPresence::SetJoinableId(const FString RichPresenceJoinableId)
 {
 	ovr_RichPresenceOptions_SetJoinableId(OvrRichPresenceOptions, TCHAR_TO_ANSI(*RichPresenceJoinableId));
 }
 
-void UOBPRichPresence::SetMaxCapacity(const int RichPresenceMaxCapacity)
+void UOBP_RichPresence::SetMaxCapacity(const int RichPresenceMaxCapacity)
 {
 	ovr_RichPresenceOptions_SetMaxCapacity(OvrRichPresenceOptions, RichPresenceMaxCapacity);
 }
 
-void UOBPRichPresence::SetStartTime(const int64 RichPresenceStartTime)
+void UOBP_RichPresence::SetStartTime(const int64 RichPresenceStartTime)
 {
 	ovr_RichPresenceOptions_SetStartTime(OvrRichPresenceOptions, RichPresenceStartTime);
 }
@@ -105,26 +105,26 @@ void UOBPRichPresence::SetStartTime(const int64 RichPresenceStartTime)
 // Rich Presence Extra Context
 // --------------------
 
-FString UOBPRichPresence::ExtraContext_ToString(EOBPRichPresenceExtraContext RichPresenceExtraContext)
+FString UOBP_RichPresence::ExtraContext_ToString(EOBP_RichPresenceExtraContext RichPresenceExtraContext)
 {
 	switch (RichPresenceExtraContext)
 	{
-	case EOBPRichPresenceExtraContext::Unknown:
+	case EOBP_RichPresenceExtraContext::Unknown:
 		return ovrRichPresenceExtraContext_ToString(ovrRichPresenceExtraContext_Unknown);
 		break;
-	case EOBPRichPresenceExtraContext::None:
+	case EOBP_RichPresenceExtraContext::None:
 		return ovrRichPresenceExtraContext_ToString(ovrRichPresenceExtraContext_None);
 		break;
-	case EOBPRichPresenceExtraContext::CurrentCapacity:
+	case EOBP_RichPresenceExtraContext::CurrentCapacity:
 		return ovrRichPresenceExtraContext_ToString(ovrRichPresenceExtraContext_CurrentCapacity);
 		break;
-	case EOBPRichPresenceExtraContext::StartedAgo:
+	case EOBP_RichPresenceExtraContext::StartedAgo:
 		return ovrRichPresenceExtraContext_ToString(ovrRichPresenceExtraContext_StartedAgo);
 		break;
-	case EOBPRichPresenceExtraContext::EndingIn:
+	case EOBP_RichPresenceExtraContext::EndingIn:
 		return ovrRichPresenceExtraContext_ToString(ovrRichPresenceExtraContext_EndingIn);
 		break;
-	case EOBPRichPresenceExtraContext::LookingForMatch:
+	case EOBP_RichPresenceExtraContext::LookingForMatch:
 		return ovrRichPresenceExtraContext_ToString(ovrRichPresenceExtraContext_LookingForAMatch);
 		break;
 	default:
@@ -133,32 +133,32 @@ FString UOBPRichPresence::ExtraContext_ToString(EOBPRichPresenceExtraContext Ric
 	}
 }
 
-EOBPRichPresenceExtraContext UOBPRichPresence::ExtraContext_FromString(FString RichPresenceExtraContextString)
+EOBP_RichPresenceExtraContext UOBP_RichPresence::ExtraContext_FromString(FString RichPresenceExtraContextString)
 {
 	ovrRichPresenceExtraContext RichPresenceExtraContextObject = ovrRichPresenceExtraContext_FromString(TCHAR_TO_ANSI(*RichPresenceExtraContextString));
 	
 	switch (RichPresenceExtraContextObject)
 	{
 	case 0:
-		return EOBPRichPresenceExtraContext::Unknown;
+		return EOBP_RichPresenceExtraContext::Unknown;
 		break;
 	case 1:
-		return EOBPRichPresenceExtraContext::None;
+		return EOBP_RichPresenceExtraContext::None;
 		break;
 	case 2:
-		return EOBPRichPresenceExtraContext::CurrentCapacity;
+		return EOBP_RichPresenceExtraContext::CurrentCapacity;
 		break;
 	case 3:
-		return EOBPRichPresenceExtraContext::StartedAgo;
+		return EOBP_RichPresenceExtraContext::StartedAgo;
 		break;
 	case 4:
-		return EOBPRichPresenceExtraContext::EndingIn;
+		return EOBP_RichPresenceExtraContext::EndingIn;
 		break;
 	case 5:
-		return EOBPRichPresenceExtraContext::LookingForMatch;
+		return EOBP_RichPresenceExtraContext::LookingForMatch;
 		break;
 	default:
-		return EOBPRichPresenceExtraContext::Unknown;
+		return EOBP_RichPresenceExtraContext::Unknown;
 		break;
 	}
 }
@@ -168,7 +168,7 @@ EOBPRichPresenceExtraContext UOBPRichPresence::ExtraContext_FromString(FString R
 // OVR_RichPresenceRequests.h
 // --------------------
 
-void UOBPRichPresence::ClearRichPresence()
+void UOBP_RichPresence::ClearRichPresence()
 {
 	ovrRequest RequestId = ovr_RichPresence_Clear();
 
@@ -185,8 +185,8 @@ void UOBPRichPresence::ClearRichPresence()
 	}));
 }
 
-// requires OculusPlatfromSDK v12 (1.44) or later
-void UOBPRichPresence::GetDestinations()
+// Requires OculusPlatfromSDK v12 (1.44) or later
+void UOBP_RichPresence::GetDestinations()
 {
 #if PLATFORM_MINOR_VERSION >= 44
 	ovrRequest RequestId = ovr_RichPresence_GetDestinations();
@@ -203,12 +203,12 @@ void UOBPRichPresence::GetDestinations()
 		}
 	}));
 #else
-	OBPPlatformVersionError("GetDestinations", "v12");
+	OBP_PlatformVersionError("GetDestinations", "v12");
 #endif
 }
 
-// requires OculusPlatfromSDK v12 (1.44) or later
-void UOBPRichPresence::GetNextDestinationArrayPage()
+// Requires OculusPlatfromSDK v12 (1.44) or later
+void UOBP_RichPresence::GetNextDestinationArrayPage()
 {
 #if PLATFORM_MINOR_VERSION >= 44
 	ovrRequest RequestId = ovr_RichPresence_GetNextDestinationArrayPage(OvrRichPresenceStruct);
@@ -225,11 +225,11 @@ void UOBPRichPresence::GetNextDestinationArrayPage()
 		}
 	}));
 #else
-	OBPPlatformVersionError("GetNextDestinationArrayPage", "v12");
+	OBP_PlatformVersionError("GetNextDestinationArrayPage", "v12");
 #endif
 }
 
-void UOBPRichPresence::SetRichPresence()
+void UOBP_RichPresence::SetRichPresence()
 {
 	ovrRequest RequestId = ovr_RichPresence_Set(OvrRichPresenceOptions);
 

@@ -5,8 +5,33 @@
 #include "OculusPlatformBP.h"
 #include "OBPUser.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSuccessfulGetLoggedInUser, UOBP_User*, LoggedInUser);
+
 UCLASS(BlueprintType)
-class OCULUSPLATFORMBP_API UOBPUser : public UBlueprintFunctionLibrary
+class OCULUSPLATFORMBP_API UOBP_LoggedInUser : public UBlueprintAsyncActionBase //UBlueprintFunctionLibrary
+{
+
+	GENERATED_UCLASS_BODY()
+
+public:
+
+	UPROPERTY(BlueprintAssignable)
+		FOnSuccessfulGetLoggedInUser OnSuccess;
+
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+		static UOBP_LoggedInUser* GetLoggedInUser(UObject* WorldContextObject);
+
+	// UBlueprintAsyncActionBase interface
+	virtual void Activate() override;
+	//~UBlueprintAsyncActionBase interface
+
+private:
+	UFUNCTION()
+		void ReturnLoggedInUser();
+};
+
+UCLASS(BlueprintType)
+class OCULUSPLATFORMBP_API UOBP_User : public UBlueprintAsyncActionBase //UBlueprintFunctionLibrary
 {
 
 	GENERATED_UCLASS_BODY()
@@ -19,10 +44,7 @@ public:
 
 	ovrUser* ovrUserHandle;
 
-	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|User", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBPUser* CreateUser(UObject* WorldContextObject);
-
-	// requires OculusPlatfromSDK v18 (1.50) or later
+	// Requires OculusPlatfromSDK v18 (1.50) or later
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User")
 		FString GetDisplayName();
 
@@ -32,12 +54,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User")
 		FString GetPresenceDeeplinkMessage();
 
-	// requires OculusPlatfromSDK 1.41 or later
+	// Requires OculusPlatfromSDK 1.41 or later
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User")
 		FString GetPresenceDestinationApiName();
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User")
-		EOBPUserPresenceStatus GetPresenceStatus();
+		EOBP_UserPresenceStatus GetPresenceStatus();
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User")
 		int64 GetID();

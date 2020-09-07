@@ -2,92 +2,124 @@
 
 #include "OBPUser.h"
 
-UOBPUser::UOBPUser(const FObjectInitializer& ObjectInitializer)
+UOBP_User::UOBP_User(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
+}
+
+UOBP_LoggedInUser::UOBP_LoggedInUser(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+}
+
+void UOBP_LoggedInUser::ReturnLoggedInUser()
+{
+	UOBP_LoggedInUser* LoggedInUser = NewObject<UOBP_LoggedInUser>();
+}
+
+void UOBP_LoggedInUser::Activate()
+{
+	UOBP_User* LoggedInUser = NewObject<UOBP_User>();
+
+	ovrRequest RequestId = ovr_User_GetLoggedInUser();
+
+	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+		[this, LoggedInUser](ovrMessageHandle Message, bool bIsError)
+	{
+		if (bIsError) {
+			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error getting logged in user."));
+		}
+		else {
+			UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got logged in user."));
+			LoggedInUser->ovrUserHandle = ovr_Message_GetUser(Message);
+			OnSuccess.Broadcast(LoggedInUser);
+		}
+	}));
+}
+
+UOBP_LoggedInUser* UOBP_LoggedInUser::GetLoggedInUser(UObject* WorldContextObject)
+{
+	return NewObject<UOBP_LoggedInUser>();
 }
 
 // --------------------
 // OVR_User.h
 // --------------------
 
-UOBPUser* UOBPUser::CreateUser(UObject* WorldContextObject)
-{
-	return NewObject<UOBPUser>();
-}
-
 // requires OculusPlatfromSDK v18 (1.50) or later
-FString UOBPUser::GetDisplayName()
+FString UOBP_User::GetDisplayName()
 {
 #if PLATFORM_MINOR_VERSION >= 50
 	return ovr_User_GetDisplayName(ovrUserHandle);
 #else
-	OBPPlatformVersionError("GetDisplayName", "v18");
+	OBP_PlatformVersionError("GetDisplayName", "v18");
 	return FString();
 #endif
 }
 
-FString UOBPUser::GetPresence()
+
+FString UOBP_User::GetPresence()
 {
 	return ovr_User_GetPresence(ovrUserHandle);
 }
 
-FString UOBPUser::GetPresenceDeeplinkMessage()
+FString UOBP_User::GetPresenceDeeplinkMessage()
 {
 	return ovr_User_GetPresenceDeeplinkMessage(ovrUserHandle);
 }
 
 // requires OculusPlatfromSDK 1.41 or later
-FString UOBPUser::GetPresenceDestinationApiName()
+FString UOBP_User::GetPresenceDestinationApiName()
 {
 #if PLATFORM_MINOR_VERSION >= 41
 	return ovr_User_GetPresenceDestinationApiName(ovrUserHandle);
 #else
-	OBPPlatformVersionError("GetPresenceDestinationApiName", "1.41");
+	OBP_PlatformVersionError("GetPresenceDestinationApiName", "1.41");
 	return FString();
 #endif
 }
 
-EOBPUserPresenceStatus UOBPUser::GetPresenceStatus()
+EOBP_UserPresenceStatus UOBP_User::GetPresenceStatus()
 {
 	switch (ovr_User_GetPresenceStatus(ovrUserHandle))
 	{
 	case ovrUserPresenceStatus::ovrUserPresenceStatus_Unknown:
-		return EOBPUserPresenceStatus::Unknown;
+		return EOBP_UserPresenceStatus::Unknown;
 		break;
 	case ovrUserPresenceStatus::ovrUserPresenceStatus_Online:
-		return EOBPUserPresenceStatus::Online;
+		return EOBP_UserPresenceStatus::Online;
 		break;
 	case ovrUserPresenceStatus::ovrUserPresenceStatus_Offline:
-		return EOBPUserPresenceStatus::Offline;
+		return EOBP_UserPresenceStatus::Offline;
 		break;
 	default:
-		return EOBPUserPresenceStatus::Unknown;
+		return EOBP_UserPresenceStatus::Unknown;
 		break;
 	}
 }
 
-int64 UOBPUser::GetID()
+int64 UOBP_User::GetID()
 {
 	return ovr_User_GetID(ovrUserHandle);
 }
 
-FString UOBPUser::GetImageURL()
+FString UOBP_User::GetImageURL()
 {
 	return ovr_User_GetImageUrl(ovrUserHandle);
 }
 
-FString UOBPUser::GetInviteToken()
+FString UOBP_User::GetInviteToken()
 {
 	return ovr_User_GetInviteToken(ovrUserHandle);
 }
 
-FString UOBPUser::GetOculusID()
+FString UOBP_User::GetOculusID()
 {
 	return ovr_User_GetOculusID(ovrUserHandle);
 }
 
-FString UOBPUser::GetSmallImageUrl()
+FString UOBP_User::GetSmallImageUrl()
 {
 	return ovr_User_GetSmallImageUrl(ovrUserHandle);
 }

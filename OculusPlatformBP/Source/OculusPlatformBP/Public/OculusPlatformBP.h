@@ -8,6 +8,7 @@
 #include "Engine/Engine.h"
 
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "Kismet/BlueprintAsyncActionBase.h"
 #include "UObject/ObjectMacros.h"
 
 #include "Online.h"
@@ -37,7 +38,7 @@ public:
 
 // OVR_RichPresenceExtraContext.h (https://developer.oculus.com/reference/platform/v19/o_v_r_rich_presence_extra_context_8h/)
 UENUM(BlueprintType)
-enum class EOBPRichPresenceExtraContext : uint8
+enum class EOBP_RichPresenceExtraContext : uint8
 {
 	Unknown,
 	None,
@@ -48,11 +49,11 @@ enum class EOBPRichPresenceExtraContext : uint8
 };
 
 UENUM(BlueprintType)
-enum class EOBPUserPresenceStatus : uint8
+enum class EOBP_UserPresenceStatus : uint8
 {
 	Unknown,
 	Online,
 	Offline
 };
 
-void OBPPlatformVersionError(FString NodeName, FString RequiredPlatformVersion);
+void OBP_PlatformVersionError(FString NodeName, FString RequiredPlatformVersion);

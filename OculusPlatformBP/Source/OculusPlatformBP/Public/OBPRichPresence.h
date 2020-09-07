@@ -6,7 +6,7 @@
 #include "OBPRichPresence.generated.h"
 
 UCLASS(BlueprintType)
-class OCULUSPLATFORMBP_API UOBPRichPresence : public UBlueprintFunctionLibrary
+class OCULUSPLATFORMBP_API UOBP_RichPresence : public UBlueprintFunctionLibrary
 {
 
 	GENERATED_UCLASS_BODY()
@@ -20,7 +20,7 @@ public:
 	ovrRichPresenceOptions* OvrRichPresenceOptions = ovr_RichPresenceOptions_Create();
 
 	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Rich Presence", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBPRichPresence* CreateRichPresenceOptions(UObject* WorldContextObject);
+		static UOBP_RichPresence* CreateRichPresenceOptions(UObject* WorldContextObject);
 	
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
 		void DestroyRichPresenceOptions();
@@ -44,7 +44,7 @@ public:
 		void SetEndTime(const int64 RichPresenceEndTime);
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
-		void SetExtraContext(EOBPRichPresenceExtraContext RichPresenceExtraContext);
+		void SetExtraContext(EOBP_RichPresenceExtraContext RichPresenceExtraContext);
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
 		void SetIsIdle(const bool RichPresenceIsIdle);
@@ -66,10 +66,10 @@ public:
 	// --------------------
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
-		static FString ExtraContext_ToString(EOBPRichPresenceExtraContext RichPresenceExtraContext);
+		static FString ExtraContext_ToString(EOBP_RichPresenceExtraContext RichPresenceExtraContext);
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
-		static EOBPRichPresenceExtraContext ExtraContext_FromString(FString RichPresenceExtraContextString);
+		static EOBP_RichPresenceExtraContext ExtraContext_FromString(FString RichPresenceExtraContextString);
 	*/
 
 	// --------------------
@@ -79,11 +79,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
 		void ClearRichPresence();
 
-	// requires OculusPlatfromSDK v12 (1.44) or later
+	// Requires OculusPlatfromSDK v12 (1.44) or later
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
 		void GetDestinations();
 
-	// requires OculusPlatfromSDK v12 (1.44) or later
+	// Requires OculusPlatfromSDK v12 (1.44) or later
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
 		void GetNextDestinationArrayPage();
 

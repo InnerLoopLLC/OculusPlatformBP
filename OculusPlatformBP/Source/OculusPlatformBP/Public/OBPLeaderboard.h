@@ -28,7 +28,7 @@ enum class EOBPLeaderboardStartAt : uint8
 
 /*
 UCLASS(BlueprintType)
-class OCULUSPLATFORMBP_API UOBPLeaderboard : public UBlueprintFunctionLibrary
+class OCULUSPLATFORMBP_API UOBP_Leaderboard : public UBlueprintFunctionLibrary
 {
 
 	GENERATED_UCLASS_BODY()
@@ -53,7 +53,7 @@ public:
 	// --------------------
 
 	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBPLeaderboard* CreateLeaderboard(UObject* WorldContextObject);
+		static UOBP_Leaderboard* CreateLeaderboard(UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
 		FString GetApiName();
@@ -111,7 +111,7 @@ public:
 
 
 UCLASS(BlueprintType)
-class OCULUSPLATFORMBP_API UOBPLeaderboardEntry : public UBlueprintFunctionLibrary
+class OCULUSPLATFORMBP_API UOBP_LeaderboardEntry : public UBlueprintFunctionLibrary
 {
 
 	GENERATED_UCLASS_BODY()
@@ -129,7 +129,7 @@ public:
 	// --------------------
 
 	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBPLeaderboardEntry* CreateLeaderboardEntry(UObject* WorldContextObject);
+		static UOBP_LeaderboardEntry* CreateLeaderboardEntry(UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
 		FString GetExtraData();
@@ -152,7 +152,7 @@ public:
 
 /*
 UCLASS(BlueprintType)
-class OCULUSPLATFORMBP_API UOBPLeaderboardEntryArray : public UBlueprintFunctionLibrary
+class OCULUSPLATFORMBP_API UOBP_LeaderboardEntryArray : public UBlueprintFunctionLibrary
 {
 
 	GENERATED_UCLASS_BODY()
@@ -170,10 +170,10 @@ public:
 	// --------------------
 
 	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBPLeaderboardEntry* CreateLeaderboardEntryArray(UObject* WorldContextObject);
+		static UOBP_LeaderboardEntry* CreateLeaderboardEntryArray(UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
-		void UOBPLeaderboardEntry* GetElement();
+		void UOBP_LeaderboardEntry* GetElement();
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
 		FString GetNextUrl();

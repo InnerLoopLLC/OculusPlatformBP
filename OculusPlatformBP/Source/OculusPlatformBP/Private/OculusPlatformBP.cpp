@@ -22,7 +22,7 @@ void FOculusPlatformBP::ShutdownModule()
 {
 }
 
-void OBPPlatformVersionError(FString NodeName, FString RequiredPlatformVersion)
+void OBP_PlatformVersionError(FString NodeName, FString RequiredPlatformVersion)
 {
 	FString errorString = FString("Unable to use ") + NodeName + FString(" node. Incorrect OculusPlatformSDK version in use. ") + RequiredPlatformVersion + FString(" or later required.");
 	UE_LOG(LogOculusPlatformBP, Log, TEXT("%s"), *errorString);

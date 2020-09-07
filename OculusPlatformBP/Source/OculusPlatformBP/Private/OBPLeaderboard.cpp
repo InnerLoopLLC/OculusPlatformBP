@@ -3,7 +3,7 @@
 #include "OBPLeaderboard.h"
 
 /*
-UOBPLeaderboard::UOBPLeaderboard(const FObjectInitializer& ObjectInitializer)
+UOBP_Leaderboard::UOBP_Leaderboard(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 }
@@ -13,12 +13,12 @@ UOBPLeaderboard::UOBPLeaderboard(const FObjectInitializer& ObjectInitializer)
 // --------------------
 
 // not yet implemented
-UOBPLeaderboard* CreateLeaderboard(UObject* WorldContextObject)
+UOBP_Leaderboard* CreateLeaderboard(UObject* WorldContextObject)
 {
-	return NewObject<UOBPLeaderboard>();
+	return NewObject<UOBP_Leaderboard>();
 }
 
-FString UOBPLeaderboard::GetApiName()
+FString UOBP_Leaderboard::GetApiName()
 {
 	// requires OculusPlatfromSDK v18 (1.50) or later; default UE4 distribution = 1.40
 #if PLATFORM_MINOR_VERSION >= 50
@@ -31,42 +31,42 @@ FString UOBPLeaderboard::GetApiName()
 // LeaderboardEntry.h
 // --------------------
 
-UOBPLeaderboardEntry::UOBPLeaderboardEntry(const FObjectInitializer& ObjectInitializer)
+UOBP_LeaderboardEntry::UOBP_LeaderboardEntry(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 }
 
-UOBPLeaderboardEntry* CreateLeaderboardEntry(UObject* WorldContextObject)
+UOBP_LeaderboardEntry* CreateLeaderboardEntry(UObject* WorldContextObject)
 {
-	return NewObject<UOBPLeaderboardEntry>();
+	return NewObject<UOBP_LeaderboardEntry>();
 }
 
-FString UOBPLeaderboardEntry::GetExtraData()
+FString UOBP_LeaderboardEntry::GetExtraData()
 {
 	return ovr_LeaderboardEntry_GetExtraData(ovrLeaderboardEntryHandle);
 }
 
-int UOBPLeaderboardEntry::GetExtraDataLength()
+int UOBP_LeaderboardEntry::GetExtraDataLength()
 {
 	return ovr_LeaderboardEntry_GetExtraDataLength(ovrLeaderboardEntryHandle);
 }
 
-int UOBPLeaderboardEntry::GetRank()
+int UOBP_LeaderboardEntry::GetRank()
 {
 	return ovr_LeaderboardEntry_GetRank(ovrLeaderboardEntryHandle);
 }
 
-int64 UOBPLeaderboardEntry::GetScore()
+int64 UOBP_LeaderboardEntry::GetScore()
 {
 	return ovr_LeaderboardEntry_GetScore(ovrLeaderboardEntryHandle);
 }
 
-int64 UOBPLeaderboardEntry::GetTimestamp()
+int64 UOBP_LeaderboardEntry::GetTimestamp()
 {
 	return ovr_LeaderboardEntry_GetTimestamp(ovrLeaderboardEntryHandle);
 }
 
-void UOBPLeaderboardEntry::GetUser()
+void UOBP_LeaderboardEntry::GetUser()
 {
 	// returns ovrUserHandle // need to implement ovrUser.h
 	//ovr_LeaderboardEntry_GetUser(ovrLeaderboardEntryHandle);
@@ -76,7 +76,7 @@ void UOBPLeaderboardEntry::GetUser()
 // Leaderboard Requests
 // --------------------
 /*
-void UOBPLeaderboard::GetLeaderboardEntries()
+void UOBP_Leaderboard::GetLeaderboardEntries()
 {
 	ovrRequest RequestId = ovr_Leaderboard_GetEntries(const char* leaderboardName, int limit, ovrLeaderboardFilterType filter, ovrLeaderboardStartAt startAt);
 
@@ -93,7 +93,7 @@ void UOBPLeaderboard::GetLeaderboardEntries()
 	}));
 }
 
-void UOBPLeaderboard::GetLeaderboardEntriesAfterRank()
+void UOBP_Leaderboard::GetLeaderboardEntriesAfterRank()
 {
 	ovrRequest RequestId = ovr_Leaderboard_GetEntriesAfterRank(const char* leaderboardName, int limit, unsigned long long afterRank);
 
@@ -113,7 +113,7 @@ void UOBPLeaderboard::GetLeaderboardEntriesAfterRank()
 // not yet implemented
 // requires OculusPlatfromSDK v16 (1.48) or later; default UE4 distribution = 1.40
 #if PLATFORM_MINOR_VERSION >= 48
-void UOBPLeaderboard::GetLeaderboardEntriesByIds()
+void UOBP_Leaderboard::GetLeaderboardEntriesByIds()
 {
 	ovrRequest RequestId = ovr_Leaderboard_GetEntriesByIds(const char* leaderboardName, int limit, ovrLeaderboardStartAt startAt, ovrID * userIDs, unsigned int userIDLength);
 
@@ -131,7 +131,7 @@ void UOBPLeaderboard::GetLeaderboardEntriesByIds()
 }
 #endif
 
-void UOBPLeaderboard::GetNextLeaderboardEntries()
+void UOBP_Leaderboard::GetNextLeaderboardEntries()
 {
 	ovrRequest RequestId = ovr_Leaderboard_GetNextEntries(const ovrLeaderboardEntryArrayHandle handle);
 
@@ -148,7 +148,7 @@ void UOBPLeaderboard::GetNextLeaderboardEntries()
 	}));
 }
 
-void UOBPLeaderboard::GetPreviousLeaderboardEntries()
+void UOBP_Leaderboard::GetPreviousLeaderboardEntries()
 {
 	ovrRequest RequestId = ovr_Leaderboard_GetPreviousEntries(const ovrLeaderboardEntryArrayHandle handle);
 
@@ -165,7 +165,7 @@ void UOBPLeaderboard::GetPreviousLeaderboardEntries()
 	}));
 }
 
-void UOBPLeaderboard::WriteLeaderboardEntry()
+void UOBP_Leaderboard::WriteLeaderboardEntry()
 {
 	ovrRequest RequestId = ovr_Leaderboard_WriteEntry(const char* leaderboardName, long long score, const void* extraData, unsigned int extraDataLength, bool forceUpdate);
 
