@@ -7,14 +7,55 @@ UOBP_User::UOBP_User(const FObjectInitializer& ObjectInitializer)
 {
 }
 
+UOBP_GetUser::UOBP_GetUser(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+}
+
 UOBP_LoggedInUser::UOBP_LoggedInUser(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 }
 
-void UOBP_LoggedInUser::ReturnLoggedInUser()
+void UOBP_GetUser::Activate()
 {
-	UOBP_LoggedInUser* LoggedInUser = NewObject<UOBP_LoggedInUser>();
+	UOBP_User* User = NewObject<UOBP_User>();
+
+	ovrRequest RequestId = ovr_User_Get(ovrId);
+
+	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+		[this, User](ovrMessageHandle Message, bool bIsError)
+	{
+		if (bIsError)
+		{
+			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error getting user."));
+			OnFailure.Broadcast(nullptr);
+		}
+		else
+		{
+			ovrMessageType messageType = ovr_Message_GetType(Message);
+
+			if (messageType == ovrMessage_User_Get)
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got user."));
+				User->ovrUserHandle = ovr_Message_GetUser(Message);
+				OnSuccess.Broadcast(User);
+			}
+			else
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get user."));
+				OnFailure.Broadcast(nullptr);
+			}
+		}
+	}));
+}
+
+UOBP_GetUser* UOBP_GetUser::GetUser(UObject* WorldContextObject, int64 UserId)
+{
+	UOBP_GetUser* UserToGet = NewObject<UOBP_GetUser>();
+	UserToGet->ovrId = UserId;
+	return UserToGet;
 }
 
 void UOBP_LoggedInUser::Activate()
@@ -26,14 +67,27 @@ void UOBP_LoggedInUser::Activate()
 	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
 	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 		[this, LoggedInUser](ovrMessageHandle Message, bool bIsError)
-	{
-		if (bIsError) {
+	{		
+		if (bIsError) 
+		{
 			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error getting logged in user."));
+			OnFailure.Broadcast(nullptr);
 		}
-		else {
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got logged in user."));
-			LoggedInUser->ovrUserHandle = ovr_Message_GetUser(Message);
-			OnSuccess.Broadcast(LoggedInUser);
+		else 
+		{
+			ovrMessageType messageType = ovr_Message_GetType(Message);
+
+			if (messageType == ovrMessage_User_GetLoggedInUser)
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got logged in user."));
+				LoggedInUser->ovrUserHandle = ovr_Message_GetUser(Message);
+				OnSuccess.Broadcast(LoggedInUser);
+			}
+			else
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get logged in user."));
+				OnFailure.Broadcast(nullptr);
+			}
 		}
 	}));
 }

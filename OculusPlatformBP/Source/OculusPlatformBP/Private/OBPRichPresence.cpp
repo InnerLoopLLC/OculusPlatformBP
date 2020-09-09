@@ -7,8 +7,148 @@ UOBP_RichPresence::UOBP_RichPresence(const FObjectInitializer& ObjectInitializer
 {
 }
 
+UOBP_GetDestinations::UOBP_GetDestinations(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+}
+
+UOBP_GetNextDestinationArrayPage::UOBP_GetNextDestinationArrayPage(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+}
+
 // --------------------
-// Rich Presence Functions
+// OVR_RichPresenceRequests.h
+// --------------------
+
+void UOBP_GetDestinations::Activate()
+{
+#if PLATFORM_MINOR_VERSION >= 41
+	UOBP_DestinationArray* DestinationArray = NewObject<UOBP_DestinationArray>();
+
+	ovrRequest RequestId = ovr_RichPresence_GetDestinations();
+
+	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+		[this, DestinationArray](ovrMessageHandle Message, bool bIsError)
+	{
+		if (bIsError)
+		{
+			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error getting destinations."));
+			OnFailure.Broadcast(nullptr);
+		}
+		else
+		{
+			ovrMessageType messageType = ovr_Message_GetType(Message);
+
+			if (messageType == ovrMessage_RichPresence_GetDestinations)
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got destinations."));
+				DestinationArray->ovrDestinationArrayHandle = ovr_Message_GetDestinationArray(Message);
+				OnSuccess.Broadcast(DestinationArray);
+			}
+			else
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get destinations."));
+				OnFailure.Broadcast(nullptr);
+			}
+		}
+	}));
+#else
+	OBP_PlatformVersionError("GetDestinations", "1.41");
+	OnFailure.Broadcast(nullptr);
+#endif
+}
+
+UOBP_GetDestinations* UOBP_GetDestinations::GetDestinations(UObject* WorldContextObject)
+{
+	return NewObject<UOBP_GetDestinations>();
+}
+
+void UOBP_GetNextDestinationArrayPage::Activate()
+{
+#if PLATFORM_MINOR_VERSION >= 41
+	UOBP_DestinationArray* DestinationArray = NewObject<UOBP_DestinationArray>();
+
+	ovrRequest RequestId = ovr_RichPresence_GetNextDestinationArrayPage(ovrDestinationArrayHandle);
+
+	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+		[this, DestinationArray](ovrMessageHandle Message, bool bIsError)
+	{
+		if (bIsError)
+		{
+			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error getting destination array page."));
+			OnFailure.Broadcast(nullptr);
+		}
+		else
+		{
+			ovrMessageType messageType = ovr_Message_GetType(Message);
+
+			if (messageType == ovrMessage_RichPresence_GetNextDestinationArrayPage)
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got destination array page."));
+				DestinationArray->ovrDestinationArrayHandle = ovr_Message_GetDestinationArray(Message);
+				OnSuccess.Broadcast(DestinationArray);
+			}
+			else
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get destination array page."));
+				OnFailure.Broadcast(nullptr);
+			}
+		}
+	}));
+#else
+	OBP_PlatformVersionError("GetNextDestinationArrayPage", "1.41");
+	OnFailure.Broadcast(nullptr);
+#endif
+}
+
+UOBP_GetNextDestinationArrayPage* UOBP_GetNextDestinationArrayPage::GetNextDestinationArrayPage(UObject* WorldContextObject, UOBP_DestinationArray* DestinationArray)
+{
+	UOBP_GetNextDestinationArrayPage* DestinationArrayPage = NewObject<UOBP_GetNextDestinationArrayPage>();
+#if PLATFORM_MINOR_VERSION >= 41
+	DestinationArrayPage->ovrDestinationArrayHandle = DestinationArray;
+#endif
+	return DestinationArrayPage;
+}
+
+void UOBP_RichPresence::ClearRichPresence()
+{
+	ovrRequest RequestId = ovr_RichPresence_Clear();
+
+	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+		[this](ovrMessageHandle Message, bool bIsError)
+	{
+		if (bIsError) {
+			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error clearing Rich Presence"));
+		}
+		else {
+			UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully cleared Rich Presence"));
+		}
+	}));
+}
+
+void UOBP_RichPresence::SetRichPresence()
+{
+	ovrRequest RequestId = ovr_RichPresence_Set(OvrRichPresenceOptions);
+
+	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+		[this](ovrMessageHandle Message, bool bIsError)
+	{
+		if (bIsError) {
+			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error setting Rich Presence")); //, *FString(ovr_Message_GetString(Message))
+		}
+		else {
+			UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully set Rich Presence"));
+		}
+	}));
+}
+
+// --------------------
+// OVR_RichPresence.h
 // --------------------
 
 UOBP_RichPresence* UOBP_RichPresence::CreateRichPresenceOptions(UObject* WorldContextObject)
@@ -163,85 +303,3 @@ EOBP_RichPresenceExtraContext UOBP_RichPresence::ExtraContext_FromString(FString
 	}
 }
 */
-
-// --------------------
-// OVR_RichPresenceRequests.h
-// --------------------
-
-void UOBP_RichPresence::ClearRichPresence()
-{
-	ovrRequest RequestId = ovr_RichPresence_Clear();
-
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
-	{
-		if (bIsError) {
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error clearing Rich Presence"));
-		}
-		else {
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully cleared Rich Presence"));
-		}
-	}));
-}
-
-// Requires OculusPlatfromSDK v12 (1.44) or later
-void UOBP_RichPresence::GetDestinations()
-{
-#if PLATFORM_MINOR_VERSION >= 44
-	ovrRequest RequestId = ovr_RichPresence_GetDestinations();
-
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
-	{
-		if (bIsError) {
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error getting Destinations"));
-		}
-		else {
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got Destinations"));
-		}
-	}));
-#else
-	OBP_PlatformVersionError("GetDestinations", "v12");
-#endif
-}
-
-// Requires OculusPlatfromSDK v12 (1.44) or later
-void UOBP_RichPresence::GetNextDestinationArrayPage()
-{
-#if PLATFORM_MINOR_VERSION >= 44
-	ovrRequest RequestId = ovr_RichPresence_GetNextDestinationArrayPage(OvrRichPresenceStruct);
-
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
-	{
-		if (bIsError) {
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error getting Next Destination Array Page"));
-		}
-		else {
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got Next Destination Array Page"));
-		}
-	}));
-#else
-	OBP_PlatformVersionError("GetNextDestinationArrayPage", "v12");
-#endif
-}
-
-void UOBP_RichPresence::SetRichPresence()
-{
-	ovrRequest RequestId = ovr_RichPresence_Set(OvrRichPresenceOptions);
-
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
-	{
-		if (bIsError) {
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error setting Rich Presence")); //, *FString(ovr_Message_GetString(Message))
-		}
-		else {
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully set Rich Presence"));
-		}
-	}));
-}

@@ -5,6 +5,55 @@
 #include "OculusPlatformBP.h"
 #include "OBPRichPresence.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGetDestinations, UOBP_DestinationArray*, DestinationArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGetDestinationsArrayPage, UOBP_DestinationArray*, DestinationArray);
+
+UCLASS(BlueprintType)
+class OCULUSPLATFORMBP_API UOBP_GetDestinations : public UBlueprintAsyncActionBase
+{
+
+	GENERATED_UCLASS_BODY()
+
+public:
+
+	UPROPERTY(BlueprintAssignable)
+		FOnGetDestinations OnSuccess;
+
+	UPROPERTY(BlueprintAssignable)
+		FOnGetDestinations OnFailure;
+
+	/*Gets all the destinations that the presence can be set to
+	Requires OculusPlatfromSDK 1.41 or later*/
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+		static UOBP_GetDestinations* GetDestinations(UObject* WorldContextObject);
+
+	// UBlueprintAsyncActionBase interface
+	virtual void Activate() override;
+};
+
+UCLASS(BlueprintType)
+class OCULUSPLATFORMBP_API UOBP_GetNextDestinationArrayPage : public UBlueprintAsyncActionBase
+{
+
+	GENERATED_UCLASS_BODY()
+
+public:
+
+	UPROPERTY(BlueprintAssignable)
+		FOnGetDestinationsArrayPage OnSuccess;
+
+	UPROPERTY(BlueprintAssignable)
+		FOnGetDestinationsArrayPage OnFailure;
+
+	/*Get the next page of entries
+	Requires OculusPlatfromSDK 1.41 or later*/
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+		static UOBP_GetNextDestinationArrayPage* GetNextDestinationArrayPage(UObject* WorldContextObject, UOBP_DestinationArray* DestinationArray);
+
+	// UBlueprintAsyncActionBase interface
+	virtual void Activate() override;
+};
+
 UCLASS(BlueprintType)
 class OCULUSPLATFORMBP_API UOBP_RichPresence : public UBlueprintFunctionLibrary
 {
@@ -61,10 +110,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
 		void SetStartTime(const int64 RichPresenceStartTime);
 
-	/*/ --------------------
+	// --------------------
 	// OVR_RichPresenceExtraContext.h (https://developer.oculus.com/reference/platform/v19/o_v_r_rich_presence_extra_context_8h/)
 	// --------------------
-
+	/*
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
 		static FString ExtraContext_ToString(EOBP_RichPresenceExtraContext RichPresenceExtraContext);
 
@@ -76,17 +125,11 @@ public:
 	// OVR_RichPresenceRequests.h (https://developer.oculus.com/reference/platform/v19/o_v_r_requests_rich_presence_8h)
 	// --------------------
 
+	/*Clear rich presence for running app*/
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
 		void ClearRichPresence();
 
-	// Requires OculusPlatfromSDK v12 (1.44) or later
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
-		void GetDestinations();
-
-	// Requires OculusPlatfromSDK v12 (1.44) or later
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
-		void GetNextDestinationArrayPage();
-
+	/*Set rich presence for running app*/
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
 		void SetRichPresence();
 };
