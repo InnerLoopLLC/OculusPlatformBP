@@ -1,6 +1,6 @@
 # OculusPlatformBP Plugin
 
-A library of UE4 Blueprint nodes for Oculus Platform functions.
+A UE4 plugin library of Blueprint nodes for Oculus Platform functions.
 
 #### What this is:
 + ...the [*Oculus Platform SDK (v19)*](https://developer.oculus.com/reference/platform/v19/) exposed from C++ to Blueprints as directly as possible.
