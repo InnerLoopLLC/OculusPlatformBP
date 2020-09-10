@@ -7,13 +7,13 @@ A library of UE4 Blueprint nodes for Oculus Platform functions.
 + ...or at least some of it. There's a still a lot of work to do.
 
 #### What this isn't:
-+ ...an attempt to integrate the Oculus Platform SDK into existing UE4 systems.
++ ...an attempt to integrate the Oculus Platform SDK into existing UE4 systems. *(e.g. OnlineSubsystem)*
 + ...an expansion of the existing SDK.
 + ...a simplification or explanation of the existing SDK.
 + ...completed. Most of the modules have **not** been implemented yet.
 
 This means you'll find blueprint nodes for the functions included in the [*Oculus Platform SDK*](https://developer.oculus.com/reference/platform/v19/).
-But that's pretty much it. No direct support is offered, but I'll try my best to answer questions.
+But that's pretty much it. No direct support is offered at this time, but I'll try my best to answer questions.
 Please refer to the [*Oculus Platform SDK*](https://developer.oculus.com/reference/platform/v19/) and [*Oculus Platform Solutions*](https://developer.oculus.com/documentation/unreal/ps-platform-intro/) pages for documentation and example usage.
 Please refer to the [*Unreal Engine 4*](https://github.com/EpicGames/UnrealEngine) GitHub for links and resources related to UE4.
 
