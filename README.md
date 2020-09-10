@@ -19,6 +19,8 @@ Please refer to the [*Unreal Engine 4*](https://github.com/EpicGames/UnrealEngin
 
 *(Note: OculusVR plugin and OnlineSubsystemOculus plugin are required for OculusPlatformBP to function)*
 
+Find out more about InnerLoop LLC at [https://www.innerloopllc.com](https://www.innerloopllc.com).
+
 ## Support
 *(Much of this has not been fully tested. So, please tell me if something is broken.)*
 * **Unreal Engine** - [4.25.3-Oculus](https://github.com/Oculus-VR/UnrealEngine/tree/4.25)
