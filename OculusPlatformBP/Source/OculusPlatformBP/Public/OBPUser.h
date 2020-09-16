@@ -7,6 +7,21 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGetUser, UOBP_User*, User);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGetLoggedInUser, UOBP_User*, LoggedInUser);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGetAccessToken, FString, AccessToken);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGetLoggedInUserFriends, UOBP_User*, LoggedInUser);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGetLoggedInUserFriendsAndRooms, UOBP_User*, LoggedInUser);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGetLoggedInUserRecentlyMetUsersAndRooms, UOBP_User*, LoggedInUser);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGetNextUserAndRoomArrayPage, UOBP_User*, LoggedInUser);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGetNextUserArrayPage, UOBP_User*, LoggedInUser);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGetOrgScopedID, int64, OrgScopedID);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGetSdkAccounts, UOBP_User*, LoggedInUser);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGetUserProof, UOBP_User*, LoggedInUser);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLaunchFriendRequestFlow, UOBP_User*, LoggedInUser);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FLaunchProfile);
+
+// --------------------
+// OVR_Requests_User.h
+// --------------------
 
 UCLASS(BlueprintType)
 class OCULUSPLATFORMBP_API UOBP_GetUser : public UBlueprintAsyncActionBase
@@ -34,7 +49,31 @@ public:
 };
 
 UCLASS(BlueprintType)
-class OCULUSPLATFORMBP_API UOBP_LoggedInUser : public UBlueprintAsyncActionBase
+class OCULUSPLATFORMBP_API UOBP_GetAccessToken : public UBlueprintAsyncActionBase
+{
+
+	GENERATED_UCLASS_BODY()
+
+public:
+
+	FString AccessToken;
+
+	UPROPERTY(BlueprintAssignable)
+		FOnGetAccessToken OnSuccess;
+
+	UPROPERTY(BlueprintAssignable)
+		FOnGetAccessToken OnFailure;
+
+	/*Return an access token for this user, suitable for making REST calls against graph.oculus.com.*/
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+		static UOBP_GetAccessToken* GetAccessToken(UObject* WorldContextObject);
+
+	// UBlueprintAsyncActionBase interface
+	virtual void Activate() override;
+};
+
+UCLASS(BlueprintType)
+class OCULUSPLATFORMBP_API UOBP_GetLoggedInUser : public UBlueprintAsyncActionBase
 {
 
 	GENERATED_UCLASS_BODY()
@@ -51,11 +90,86 @@ public:
 	NOTE: This will not return the user's presence as it should always be 'online' in your application.
 	NOTE: Users will have a unique ID per application.*/
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_LoggedInUser* GetLoggedInUser(UObject* WorldContextObject);
+		static UOBP_GetLoggedInUser* GetLoggedInUser(UObject* WorldContextObject);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;
 };
+
+UCLASS(BlueprintType)
+class OCULUSPLATFORMBP_API UOBP_GetLoggedInUserFriends : public UBlueprintAsyncActionBase
+{
+
+	GENERATED_UCLASS_BODY()
+
+public:
+
+	UPROPERTY(BlueprintAssignable)
+		FOnGetLoggedInUserFriends OnSuccess;
+
+	UPROPERTY(BlueprintAssignable)
+		FOnGetLoggedInUserFriends OnFailure;
+
+	/*Retrieve a list of the logged in user's friends.*/
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+		static UOBP_GetLoggedInUserFriends* GetLoggedInUserFriends(UObject* WorldContextObject);
+
+	// UBlueprintAsyncActionBase interface
+	virtual void Activate() override;
+};
+
+UCLASS(BlueprintType)
+class OCULUSPLATFORMBP_API UOBP_GetOrgScopedID : public UBlueprintAsyncActionBase
+{
+
+	GENERATED_UCLASS_BODY()
+
+public:
+
+	int64 UserID;
+
+	UPROPERTY(BlueprintAssignable)
+		FGetOrgScopedID OnSuccess;
+
+	UPROPERTY(BlueprintAssignable)
+		FGetOrgScopedID OnFailure;
+
+	/*returns an ovrID which is unique per org. allows different apps within the same org to identify the user.*/
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+		static UOBP_GetOrgScopedID* GetOrgScopedID(UObject* WorldContextObject, int64 UserID);
+
+	// UBlueprintAsyncActionBase interface
+	virtual void Activate() override;
+};
+
+UCLASS(BlueprintType)
+class OCULUSPLATFORMBP_API UOBP_LaunchProfile : public UBlueprintAsyncActionBase
+{
+
+	GENERATED_UCLASS_BODY()
+
+public:
+
+	int64 UserID;
+
+	UPROPERTY(BlueprintAssignable)
+		FLaunchProfile OnSuccess;
+
+	UPROPERTY(BlueprintAssignable)
+		FLaunchProfile OnFailure;
+
+	/*Launch the profile of the given user. The profile surfaces information about the user and supports relevant actions that the viewer may take on that user, e.g. sending a friend request.
+	Note: This seems to be broken in 1.40. Not yet tested with newer OculusPlatfromSDK versions.*/
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+		static UOBP_LaunchProfile* LaunchProfile(UObject* WorldContextObject, int64 UserID);
+
+	// UBlueprintAsyncActionBase interface
+	virtual void Activate() override;
+};
+
+// --------------------
+// OVR_User.h
+// --------------------
 
 UCLASS(BlueprintType)
 class OCULUSPLATFORMBP_API UOBP_User : public UBlueprintFunctionLibrary

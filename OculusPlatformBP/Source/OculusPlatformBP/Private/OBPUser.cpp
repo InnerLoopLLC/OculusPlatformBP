@@ -2,6 +2,10 @@
 
 #include "OBPUser.h"
 
+// --------------------
+// Initializers
+// --------------------
+
 UOBP_User::UOBP_User(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
@@ -12,10 +16,36 @@ UOBP_GetUser::UOBP_GetUser(const FObjectInitializer& ObjectInitializer)
 {
 }
 
-UOBP_LoggedInUser::UOBP_LoggedInUser(const FObjectInitializer& ObjectInitializer)
+UOBP_GetAccessToken::UOBP_GetAccessToken(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 }
+
+UOBP_GetLoggedInUser::UOBP_GetLoggedInUser(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+}
+
+UOBP_GetLoggedInUserFriends::UOBP_GetLoggedInUserFriends(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+}
+
+UOBP_GetOrgScopedID::UOBP_GetOrgScopedID(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+}
+
+UOBP_LaunchProfile::UOBP_LaunchProfile(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+}
+
+// --------------------
+// OVR_Requests_User.h
+// --------------------
+
+//---GetUser---
 
 void UOBP_GetUser::Activate()
 {
@@ -58,7 +88,48 @@ UOBP_GetUser* UOBP_GetUser::GetUser(UObject* WorldContextObject, int64 UserId)
 	return UserToGet;
 }
 
-void UOBP_LoggedInUser::Activate()
+//---GetAccessToken---
+
+void UOBP_GetAccessToken::Activate()
+{
+	ovrRequest RequestId = ovr_User_GetAccessToken();
+
+	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+		[this](ovrMessageHandle Message, bool bIsError)
+	{
+		if (bIsError)
+		{
+			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error getting access token."));
+			OnFailure.Broadcast("");
+		}
+		else
+		{
+			ovrMessageType messageType = ovr_Message_GetType(Message);
+
+			if (messageType == ovrMessage_User_GetAccessToken)
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got access token."));
+				AccessToken = ovr_Message_GetString(Message);
+				OnSuccess.Broadcast(AccessToken);
+			}
+			else
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get acess token."));
+				OnFailure.Broadcast("");
+			}
+		}
+	}));
+}
+
+UOBP_GetAccessToken* UOBP_GetAccessToken::GetAccessToken(UObject* WorldContextObject)
+{
+	return NewObject<UOBP_GetAccessToken>();
+}
+
+//---GetLoggedInUser---
+
+void UOBP_GetLoggedInUser::Activate()
 {
 	UOBP_User* LoggedInUser = NewObject<UOBP_User>();
 
@@ -92,9 +163,133 @@ void UOBP_LoggedInUser::Activate()
 	}));
 }
 
-UOBP_LoggedInUser* UOBP_LoggedInUser::GetLoggedInUser(UObject* WorldContextObject)
+UOBP_GetLoggedInUser* UOBP_GetLoggedInUser::GetLoggedInUser(UObject* WorldContextObject)
 {
-	return NewObject<UOBP_LoggedInUser>();
+	return NewObject<UOBP_GetLoggedInUser>();
+}
+
+//---GetLoggedInUserFriends---
+
+void UOBP_GetLoggedInUserFriends::Activate()
+{
+	//should be UOBP_UserArrayHandle
+	UOBP_User* LoggedInUserFriends = NewObject<UOBP_User>();
+
+	ovrRequest RequestId = ovr_User_GetLoggedInUserFriends();
+
+	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+		[this, LoggedInUserFriends](ovrMessageHandle Message, bool bIsError)
+	{
+		if (bIsError)
+		{
+			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error getting logged in user friends."));
+			OnFailure.Broadcast(nullptr);
+		}
+		else
+		{
+			ovrMessageType messageType = ovr_Message_GetType(Message);
+
+			if (messageType == ovrMessage_User_GetLoggedInUserFriends)
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got logged in user friends."));
+				//need to implement UOBP_UserArrayHandle
+				//LoggedInUserFriends->ovrUserHandle = ovr_Message_GetUserArray(Message);
+				OnSuccess.Broadcast(LoggedInUserFriends);
+			}
+			else
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get logged in user friends."));
+				OnFailure.Broadcast(nullptr);
+			}
+		}
+	}));
+}
+
+UOBP_GetLoggedInUserFriends* UOBP_GetLoggedInUserFriends::GetLoggedInUserFriends(UObject* WorldContextObject)
+{
+	return NewObject<UOBP_GetLoggedInUserFriends>();
+}
+
+//---GetOrgScopedID---
+
+void UOBP_GetOrgScopedID::Activate()
+{
+	ovrRequest RequestId = ovr_User_GetOrgScopedID(UserID);
+
+	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+		[this](ovrMessageHandle Message, bool bIsError)
+	{
+		if (bIsError)
+		{
+			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error getting org scoped ID."));
+			OnFailure.Broadcast(0);
+		}
+		else
+		{
+			ovrMessageType messageType = ovr_Message_GetType(Message);
+
+			if (messageType == ovrMessage_User_GetOrgScopedID)
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got org scoped ID."));
+				// message returns and org scoped ID handle, but it doesn't contain anything other than an ID, so we're skipping a step and just returning the ID directly
+				OnSuccess.Broadcast(ovr_OrgScopedID_GetID(ovr_Message_GetOrgScopedID(Message)));
+			}
+			else
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get org scoped ID."));
+				OnFailure.Broadcast(0);
+			}
+		}
+	}));
+}
+
+UOBP_GetOrgScopedID* UOBP_GetOrgScopedID::GetOrgScopedID(UObject* WorldContextObject, int64 UserID)
+{
+	UOBP_GetOrgScopedID* UserIDToGet = NewObject<UOBP_GetOrgScopedID>();
+	UserIDToGet->UserID = UserID;
+	return UserIDToGet;
+}
+
+//---GetOrgScopedID---
+
+void UOBP_LaunchProfile::Activate()
+{
+	ovrRequest RequestId = ovr_User_LaunchProfile(UserID);
+
+	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+		[this](ovrMessageHandle Message, bool bIsError)
+	{
+		if (bIsError)
+		{
+			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error launching profile."));
+			OnFailure.Broadcast();
+		}
+		else
+		{
+			ovrMessageType messageType = ovr_Message_GetType(Message);
+
+			if (messageType == ovrMessage_User_LaunchProfile)
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully launched profile."));
+				OnSuccess.Broadcast();
+			}
+			else
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to launch profile."));
+				OnFailure.Broadcast();
+			}
+		}
+	}));
+}
+
+UOBP_LaunchProfile* UOBP_LaunchProfile::LaunchProfile(UObject* WorldContextObject, int64 UserID)
+{
+	UOBP_LaunchProfile* ProfileToLaunch = NewObject<UOBP_LaunchProfile>();
+	ProfileToLaunch->UserID = UserID;
+	return ProfileToLaunch;
 }
 
 // --------------------
