@@ -2,6 +2,9 @@
 
 A UE4 plugin library of Blueprint nodes for Oculus Platform functions.
 
+*If you enjoy this plugin and want to see it improve, please consider helping me buy some caffeine.<br>
+[**Donate via Patreon**](https://www.patreon.com/innerloopllc)*
+
 #### What this is:
 + ...the [*Oculus Platform SDK (v19)*](https://developer.oculus.com/reference/platform/v19/) exposed from C++ to Blueprints as directly as possible.
 + ...or at least some of it. There's a still a lot of work to do.
