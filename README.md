@@ -20,6 +20,7 @@ This means you'll find blueprint nodes for the functions included in the [*Oculu
 But that's pretty much it. No direct support is offered at this time, but I'll try my best to answer questions.
 Please refer to the [*Oculus Platform SDK*](https://developer.oculus.com/reference/platform/v19/) and [*Oculus Platform Solutions*](https://developer.oculus.com/documentation/unreal/ps-platform-intro/) pages for documentation and example usage.
 Please refer to the [*Unreal Engine 4*](https://github.com/EpicGames/UnrealEngine) GitHub for links and resources related to UE4.
+Usage examples are included in the *Examples* folder.
 
 *(Note: OculusVR plugin and OnlineSubsystemOculus plugin are required for OculusPlatformBP to function)*
 
@@ -32,7 +33,7 @@ Find out more about InnerLoop LLC at [https://www.innerloopllc.com](https://www.
 * **Oculus Platform SDK** - [v19](https://developer.oculus.com/downloads/package/oculus-platform-sdk/19.0.0/)<br>
 *(UE4.23+ includes Oculus Platform SDK 1.40 by default. **It is highly recommended to update to v19 to access all features and bug fixes.**)*<br>
 *(This plugin attempts to handle whichever Oculus Platform SDK is installed. Though 1.40+ is required.)*<br>
-*(This plugin has only been tested for UE4.25.3-Oculus, however it may also work on other engine branches. No promises.)*
+*(This plugin has only been tested for UE4.25.3-Oculus, however it may also work on other engine branches. No promises.)*<br>
 *(Launcher distributions of UE4 are not currently supported. You'll have to compile your own build of the engine.)*
 
 ## Installation
