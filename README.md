@@ -8,6 +8,7 @@ A UE4 plugin library of Blueprint nodes for Oculus Platform functions.
 #### What this is:
 + ...the [*Oculus Platform SDK (v19)*](https://developer.oculus.com/reference/platform/v19/) exposed from C++ to Blueprints as directly as possible.
 + ...or at least some of it. There's a still a lot of work to do.
++ ...client-side stuff **only**. For now. Server-side will be implemented eventually.
 
 #### What this isn't:
 + ...an attempt to integrate the Oculus Platform SDK into existing UE4 systems. *(e.g. OnlineSubsystem)*
@@ -32,6 +33,7 @@ Find out more about InnerLoop LLC at [https://www.innerloopllc.com](https://www.
 *(UE4.23+ includes Oculus Platform SDK 1.40 by default. **It is highly recommended to update to v19 to access all features and bug fixes.**)*<br>
 *(This plugin attempts to handle whichever Oculus Platform SDK is installed. Though 1.40+ is required.)*<br>
 *(This plugin has only been tested for UE4.25.3-Oculus, however it may also work on other engine branches. No promises.)*
+*(Launcher distributions of UE4 are not currently supported. You'll have to compile your own build of the engine.)*
 
 ## Installation
 *(Optional)* - Update [*Oculus Platform SDK*](https://developer.oculus.com/downloads/package/oculus-platform-sdk/) to latest version (v19).
@@ -43,8 +45,9 @@ Find out more about InnerLoop LLC at [https://www.innerloopllc.com](https://www.
 6) Use *OculusPlatformBP* to do cool stuff
 
 ## Modules
-+ [Rich Presence/Destinations](https://developer.oculus.com/documentation/unreal/ps-rich-presence/)
 + [Leaderboards](https://developer.oculus.com/documentation/unreal/ps-leaderboards/)
++ [Rich Presence/Destinations](https://developer.oculus.com/documentation/unreal/ps-rich-presence/)
++ [User/Identity](https://developer.oculus.com/documentation/unreal/ps-presence/)
 
 ## Legal
 *OculusPlatformBP Plugin* by ItsNotMeTrustMe *(Brian Edward Hicks)* of InnerLoop LLC, 2020<br>
