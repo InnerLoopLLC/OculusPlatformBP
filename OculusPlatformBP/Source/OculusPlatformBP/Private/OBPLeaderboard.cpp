@@ -2,44 +2,274 @@
 
 #include "OBPLeaderboard.h"
 
+// --------------------
+// Initializers
+// --------------------
 /*
 UOBP_Leaderboard::UOBP_Leaderboard(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 }
-
-// --------------------
-// Leaderboard.h
-// --------------------
-
-// not yet implemented
-UOBP_Leaderboard* CreateLeaderboard(UObject* WorldContextObject)
-{
-	return NewObject<UOBP_Leaderboard>();
-}
-
-FString UOBP_Leaderboard::GetApiName()
-{
-	// requires OculusPlatfromSDK v18 (1.50) or later; default UE4 distribution = 1.40
-#if PLATFORM_MINOR_VERSION >= 50
-	return ovr_Leaderboard_GetApiName(ovrLeaderboardHandle);
-#endif
-}
-
-
-// --------------------
-// LeaderboardEntry.h
-// --------------------
-
+*/
 UOBP_LeaderboardEntry::UOBP_LeaderboardEntry(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 }
 
-UOBP_LeaderboardEntry* CreateLeaderboardEntry(UObject* WorldContextObject)
+UOBP_LeaderboardEntryArray::UOBP_LeaderboardEntryArray(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
 {
-	return NewObject<UOBP_LeaderboardEntry>();
 }
+
+UOBP_GetEntries::UOBP_GetEntries(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+}
+
+UOBP_GetEntriesAfterRank::UOBP_GetEntriesAfterRank(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+}
+
+UOBP_GetNextEntries::UOBP_GetNextEntries(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+}
+
+UOBP_GetPreviousEntries::UOBP_GetPreviousEntries(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+}
+
+UOBP_WriteEntry::UOBP_WriteEntry(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+}
+
+// --------------------
+// ovr_Requests_Leaderboard.h
+// --------------------
+
+//---GetEntries---
+void UOBP_GetEntries::Activate()
+{
+	UOBP_LeaderboardEntryArray* LeaderboardEntryArray = NewObject<UOBP_LeaderboardEntryArray>();
+
+	ovrLeaderboardFilterType LeaderboardFilter = OBP_LeaderboardFilterToEnum(Filter);
+	ovrLeaderboardStartAt LeaderboardStartAt = OBP_LeaderboardStartAtToEnum(StartAt);
+
+	ovrRequest RequestId = ovr_Leaderboard_GetEntries(TCHAR_TO_ANSI(*LeaderboardName), Limit, LeaderboardFilter, LeaderboardStartAt);
+
+	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+		[this, LeaderboardEntryArray](ovrMessageHandle Message, bool bIsError)
+	{
+		if (bIsError)
+		{
+			OBP_MessageError("Leaderboard::GetEntries", Message);
+			OnFailure.Broadcast(nullptr);
+		}
+		else
+		{
+			ovrMessageType messageType = ovr_Message_GetType(Message);
+
+			if (messageType == ovrMessage_Leaderboard_GetEntries)
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got leaderboard entries."));
+				LeaderboardEntryArray->ovrLeaderboardEntryArrayHandle = ovr_Message_GetLeaderboardEntryArray(Message);
+				OnSuccess.Broadcast(LeaderboardEntryArray);
+			}
+			else
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get leaderboard entries."));
+				OnFailure.Broadcast(nullptr);
+			}
+		}
+	}));
+}
+
+UOBP_GetEntries* UOBP_GetEntries::GetEntries(UObject* WorldContextObject, FString LeaderboardName, int Limit, EOBPLeaderboardFilterType Filter, EOBPLeaderboardStartAt StartAt)
+{
+	UOBP_GetEntries* Entries = NewObject<UOBP_GetEntries>();
+	Entries->LeaderboardName = LeaderboardName;
+	Entries->Limit = Limit;
+	Entries->Filter = Filter;
+	Entries->StartAt = StartAt;
+	return Entries;
+}
+
+//---GetEntriesAfterRank---
+void UOBP_GetEntriesAfterRank::Activate()
+{
+	UOBP_LeaderboardEntryArray* LeaderboardEntryArray = NewObject<UOBP_LeaderboardEntryArray>();
+
+	ovrRequest RequestId = ovr_Leaderboard_GetEntriesAfterRank(TCHAR_TO_ANSI(*LeaderboardName), Limit, AfterRank);
+
+	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+		[this, LeaderboardEntryArray](ovrMessageHandle Message, bool bIsError)
+	{
+		if (bIsError)
+		{
+			OBP_MessageError("Leaderboard::GetEntriesAfterRank", Message);
+			OnFailure.Broadcast(nullptr);
+		}
+		else
+		{
+			ovrMessageType messageType = ovr_Message_GetType(Message);
+
+			if (messageType == ovrMessage_Leaderboard_GetEntriesAfterRank)
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got leaderboard entries after rank."));
+				LeaderboardEntryArray->ovrLeaderboardEntryArrayHandle = ovr_Message_GetLeaderboardEntryArray(Message);
+				OnSuccess.Broadcast(LeaderboardEntryArray);
+			}
+			else
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get leaderboard entries after rank."));
+				OnFailure.Broadcast(nullptr);
+			}
+		}
+	}));
+}
+
+UOBP_GetEntriesAfterRank* UOBP_GetEntriesAfterRank::GetEntriesAfterRank(UObject* WorldContextObject, FString LeaderboardName, int Limit, int64 AfterRank)
+{
+	UOBP_GetEntriesAfterRank* EntriesAfterRank = NewObject<UOBP_GetEntriesAfterRank>();
+	EntriesAfterRank->LeaderboardName = LeaderboardName;
+	EntriesAfterRank->Limit = Limit;
+	EntriesAfterRank->AfterRank = AfterRank;
+	return EntriesAfterRank;
+}
+
+//---GetNextEntries---
+void UOBP_GetNextEntries::Activate()
+{
+	ovrRequest RequestId = ovr_Leaderboard_GetNextEntries(NextLeaderboardEntryArray->ovrLeaderboardEntryArrayHandle);
+
+	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+		[this](ovrMessageHandle Message, bool bIsError)
+	{
+		if (bIsError)
+		{
+			OBP_MessageError("Leaderboard::GetNextEntries", Message);
+			OnFailure.Broadcast(nullptr);
+		}
+		else
+		{
+			ovrMessageType messageType = ovr_Message_GetType(Message);
+
+			if (messageType == ovrMessage_Leaderboard_GetNextEntries)
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got next leaderboard entries."));
+				NextLeaderboardEntryArray->ovrLeaderboardEntryArrayHandle = ovr_Message_GetLeaderboardEntryArray(Message);
+				OnSuccess.Broadcast(NextLeaderboardEntryArray);
+			}
+			else
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get next leaderboard entries."));
+				OnFailure.Broadcast(nullptr);
+			}
+		}
+	}));
+}
+ 
+UOBP_GetNextEntries* UOBP_GetNextEntries::GetNextEntries(UObject* WorldContextObject, UOBP_LeaderboardEntryArray* LeaderboardEntryArray)
+{
+	UOBP_GetNextEntries* NextEntries = NewObject<UOBP_GetNextEntries>();
+	NextEntries->NextLeaderboardEntryArray = LeaderboardEntryArray;
+	return NextEntries;
+}
+
+//---GetPreviousEntries---
+void UOBP_GetPreviousEntries::Activate()
+{
+	ovrRequest RequestId = ovr_Leaderboard_GetPreviousEntries(PreviousLeaderboardEntryArray->ovrLeaderboardEntryArrayHandle);
+
+	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+		[this](ovrMessageHandle Message, bool bIsError)
+	{
+		if (bIsError)
+		{
+			OBP_MessageError("Leaderboard::GetPreviousEntries", Message);
+			OnFailure.Broadcast(nullptr);
+		}
+		else
+		{
+			ovrMessageType messageType = ovr_Message_GetType(Message);
+
+			if (messageType == ovrMessage_Leaderboard_GetPreviousEntries)
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got previous leaderboard entries."));
+				PreviousLeaderboardEntryArray->ovrLeaderboardEntryArrayHandle = ovr_Message_GetLeaderboardEntryArray(Message);
+				OnSuccess.Broadcast(PreviousLeaderboardEntryArray);
+			}
+			else
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get previous leaderboard entries."));
+				OnFailure.Broadcast(nullptr);
+			}
+		}
+	}));
+}
+
+UOBP_GetPreviousEntries* UOBP_GetPreviousEntries::GetPreviousEntries(UObject* WorldContextObject, UOBP_LeaderboardEntryArray* LeaderboardEntryArray)
+{
+	UOBP_GetPreviousEntries* PreviousEntries = NewObject<UOBP_GetPreviousEntries>();
+	PreviousEntries->PreviousLeaderboardEntryArray = LeaderboardEntryArray;
+	return PreviousEntries;
+}
+
+//---WriteEntry---
+void UOBP_WriteEntry::Activate()
+{
+	// Haven't figured out how to handle this yet. Probably a UStruct or UClass. Too tired. It's a tomorrow problem.
+	ovrRequest RequestId = ovr_Leaderboard_WriteEntry(TCHAR_TO_ANSI(*LeaderboardName), Score, ExtraData, ExtraDataLength, bForceUpdate);
+
+	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+		[this](ovrMessageHandle Message, bool bIsError)
+	{
+		if (bIsError)
+		{
+			OBP_MessageError("Leaderboard::WriteEntry", Message);
+			OnFailure.Broadcast(false);
+		}
+		else
+		{
+			ovrMessageType messageType = ovr_Message_GetType(Message);
+
+			if (messageType == ovrMessage_Leaderboard_WriteEntry)
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully wrote leaderboard entry."));
+				bool bDidUpdate = ovr_LeaderboardUpdateStatus_GetDidUpdate(ovr_Message_GetLeaderboardUpdateStatus(Message));
+				OnSuccess.Broadcast(bDidUpdate);
+			}
+			else
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to write leaderboard entry."));
+				OnFailure.Broadcast(false);
+			}
+		}
+	}));
+}
+
+UOBP_WriteEntry* UOBP_WriteEntry::WriteEntry(UObject* WorldContextObject, FString LeaderboardName, int64 Score, int ExtraDataLength, bool bForceUpdate)
+{
+	UOBP_WriteEntry* WriteEntry = NewObject<UOBP_WriteEntry>();
+	WriteEntry->LeaderboardName = LeaderboardName;
+	WriteEntry->Score = Score;
+	//WriteEntry->ExtraData = ExtraData;
+	WriteEntry->ExtraDataLength = ExtraDataLength;
+	WriteEntry->bForceUpdate = bForceUpdate;
+	return WriteEntry;
+}
+
+// --------------------
+// ovr_LeaderboardEntry.h
+// --------------------
 
 FString UOBP_LeaderboardEntry::GetExtraData()
 {
@@ -66,119 +296,50 @@ int64 UOBP_LeaderboardEntry::GetTimestamp()
 	return ovr_LeaderboardEntry_GetTimestamp(ovrLeaderboardEntryHandle);
 }
 
-void UOBP_LeaderboardEntry::GetUser()
+UOBP_User* UOBP_LeaderboardEntry::GetUser()
 {
-	// returns ovrUserHandle // need to implement ovrUser.h
-	//ovr_LeaderboardEntry_GetUser(ovrLeaderboardEntryHandle);
+	UOBP_User* UserToGet = NewObject<UOBP_User>();
+	UserToGet->ovrUserHandle = ovr_LeaderboardEntry_GetUser(ovrLeaderboardEntryHandle);
+	return UserToGet;
 }
 
 // --------------------
-// Leaderboard Requests
+// ovr_LeaderboardEntryArray.h
 // --------------------
-/*
-void UOBP_Leaderboard::GetLeaderboardEntries()
-{
-	ovrRequest RequestId = ovr_Leaderboard_GetEntries(const char* leaderboardName, int limit, ovrLeaderboardFilterType filter, ovrLeaderboardStartAt startAt);
 
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
-	{
-		if (bIsError) {
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error getting Leaderboard entries"));
-		}
-		else {
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got Leaderboard entries"));
-		}
-	}));
+UOBP_LeaderboardEntry* UOBP_LeaderboardEntryArray::GetElement(int Index)
+{
+	UOBP_LeaderboardEntry* LeaderboardEntryToGet = NewObject<UOBP_LeaderboardEntry>();
+	LeaderboardEntryToGet->ovrLeaderboardEntryHandle = ovr_LeaderboardEntryArray_GetElement(ovrLeaderboardEntryArrayHandle, Index);
+	return LeaderboardEntryToGet;
 }
 
-void UOBP_Leaderboard::GetLeaderboardEntriesAfterRank()
+FString UOBP_LeaderboardEntryArray::GetNextUrl()
 {
-	ovrRequest RequestId = ovr_Leaderboard_GetEntriesAfterRank(const char* leaderboardName, int limit, unsigned long long afterRank);
-
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
-	{
-		if (bIsError) {
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error getting Leaderboard entries after rank"));
-		}
-		else {
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got Leaderboard entries after rank"));
-		}
-	}));
+	return ovr_LeaderboardEntryArray_GetNextUrl(ovrLeaderboardEntryArrayHandle);
 }
 
-// not yet implemented
-// requires OculusPlatfromSDK v16 (1.48) or later; default UE4 distribution = 1.40
-#if PLATFORM_MINOR_VERSION >= 48
-void UOBP_Leaderboard::GetLeaderboardEntriesByIds()
+FString UOBP_LeaderboardEntryArray::GetPreviousUrl()
 {
-	ovrRequest RequestId = ovr_Leaderboard_GetEntriesByIds(const char* leaderboardName, int limit, ovrLeaderboardStartAt startAt, ovrID * userIDs, unsigned int userIDLength);
-
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
-	{
-		if (bIsError) {
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error getting Leaderboard entries by IDs"));
-		}
-		else {
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got Leaderboard entries by IDs"));
-		}
-	}));
-}
-#endif
-
-void UOBP_Leaderboard::GetNextLeaderboardEntries()
-{
-	ovrRequest RequestId = ovr_Leaderboard_GetNextEntries(const ovrLeaderboardEntryArrayHandle handle);
-
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
-	{
-		if (bIsError) {
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error getting next Leaderboard entries"));
-		}
-		else {
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got next Leaderboard entries"));
-		}
-	}));
+	return ovr_LeaderboardEntryArray_GetPreviousUrl(ovrLeaderboardEntryArrayHandle);
 }
 
-void UOBP_Leaderboard::GetPreviousLeaderboardEntries()
+int UOBP_LeaderboardEntryArray::GetSize()
 {
-	ovrRequest RequestId = ovr_Leaderboard_GetPreviousEntries(const ovrLeaderboardEntryArrayHandle handle);
-
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
-	{
-		if (bIsError) {
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error getting previous Leaderboard entries"));
-		}
-		else {
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got previous Leaderboard entries"));
-		}
-	}));
+	return ovr_LeaderboardEntryArray_GetSize(ovrLeaderboardEntryArrayHandle);
 }
 
-void UOBP_Leaderboard::WriteLeaderboardEntry()
+int64 UOBP_LeaderboardEntryArray::GetTotalCount()
 {
-	ovrRequest RequestId = ovr_Leaderboard_WriteEntry(const char* leaderboardName, long long score, const void* extraData, unsigned int extraDataLength, bool forceUpdate);
-
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
-	{
-		if (bIsError) {
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error writing Leaderboard entry"));
-		}
-		else {
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got Leaderboard entry"));
-		}
-	}));
+	return ovr_LeaderboardEntryArray_GetTotalCount(ovrLeaderboardEntryArrayHandle);
 }
-*/
+
+bool UOBP_LeaderboardEntryArray::HasNextPage()
+{
+	return ovr_LeaderboardEntryArray_HasNextPage(ovrLeaderboardEntryArrayHandle);
+}
+
+bool UOBP_LeaderboardEntryArray::HasPreviousPage()
+{
+	return ovr_LeaderboardEntryArray_HasPreviousPage(ovrLeaderboardEntryArrayHandle);
+}

@@ -3,113 +3,151 @@
 #pragma once
 
 #include "OculusPlatformBP.h"
-//#include "OBPLeaderboard.generated.h"
+#include "OBPUser.h"
+#include "OBPLeaderboard.generated.h"
 
-/*
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGetEntries, UOBP_LeaderboardEntryArray*, LeaderboardEntryArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGetEntriesAfterRank, UOBP_LeaderboardEntryArray*, LeaderboardEntryArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGetNextEntries, UOBP_LeaderboardEntryArray*, LeaderboardEntryArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGetPreviousEntries, UOBP_LeaderboardEntryArray*, LeaderboardEntryArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWriteEntry, bool, bDidUpdate);
 
-UENUM(BlueprintType)
-enum class EOBPLeaderboardFilterType : uint8
-{
-	None,
-	Friends,
-	Unknown,
-	UserIds
-};
+// --------------------
+// OVR_Requests_Leaderboard.h
+// --------------------
 
-UENUM(BlueprintType)
-enum class EOBPLeaderboardStartAt : uint8
-{
-	Top,
-	CenteredOnViewer,
-	CenteredOnViewerOrTop,
-	Unknown
-};
-
-
-/*
 UCLASS(BlueprintType)
-class OCULUSPLATFORMBP_API UOBP_Leaderboard : public UBlueprintFunctionLibrary
+class OCULUSPLATFORMBP_API UOBP_GetEntries : public UBlueprintAsyncActionBase
 {
 
 	GENERATED_UCLASS_BODY()
 
 public:
 
-	// --------------------
-	// Leaderboard.h
-	// --------------------
-	
-// not yet implemented
-// requires OculusPlatfromSDK v18 (1.50) or later; default UE4 distribution = 1.40
+	FString LeaderboardName;
+	int Limit;
+	EOBPLeaderboardFilterType Filter;
+	EOBPLeaderboardStartAt StartAt;
 
-// Leaderboard Struct
-	ovrLeaderboard* ovrLeaderboardHandle;
+	UPROPERTY(BlueprintAssignable)
+		FGetEntries OnSuccess;
 
-	// Leaderboard Update Status
-	ovrLeaderboardUpdateStatus* ovrLeaderboardUpdateStatusHandle;
+	UPROPERTY(BlueprintAssignable)
+		FGetEntries OnFailure;
 
-	// --------------------
-	// Leaderboard (https://developer.oculus.com/reference/platform/1.40/o_v_r_rich_presence_options_8h)
-	// --------------------
+	/* Requests a block of Leaderboard Entries.*/
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+		static UOBP_GetEntries* GetEntries(UObject* WorldContextObject, FString LeaderboardName, int Limit, EOBPLeaderboardFilterType Filter, EOBPLeaderboardStartAt StartAt);
 
-	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_Leaderboard* CreateLeaderboard(UObject* WorldContextObject);
-
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
-		FString GetApiName();
-
-	// --------------------
-	// Enum Leaderboard Filter Type
-	// --------------------
-
-	//OVRPL_PUBLIC_FUNCTION(constchar*) ovrLeaderboardFilterType_ToString(ovrLeaderboardFilterType value);
-
-	//OVRPL_PUBLIC_FUNCTION(ovrLeaderboardFilterType) ovrLeaderboardFilterType_FromString(constchar* str);
-
-
-	// --------------------
-	// Enum Leaderboard Start At
-	// --------------------
-	
-	//OVRPL_PUBLIC_FUNCTION(constchar*) ovrLeaderboardStartAt_ToString(ovrLeaderboardStartAt value);
-	
-	//OVRPL_PUBLIC_FUNCTION(ovrLeaderboardStartAt) ovrLeaderboardStartAt_FromString(constchar* str);
-
-	// --------------------
-	// Leaderboard Update Status
-	// --------------------
-
-	OVRP_PUBLIC_FUNCTION(bool)         ovr_LeaderboardUpdateStatus_GetDidUpdate(const ovrLeaderboardUpdateStatusHandle obj);
-	OVRP_PUBLIC_FUNCTION(ovrID)        ovr_LeaderboardUpdateStatus_GetUpdatedChallengeId(const ovrLeaderboardUpdateStatusHandle obj, unsignedint index);
-	OVRP_PUBLIC_FUNCTION(unsignedint) ovr_LeaderboardUpdateStatus_GetUpdatedChallengeIdsSize(const ovrLeaderboardUpdateStatusHandle obj);
-
-	// --------------------
-	// Leaderboard Requests
-	// --------------------
-
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
-		void GetLeaderboardEntries();
-
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
-		void GetLeaderboardEntriesAfterRank();
-
-	// not yet implemented
-	// requires OculusPlatfromSDK v16 (1.48) or later; default UE4 distribution = 1.40
-
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
-		void GetLeaderboardEntriesByIds();
-
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
-		void GetNextLeaderboardEntries();;
-
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
-		void GetPreviousLeaderboardEntries();
-
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
-		void WriteLeaderboardEntry();
+	// UBlueprintAsyncActionBase interface
+	virtual void Activate() override;
 };
 
+UCLASS(BlueprintType)
+class OCULUSPLATFORMBP_API UOBP_GetEntriesAfterRank : public UBlueprintAsyncActionBase
+{
 
+	GENERATED_UCLASS_BODY()
+
+public:
+
+	FString LeaderboardName;
+	int Limit;
+	int64 AfterRank;
+
+	UPROPERTY(BlueprintAssignable)
+		FGetEntriesAfterRank OnSuccess;
+
+	UPROPERTY(BlueprintAssignable)
+		FGetEntriesAfterRank OnFailure;
+
+	/* Requests a block of leaderboard Entries.*/
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+		static UOBP_GetEntriesAfterRank* GetEntriesAfterRank(UObject* WorldContextObject, FString LeaderboardName, int Limit, int64 AfterRank);
+
+	// UBlueprintAsyncActionBase interface
+	virtual void Activate() override;
+};
+
+UCLASS(BlueprintType)
+class OCULUSPLATFORMBP_API UOBP_GetNextEntries : public UBlueprintAsyncActionBase
+{
+
+	GENERATED_UCLASS_BODY()
+
+public:
+
+	UOBP_LeaderboardEntryArray* NextLeaderboardEntryArray;
+
+	UPROPERTY(BlueprintAssignable)
+		FGetNextEntries OnSuccess;
+
+	UPROPERTY(BlueprintAssignable)
+		FGetNextEntries OnFailure;
+
+	/* Requests the next block of leaderboard entries.*/
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+		static UOBP_GetNextEntries* GetNextEntries(UObject* WorldContextObject, UOBP_LeaderboardEntryArray* LeaderboardEntryArray);
+
+	// UBlueprintAsyncActionBase interface
+	virtual void Activate() override;
+};
+
+UCLASS(BlueprintType)
+class OCULUSPLATFORMBP_API UOBP_GetPreviousEntries : public UBlueprintAsyncActionBase
+{
+
+	GENERATED_UCLASS_BODY()
+
+public:
+
+	UOBP_LeaderboardEntryArray* PreviousLeaderboardEntryArray;
+
+	UPROPERTY(BlueprintAssignable)
+		FGetPreviousEntries OnSuccess;
+
+	UPROPERTY(BlueprintAssignable)
+		FGetPreviousEntries OnFailure;
+
+	/* Requests the previous block of leaderboard entries.*/
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+		static UOBP_GetPreviousEntries* GetPreviousEntries(UObject* WorldContextObject, UOBP_LeaderboardEntryArray* LeaderboardEntryArray);
+
+	// UBlueprintAsyncActionBase interface
+	virtual void Activate() override;
+};
+
+UCLASS(BlueprintType)
+class OCULUSPLATFORMBP_API UOBP_WriteEntry : public UBlueprintAsyncActionBase
+{
+
+	GENERATED_UCLASS_BODY()
+
+public:
+
+	FString LeaderboardName;
+	int64 Score;
+	const void* ExtraData;
+	int ExtraDataLength;
+	bool bForceUpdate;
+
+	UPROPERTY(BlueprintAssignable)
+		FWriteEntry OnSuccess;
+
+	UPROPERTY(BlueprintAssignable)
+		FWriteEntry OnFailure;
+
+	/* Writes a single entry to a leaderboard. */
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+		static UOBP_WriteEntry* WriteEntry(UObject* WorldContextObject, FString LeaderboardName, int64 Score, int ExtraDataLength, bool bForceUpdate);
+
+	// UBlueprintAsyncActionBase interface
+	virtual void Activate() override;
+};
+
+// --------------------
+// ovr_LeaderboardEntry.h
+// --------------------
 UCLASS(BlueprintType)
 class OCULUSPLATFORMBP_API UOBP_LeaderboardEntry : public UBlueprintFunctionLibrary
 {
@@ -118,18 +156,7 @@ class OCULUSPLATFORMBP_API UOBP_LeaderboardEntry : public UBlueprintFunctionLibr
 
 public:
 
-	// --------------------
-	// Leaderboard Entry Object Properties
-	// --------------------
-
 	ovrLeaderboardEntry* ovrLeaderboardEntryHandle;
-
-	// --------------------
-	// Leaderboard Entry (https://developer.oculus.com/reference/platform/v19/o_v_r_leaderboard_entry_8h)
-	// --------------------
-
-	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_LeaderboardEntry* CreateLeaderboardEntry(UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
 		FString GetExtraData();
@@ -147,10 +174,13 @@ public:
 		int64 GetTimestamp();
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
-		void GetUser();
+		UOBP_User* GetUser();
 };	
 
-/*
+// --------------------
+// ovr_LeaderboardEntryArray.h
+// --------------------
+
 UCLASS(BlueprintType)
 class OCULUSPLATFORMBP_API UOBP_LeaderboardEntryArray : public UBlueprintFunctionLibrary
 {
@@ -159,25 +189,14 @@ class OCULUSPLATFORMBP_API UOBP_LeaderboardEntryArray : public UBlueprintFunctio
 
 public:
 
-	// --------------------
-	// Leaderboard Entry Array Object Properties
-	// --------------------
-
 	ovrLeaderboardEntryArray* ovrLeaderboardEntryArrayHandle;
 
-	// --------------------
-	// Leaderboard Entry Array (https://developer.oculus.com/reference/platform/v19/o_v_r_leaderboard_entry_array_8h)
-	// --------------------
-
-	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_LeaderboardEntry* CreateLeaderboardEntryArray(UObject* WorldContextObject);
-
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
-		void UOBP_LeaderboardEntry* GetElement();
+		UOBP_LeaderboardEntry* GetElement(int Index);
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
 		FString GetNextUrl();
-
+	
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
 		FString GetPreviousUrl();
 
@@ -192,12 +211,4 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
 		bool HasPreviousPage();
-
-	OVRP_PUBLIC_FUNCTION(ovrLeaderboardEntryHandle) ovr_LeaderboardEntryArray_GetElement(const ovrLeaderboardEntryArrayHandle obj, size_t index);
-	OVRP_PUBLIC_FUNCTION(constchar*)              ovr_LeaderboardEntryArray_GetNextUrl(const ovrLeaderboardEntryArrayHandle obj);
-	OVRP_PUBLIC_FUNCTION(constchar*)              ovr_LeaderboardEntryArray_GetPreviousUrl(const ovrLeaderboardEntryArrayHandle obj);
-	OVRP_PUBLIC_FUNCTION(size_t)                    ovr_LeaderboardEntryArray_GetSize(const ovrLeaderboardEntryArrayHandle obj);
-	OVRP_PUBLIC_FUNCTION(unsignedlonglong)        ovr_LeaderboardEntryArray_GetTotalCount(const ovrLeaderboardEntryArrayHandle obj);
-	OVRP_PUBLIC_FUNCTION(bool)                      ovr_LeaderboardEntryArray_HasNextPage(const ovrLeaderboardEntryArrayHandle obj);
-	OVRP_PUBLIC_FUNCTION(bool)                      ovr_LeaderboardEntryArray_HasPreviousPage(const ovrLeaderboardEntryArrayHandle obj);
-};*/
+};

@@ -5,8 +5,36 @@
 #include "OculusPlatformBP.h"
 #include "OBPRichPresence.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGetDestinations, UOBP_DestinationArray*, DestinationArray);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGetDestinationsArrayPage, UOBP_DestinationArray*, DestinationArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FClearRichPresence);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGetDestinations, UOBP_DestinationArray*, DestinationArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGetDestinationsArrayPage, UOBP_DestinationArray*, DestinationArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSetRichPresence);
+
+// --------------------
+// OVR_Requests_RichPresence.h
+// --------------------
+
+UCLASS(BlueprintType)
+class OCULUSPLATFORMBP_API UOBP_ClearRichPresence : public UBlueprintAsyncActionBase
+{
+
+	GENERATED_UCLASS_BODY()
+
+public:
+
+	UPROPERTY(BlueprintAssignable)
+		FClearRichPresence OnSuccess;
+
+	UPROPERTY(BlueprintAssignable)
+		FClearRichPresence OnFailure;
+
+	/*Clear rich presence for running app*/
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+		static UOBP_ClearRichPresence* ClearRichPresence(UObject* WorldContextObject);
+
+	// UBlueprintAsyncActionBase interface
+	virtual void Activate() override;
+};
 
 UCLASS(BlueprintType)
 class OCULUSPLATFORMBP_API UOBP_GetDestinations : public UBlueprintAsyncActionBase
@@ -17,14 +45,14 @@ class OCULUSPLATFORMBP_API UOBP_GetDestinations : public UBlueprintAsyncActionBa
 public:
 
 	UPROPERTY(BlueprintAssignable)
-		FOnGetDestinations OnSuccess;
+		FGetDestinations OnSuccess;
 
 	UPROPERTY(BlueprintAssignable)
-		FOnGetDestinations OnFailure;
+		FGetDestinations OnFailure;
 
 	/*Gets all the destinations that the presence can be set to
 	Requires OculusPlatfromSDK 1.41 or later*/
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 		static UOBP_GetDestinations* GetDestinations(UObject* WorldContextObject);
 
 	// UBlueprintAsyncActionBase interface
@@ -40,19 +68,47 @@ class OCULUSPLATFORMBP_API UOBP_GetNextDestinationArrayPage : public UBlueprintA
 public:
 
 	UPROPERTY(BlueprintAssignable)
-		FOnGetDestinationsArrayPage OnSuccess;
+		FGetDestinationsArrayPage OnSuccess;
 
 	UPROPERTY(BlueprintAssignable)
-		FOnGetDestinationsArrayPage OnFailure;
+		FGetDestinationsArrayPage OnFailure;
 
 	/*Get the next page of entries
 	Requires OculusPlatfromSDK 1.41 or later*/
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 		static UOBP_GetNextDestinationArrayPage* GetNextDestinationArrayPage(UObject* WorldContextObject, UOBP_DestinationArray* DestinationArray);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;
 };
+
+UCLASS(BlueprintType)
+class OCULUSPLATFORMBP_API UOBP_SetRichPresence : public UBlueprintAsyncActionBase
+{
+
+	GENERATED_UCLASS_BODY()
+
+public:
+
+	ovrRichPresenceOptions* OvrRichPresenceOptions = ovr_RichPresenceOptions_Create();
+	
+	UPROPERTY(BlueprintAssignable)
+		FSetRichPresence OnSuccess;
+
+	UPROPERTY(BlueprintAssignable)
+		FSetRichPresence OnFailure;
+
+	/*Set rich presence for running app*/
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+		static UOBP_SetRichPresence* SetRichPresence(UObject* WorldContextObject, UOBP_RichPresence* RichPresenceObject);
+
+	// UBlueprintAsyncActionBase interface
+	virtual void Activate() override;
+};
+
+// --------------------
+// OVR_RichPresence.h
+// --------------------
 
 UCLASS(BlueprintType)
 class OCULUSPLATFORMBP_API UOBP_RichPresence : public UBlueprintFunctionLibrary
@@ -61,10 +117,6 @@ class OCULUSPLATFORMBP_API UOBP_RichPresence : public UBlueprintFunctionLibrary
 	GENERATED_UCLASS_BODY()
 
 public:
-
-	// --------------------
-	// OVR_RichPresence.h (https://developer.oculus.com/reference/platform/v19/o_v_r_rich_presence_options_8h)
-	// --------------------
 
 	ovrRichPresenceOptions* OvrRichPresenceOptions = ovr_RichPresenceOptions_Create();
 
@@ -109,27 +161,4 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
 		void SetStartTime(const int64 RichPresenceStartTime);
-
-	// --------------------
-	// OVR_RichPresenceExtraContext.h (https://developer.oculus.com/reference/platform/v19/o_v_r_rich_presence_extra_context_8h/)
-	// --------------------
-	/*
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
-		static FString ExtraContext_ToString(EOBP_RichPresenceExtraContext RichPresenceExtraContext);
-
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
-		static EOBP_RichPresenceExtraContext ExtraContext_FromString(FString RichPresenceExtraContextString);
-	*/
-
-	// --------------------
-	// OVR_RichPresenceRequests.h (https://developer.oculus.com/reference/platform/v19/o_v_r_requests_rich_presence_8h)
-	// --------------------
-
-	/*Clear rich presence for running app*/
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
-		void ClearRichPresence();
-
-	/*Set rich presence for running app*/
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
-		void SetRichPresence();
 };

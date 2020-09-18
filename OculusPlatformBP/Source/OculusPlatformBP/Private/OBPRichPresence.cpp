@@ -2,7 +2,16 @@
 
 #include "OBPRichPresence.h"
 
+// --------------------
+// Initializers
+// --------------------
+
 UOBP_RichPresence::UOBP_RichPresence(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+}
+
+UOBP_ClearRichPresence::UOBP_ClearRichPresence(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 }
@@ -17,10 +26,53 @@ UOBP_GetNextDestinationArrayPage::UOBP_GetNextDestinationArrayPage(const FObject
 {
 }
 
+UOBP_SetRichPresence::UOBP_SetRichPresence(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+}
+
 // --------------------
 // OVR_RichPresenceRequests.h
 // --------------------
 
+//---ClearRichPresence---
+void UOBP_ClearRichPresence::Activate()
+{
+	ovrRequest RequestId = ovr_RichPresence_Clear();
+
+	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+		[this](ovrMessageHandle Message, bool bIsError)
+	{
+		if (bIsError)
+		{
+			OBP_MessageError("RichPresence::ClearRichPresence", Message);
+			OnFailure.Broadcast();
+		}
+		else
+		{
+			ovrMessageType messageType = ovr_Message_GetType(Message);
+
+			if (messageType == ovrMessage_RichPresence_Clear)
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully cleared rich presence."));
+				OnSuccess.Broadcast();
+			}
+			else
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to clear rich presence."));
+				OnFailure.Broadcast();
+			}
+		}
+	}));
+}
+
+UOBP_ClearRichPresence* UOBP_ClearRichPresence::ClearRichPresence(UObject* WorldContextObject)
+{
+	return NewObject<UOBP_ClearRichPresence>();
+}
+
+//---GetDestinations---
 void UOBP_GetDestinations::Activate()
 {
 #if PLATFORM_MINOR_VERSION >= 41
@@ -34,7 +86,7 @@ void UOBP_GetDestinations::Activate()
 	{
 		if (bIsError)
 		{
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error getting destinations."));
+			OBP_MessageError("RichPresence::GetDestinations", Message);
 			OnFailure.Broadcast(nullptr);
 		}
 		else
@@ -65,6 +117,7 @@ UOBP_GetDestinations* UOBP_GetDestinations::GetDestinations(UObject* WorldContex
 	return NewObject<UOBP_GetDestinations>();
 }
 
+//---GetNextDestinationArrayPage---
 void UOBP_GetNextDestinationArrayPage::Activate()
 {
 #if PLATFORM_MINOR_VERSION >= 41
@@ -78,7 +131,7 @@ void UOBP_GetNextDestinationArrayPage::Activate()
 	{
 		if (bIsError)
 		{
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error getting destination array page."));
+			OBP_MessageError("RichPresence::GetNextDestinationArray", Message);
 			OnFailure.Broadcast(nullptr);
 		}
 		else
@@ -113,24 +166,8 @@ UOBP_GetNextDestinationArrayPage* UOBP_GetNextDestinationArrayPage::GetNextDesti
 	return DestinationArrayPage;
 }
 
-void UOBP_RichPresence::ClearRichPresence()
-{
-	ovrRequest RequestId = ovr_RichPresence_Clear();
-
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
-	{
-		if (bIsError) {
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error clearing Rich Presence"));
-		}
-		else {
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully cleared Rich Presence"));
-		}
-	}));
-}
-
-void UOBP_RichPresence::SetRichPresence()
+//---SetRichPresence---
+void UOBP_SetRichPresence::Activate()
 {
 	ovrRequest RequestId = ovr_RichPresence_Set(OvrRichPresenceOptions);
 
@@ -138,13 +175,34 @@ void UOBP_RichPresence::SetRichPresence()
 	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 		[this](ovrMessageHandle Message, bool bIsError)
 	{
-		if (bIsError) {
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error setting Rich Presence")); //, *FString(ovr_Message_GetString(Message))
+		if (bIsError)
+		{
+			OBP_MessageError("RichPresence::SetRichPresence", Message);
+			OnFailure.Broadcast();
 		}
-		else {
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully set Rich Presence"));
+		else
+		{
+			ovrMessageType messageType = ovr_Message_GetType(Message);
+
+			if (messageType == ovrMessage_RichPresence_Set)
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully set rich presence."));
+				OnSuccess.Broadcast();
+			}
+			else
+			{
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to set rich presence."));
+				OnFailure.Broadcast();
+			}
 		}
 	}));
+}
+
+UOBP_SetRichPresence* UOBP_SetRichPresence::SetRichPresence(UObject* WorldContextObject, UOBP_RichPresence* RichPresenceObject)
+{
+	UOBP_SetRichPresence* SetRichPresence = NewObject<UOBP_SetRichPresence>();
+	SetRichPresence->OvrRichPresenceOptions = RichPresenceObject->OvrRichPresenceOptions;
+	return SetRichPresence;
 }
 
 // --------------------
@@ -240,66 +298,3 @@ void UOBP_RichPresence::SetStartTime(const int64 RichPresenceStartTime)
 {
 	ovr_RichPresenceOptions_SetStartTime(OvrRichPresenceOptions, RichPresenceStartTime);
 }
-
-/*/ --------------------
-// Rich Presence Extra Context
-// --------------------
-
-FString UOBP_RichPresence::ExtraContext_ToString(EOBP_RichPresenceExtraContext RichPresenceExtraContext)
-{
-	switch (RichPresenceExtraContext)
-	{
-	case EOBP_RichPresenceExtraContext::Unknown:
-		return ovrRichPresenceExtraContext_ToString(ovrRichPresenceExtraContext_Unknown);
-		break;
-	case EOBP_RichPresenceExtraContext::None:
-		return ovrRichPresenceExtraContext_ToString(ovrRichPresenceExtraContext_None);
-		break;
-	case EOBP_RichPresenceExtraContext::CurrentCapacity:
-		return ovrRichPresenceExtraContext_ToString(ovrRichPresenceExtraContext_CurrentCapacity);
-		break;
-	case EOBP_RichPresenceExtraContext::StartedAgo:
-		return ovrRichPresenceExtraContext_ToString(ovrRichPresenceExtraContext_StartedAgo);
-		break;
-	case EOBP_RichPresenceExtraContext::EndingIn:
-		return ovrRichPresenceExtraContext_ToString(ovrRichPresenceExtraContext_EndingIn);
-		break;
-	case EOBP_RichPresenceExtraContext::LookingForMatch:
-		return ovrRichPresenceExtraContext_ToString(ovrRichPresenceExtraContext_LookingForAMatch);
-		break;
-	default:
-		return ovrRichPresenceExtraContext_ToString(ovrRichPresenceExtraContext_Unknown);
-		break;
-	}
-}
-
-EOBP_RichPresenceExtraContext UOBP_RichPresence::ExtraContext_FromString(FString RichPresenceExtraContextString)
-{
-	ovrRichPresenceExtraContext RichPresenceExtraContextObject = ovrRichPresenceExtraContext_FromString(TCHAR_TO_ANSI(*RichPresenceExtraContextString));
-	
-	switch (RichPresenceExtraContextObject)
-	{
-	case 0:
-		return EOBP_RichPresenceExtraContext::Unknown;
-		break;
-	case 1:
-		return EOBP_RichPresenceExtraContext::None;
-		break;
-	case 2:
-		return EOBP_RichPresenceExtraContext::CurrentCapacity;
-		break;
-	case 3:
-		return EOBP_RichPresenceExtraContext::StartedAgo;
-		break;
-	case 4:
-		return EOBP_RichPresenceExtraContext::EndingIn;
-		break;
-	case 5:
-		return EOBP_RichPresenceExtraContext::LookingForMatch;
-		break;
-	default:
-		return EOBP_RichPresenceExtraContext::Unknown;
-		break;
-	}
-}
-*/

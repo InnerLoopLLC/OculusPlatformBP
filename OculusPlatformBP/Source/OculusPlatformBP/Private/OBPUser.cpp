@@ -46,7 +46,6 @@ UOBP_LaunchProfile::UOBP_LaunchProfile(const FObjectInitializer& ObjectInitializ
 // --------------------
 
 //---GetUser---
-
 void UOBP_GetUser::Activate()
 {
 	UOBP_User* User = NewObject<UOBP_User>();
@@ -59,7 +58,7 @@ void UOBP_GetUser::Activate()
 	{
 		if (bIsError)
 		{
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error getting user."));
+			OBP_MessageError("User::GetUser", Message);
 			OnFailure.Broadcast(nullptr);
 		}
 		else
@@ -89,7 +88,6 @@ UOBP_GetUser* UOBP_GetUser::GetUser(UObject* WorldContextObject, int64 UserId)
 }
 
 //---GetAccessToken---
-
 void UOBP_GetAccessToken::Activate()
 {
 	ovrRequest RequestId = ovr_User_GetAccessToken();
@@ -100,7 +98,7 @@ void UOBP_GetAccessToken::Activate()
 	{
 		if (bIsError)
 		{
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error getting access token."));
+			OBP_MessageError("User::GetAccessToken", Message);
 			OnFailure.Broadcast("");
 		}
 		else
@@ -128,7 +126,6 @@ UOBP_GetAccessToken* UOBP_GetAccessToken::GetAccessToken(UObject* WorldContextOb
 }
 
 //---GetLoggedInUser---
-
 void UOBP_GetLoggedInUser::Activate()
 {
 	UOBP_User* LoggedInUser = NewObject<UOBP_User>();
@@ -141,7 +138,7 @@ void UOBP_GetLoggedInUser::Activate()
 	{		
 		if (bIsError) 
 		{
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error getting logged in user."));
+			OBP_MessageError("User::GetLoggedInUser", Message);
 			OnFailure.Broadcast(nullptr);
 		}
 		else 
@@ -169,7 +166,6 @@ UOBP_GetLoggedInUser* UOBP_GetLoggedInUser::GetLoggedInUser(UObject* WorldContex
 }
 
 //---GetLoggedInUserFriends---
-
 void UOBP_GetLoggedInUserFriends::Activate()
 {
 	//should be UOBP_UserArrayHandle
@@ -183,7 +179,7 @@ void UOBP_GetLoggedInUserFriends::Activate()
 	{
 		if (bIsError)
 		{
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error getting logged in user friends."));
+			OBP_MessageError("User::GetLoggedInUserFriends", Message);
 			OnFailure.Broadcast(nullptr);
 		}
 		else
@@ -212,7 +208,6 @@ UOBP_GetLoggedInUserFriends* UOBP_GetLoggedInUserFriends::GetLoggedInUserFriends
 }
 
 //---GetOrgScopedID---
-
 void UOBP_GetOrgScopedID::Activate()
 {
 	ovrRequest RequestId = ovr_User_GetOrgScopedID(UserID);
@@ -223,7 +218,7 @@ void UOBP_GetOrgScopedID::Activate()
 	{
 		if (bIsError)
 		{
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error getting org scoped ID."));
+			OBP_MessageError("User::GetOrgScopedID", Message);
 			OnFailure.Broadcast(0);
 		}
 		else
@@ -253,7 +248,6 @@ UOBP_GetOrgScopedID* UOBP_GetOrgScopedID::GetOrgScopedID(UObject* WorldContextOb
 }
 
 //---GetOrgScopedID---
-
 void UOBP_LaunchProfile::Activate()
 {
 	ovrRequest RequestId = ovr_User_LaunchProfile(UserID);
@@ -264,7 +258,7 @@ void UOBP_LaunchProfile::Activate()
 	{
 		if (bIsError)
 		{
-			UE_LOG(LogOculusPlatformBP, Log, TEXT("Error launching profile."));
+			OBP_MessageError("User::LaunchProfile", Message);
 			OnFailure.Broadcast();
 		}
 		else
@@ -306,7 +300,6 @@ FString UOBP_User::GetDisplayName()
 	return FString();
 #endif
 }
-
 
 FString UOBP_User::GetPresence()
 {

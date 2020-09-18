@@ -36,7 +36,11 @@ public:
 	}
 };
 
-// OVR_RichPresenceExtraContext.h (https://developer.oculus.com/reference/platform/v19/o_v_r_rich_presence_extra_context_8h/)
+// --------------------
+// Enums - UEnums have to be declared here, I guess? They don't work when declared in each OBP_xxx.h file
+// --------------------
+
+/* RichPresenceExtraContext */
 UENUM(BlueprintType)
 enum class EOBP_RichPresenceExtraContext : uint8
 {
@@ -48,6 +52,7 @@ enum class EOBP_RichPresenceExtraContext : uint8
 	LookingForMatch
 };
 
+/* UserPresenceStatus */
 UENUM(BlueprintType)
 enum class EOBP_UserPresenceStatus : uint8
 {
@@ -56,4 +61,35 @@ enum class EOBP_UserPresenceStatus : uint8
 	Offline
 };
 
+/* LeaderboardFilterType */
+UENUM(BlueprintType)
+enum class EOBPLeaderboardFilterType : uint8
+{
+	None,
+	Friends,
+	Unknown,
+	UserIds
+};
+
+/* LeaderboardStartAt */
+UENUM(BlueprintType)
+enum class EOBPLeaderboardStartAt : uint8
+{
+	Top,
+	CenteredOnViewer,
+	CenteredOnViewerOrTop,
+	Unknown
+};
+
+/*Log errors caused by incorrect OculusPlatformSDK.*/
 void OBP_PlatformVersionError(FString NodeName, FString RequiredPlatformVersion);
+
+/*Log errors receiving ovr messages.*/
+void OBP_MessageError(FString NodeName, ovrMessageHandle Message);
+
+/* Converts an EOBPLeaderboardFilterType to an ovrLeaderboardFilterType for passing to the OculusPlatformSDK
+	Note: Enum value 'UserIds' Requires OculusPlatfromSDK v15 or later*/
+ovrLeaderboardFilterType OBP_LeaderboardFilterToEnum(EOBPLeaderboardFilterType OBPLeaderboardFilterType);
+
+/* Converts an EOBPLeaderboardStartAt to an ovrLeaderboardStartAt for passing to the OculusPlatformSDK */
+ovrLeaderboardStartAt OBP_LeaderboardStartAtToEnum(EOBPLeaderboardStartAt OBPLeaderboardStartAt);
