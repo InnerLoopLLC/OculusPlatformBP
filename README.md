@@ -52,6 +52,6 @@ Find out more about InnerLoop LLC at [https://www.innerloopllc.com](https://www.
 
 ## Legal
 *OculusPlatformBP Plugin* by ItsNotMeTrustMe *(Brian Edward Hicks)* of InnerLoop LLC, 2020<br>
-This plugin was not created by, or in partnership with, Oculus or Epic Games.<br>
+This plugin was not created by, or in partnership with, Oculus or Epic Games *(which are trademarks of their respective entities)*.<br>
 No guarantees are made about anything. Use at your own risk.<br>
 Please drink responsibly.
