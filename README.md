@@ -14,7 +14,7 @@ A UE4 plugin library of Blueprint nodes for Oculus Platform functions.
 + ...an attempt to integrate the Oculus Platform SDK into existing UE4 systems. *(e.g. OnlineSubsystem)*
 + ...an expansion of the existing SDK.
 + ...a simplification or explanation of the existing SDK.
-+ ...completed. Most of the modules have **not** been implemented yet.
++ ...completed. Most of the features have **not** been implemented yet.
 
 This means you'll find blueprint nodes for the functions included in the [*Oculus Platform SDK*](https://developer.oculus.com/reference/platform/v19/).
 But that's pretty much it. No direct support is offered at this time, but I'll try my best to answer questions.
@@ -45,7 +45,8 @@ Find out more about InnerLoop LLC at [https://www.innerloopllc.com](https://www.
 5) Check Oculus Entitlement
 6) Use *OculusPlatformBP* to do cool stuff
 
-## Modules
+## Features
++ [Achievements](https://developer.oculus.com/documentation/unreal/ps-achievements)
 + [Leaderboards](https://developer.oculus.com/documentation/unreal/ps-leaderboards/)
 + [Rich Presence/Destinations](https://developer.oculus.com/documentation/unreal/ps-rich-presence/)
 + [User/Identity](https://developer.oculus.com/documentation/unreal/ps-presence/)
