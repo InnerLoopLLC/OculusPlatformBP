@@ -21,27 +21,31 @@ void FOculusPlatformBP::ShutdownModule()
 {
 }
 
-/*Log errors caused by incorrect OculusPlatformSDK.*/
-void OBP_PlatformVersionError(FString NodeName, FString RequiredPlatformVersion)
-{
-	FString ErrorString = FString("Unable to use ") + NodeName + FString(" node. Incorrect OculusPlatformSDK version in use. ") + RequiredPlatformVersion + FString(" or later required.");
-	UE_LOG(LogOculusPlatformBP, Log, TEXT("%s"), *ErrorString);
-};
-
-/*Log ovr message errors.*/
-void OBP_MessageError(FString NodeName, ovrMessageHandle Message)
-{
-	FString ErrorCode = FString::FromInt(ovr_Error_GetCode(ovr_Message_GetError(Message)));
-	FString ErrorString = FString("Error on ") + NodeName + FString(". Error Code: ") + ErrorCode + FString(")");
-	UE_LOG(LogOculusPlatformBP, Log, TEXT("%s"), *ErrorString);
-
-	FString ErrorMessage = ovr_Error_GetMessage(ovr_Message_GetError(Message));
-	UE_LOG(LogOculusPlatformBP, Log, TEXT("%s"), *ErrorMessage);
-};
-
 // --------------------
 // Enum Conversions
 // --------------------
+
+/* Converts an EOBPAchievementType to an ovrAchievementType for passing to the OculusPlatformSDK */
+ovrAchievementType OBP_AchievementTypeToEnum(EOBPAchievementType OBPAchievementType)
+{
+	switch (OBPAchievementType)
+	{
+	case EOBPAchievementType::Unknown:
+		return ovrAchievement_TypeUnknown;
+		break;
+	case EOBPAchievementType::Simple:
+		return ovrAchievement_TypeSimple;
+		break;
+	case EOBPAchievementType::Bitfield:
+		return ovrAchievement_TypeBitfield;
+		break;
+	case EOBPAchievementType::Count:
+		return ovrAchievement_TypeCount;
+		break;
+	default:
+		return ovrAchievement_TypeUnknown;
+	}
+}
 
 /* Converts an EOBPLeaderboardFilterType to an ovrLeaderboardFilterType for passing to the OculusPlatformSDK
 	Note: Enum value 'UserIds' Requires OculusPlatfromSDK v15 or later
@@ -92,3 +96,25 @@ ovrLeaderboardStartAt OBP_LeaderboardStartAtToEnum(EOBPLeaderboardStartAt OBPLea
 		return ovrLeaderboard_StartAtTop;
 	}
 }
+
+// --------------------
+// Logging Functions
+// --------------------
+
+/*Log errors caused by incorrect OculusPlatformSDK.*/
+void OBP_PlatformVersionError(FString NodeName, FString RequiredPlatformVersion)
+{
+	FString ErrorString = FString("Unable to use ") + NodeName + FString(" node. Incorrect OculusPlatformSDK version in use. ") + RequiredPlatformVersion + FString(" or later required.");
+	UE_LOG(LogOculusPlatformBP, Log, TEXT("%s"), *ErrorString);
+};
+
+/*Log ovr message errors.*/
+void OBP_MessageError(FString NodeName, ovrMessageHandle Message)
+{
+	FString ErrorCode = FString::FromInt(ovr_Error_GetCode(ovr_Message_GetError(Message)));
+	FString ErrorString = FString("Error on ") + NodeName + FString(". Error Code: ") + ErrorCode + FString(")");
+	UE_LOG(LogOculusPlatformBP, Log, TEXT("%s"), *ErrorString);
+
+	FString ErrorMessage = ovr_Error_GetMessage(ovr_Message_GetError(Message));
+	UE_LOG(LogOculusPlatformBP, Log, TEXT("%s"), *ErrorMessage);
+};

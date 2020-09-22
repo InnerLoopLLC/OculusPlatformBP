@@ -107,7 +107,7 @@ void UOBP_GetDestinations::Activate()
 		}
 	}));
 #else
-	OBP_PlatformVersionError("GetDestinations", "1.41");
+	OBP_PlatformVersionError("RichPresence::GetDestinations", "1.41");
 	OnFailure.Broadcast(nullptr);
 #endif
 }
@@ -152,7 +152,7 @@ void UOBP_GetNextDestinationArrayPage::Activate()
 		}
 	}));
 #else
-	OBP_PlatformVersionError("GetNextDestinationArrayPage", "1.41");
+	OBP_PlatformVersionError("RichPresence::GetNextDestinationArrayPage", "1.41");
 	OnFailure.Broadcast(nullptr);
 #endif
 }

@@ -40,7 +40,37 @@ public:
 // Enums - UEnums have to be declared here, I guess? They don't work when declared in each OBP_xxx.h file
 // --------------------
 
-/* RichPresenceExtraContext */
+/* AchievementType.h */
+UENUM(BlueprintType)
+enum class EOBPAchievementType : uint8
+{
+	Unknown,
+	Simple,
+	Bitfield,
+	Count
+};
+
+/* LeaderboardFilterType.h */
+UENUM(BlueprintType)
+enum class EOBPLeaderboardFilterType : uint8
+{
+	None,
+	Friends,
+	Unknown,
+	UserIds
+};
+
+/* LeaderboardStartAt.h */
+UENUM(BlueprintType)
+enum class EOBPLeaderboardStartAt : uint8
+{
+	Top,
+	CenteredOnViewer,
+	CenteredOnViewerOrTop,
+	Unknown
+};
+
+/* RichPresenceExtraContext.h */
 UENUM(BlueprintType)
 enum class EOBP_RichPresenceExtraContext : uint8
 {
@@ -52,7 +82,7 @@ enum class EOBP_RichPresenceExtraContext : uint8
 	LookingForMatch
 };
 
-/* UserPresenceStatus */
+/* UserPresenceStatus.h */
 UENUM(BlueprintType)
 enum class EOBP_UserPresenceStatus : uint8
 {
@@ -61,31 +91,12 @@ enum class EOBP_UserPresenceStatus : uint8
 	Offline
 };
 
-/* LeaderboardFilterType */
-UENUM(BlueprintType)
-enum class EOBPLeaderboardFilterType : uint8
-{
-	None,
-	Friends,
-	Unknown,
-	UserIds
-};
+// --------------------
+// Enum Conversions
+// --------------------
 
-/* LeaderboardStartAt */
-UENUM(BlueprintType)
-enum class EOBPLeaderboardStartAt : uint8
-{
-	Top,
-	CenteredOnViewer,
-	CenteredOnViewerOrTop,
-	Unknown
-};
-
-/*Log errors caused by incorrect OculusPlatformSDK.*/
-void OBP_PlatformVersionError(FString NodeName, FString RequiredPlatformVersion);
-
-/*Log errors receiving ovr messages.*/
-void OBP_MessageError(FString NodeName, ovrMessageHandle Message);
+/* Converts an EOBPAchievementType to an ovrAchievementType for passing to the OculusPlatformSDK */
+ovrAchievementType OBP_AchievementTypeToEnum(EOBPAchievementType OBPAchievementType);
 
 /* Converts an EOBPLeaderboardFilterType to an ovrLeaderboardFilterType for passing to the OculusPlatformSDK
 	Note: Enum value 'UserIds' Requires OculusPlatfromSDK v15 or later*/
@@ -93,3 +104,13 @@ ovrLeaderboardFilterType OBP_LeaderboardFilterToEnum(EOBPLeaderboardFilterType O
 
 /* Converts an EOBPLeaderboardStartAt to an ovrLeaderboardStartAt for passing to the OculusPlatformSDK */
 ovrLeaderboardStartAt OBP_LeaderboardStartAtToEnum(EOBPLeaderboardStartAt OBPLeaderboardStartAt);
+
+// --------------------
+// Logging Functions
+// --------------------
+
+/*Log errors caused by incorrect OculusPlatformSDK.*/
+void OBP_PlatformVersionError(FString NodeName, FString RequiredPlatformVersion);
+
+/*Log errors receiving ovr messages.*/
+void OBP_MessageError(FString NodeName, ovrMessageHandle Message);
