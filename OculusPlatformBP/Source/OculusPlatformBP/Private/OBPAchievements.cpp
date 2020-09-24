@@ -194,7 +194,9 @@ void UOBP_Achievements_GetAllDefinitions::Activate()
 
 UOBP_Achievements_GetAllDefinitions* UOBP_Achievements_GetAllDefinitions::GetAllDefinitions(UObject* WorldContextObject)
 {
-	return NewObject<UOBP_Achievements_GetAllDefinitions>();
+	UOBP_Achievements_GetAllDefinitions* GetAllDefinitions = NewObject<UOBP_Achievements_GetAllDefinitions>();
+	GetAllDefinitions->AchievementDefinitionArray = NewObject<UOBP_AchievementDefinitionArray>();
+	return GetAllDefinitions;
 }
 
 //---GetAllProgress---
@@ -232,15 +234,27 @@ void UOBP_Achievements_GetAllProgress::Activate()
 
 UOBP_Achievements_GetAllProgress* UOBP_Achievements_GetAllProgress::GetAllProgress(UObject* WorldContextObject)
 {
-	return NewObject<UOBP_Achievements_GetAllProgress>();
+	UOBP_Achievements_GetAllProgress* GetAllProgress = NewObject<UOBP_Achievements_GetAllProgress>();
+	GetAllProgress->AchievementProgressArray = NewObject<UOBP_AchievementProgressArray>();
+	return GetAllProgress;
 }
 
 //---GetDefinitionsByName---
 void UOBP_Achievements_GetDefinitionsByName::Activate()
 {
-	/* Temporarily removed to test everything else before fixing this issue.
+	const char* ThisName = TCHAR_TO_ANSI(*Names);
+	const char** ThisNewName = &ThisName;
 
-	ovrRequest RequestId = ovr_Achievements_GetDefinitionsByName(TCHAR_TO_ANSI(*Names), Count);
+	if(Count > 1)
+	{ 
+		Count = 1;
+	}
+	else if (Count < 0)
+	{
+		Count = 0;
+	}
+
+	ovrRequest RequestId = ovr_Achievements_GetDefinitionsByName(ThisNewName, Count);
 
 	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
 	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
@@ -268,12 +282,12 @@ void UOBP_Achievements_GetDefinitionsByName::Activate()
 			}
 		}
 	}));
-	*/
 }
 
-UOBP_Achievements_GetDefinitionsByName* UOBP_Achievements_GetDefinitionsByName::GetDefinitionsByName(UObject* WorldContextObject, TArray<FString> Names, int Count)
+UOBP_Achievements_GetDefinitionsByName* UOBP_Achievements_GetDefinitionsByName::GetDefinitionsByName(UObject* WorldContextObject, FString Names, int Count)
 {
 	UOBP_Achievements_GetDefinitionsByName* AchievementDefinitionByName = NewObject<UOBP_Achievements_GetDefinitionsByName>();
+	AchievementDefinitionByName->AchievementDefinitionArray = NewObject<UOBP_AchievementDefinitionArray>();
 	AchievementDefinitionByName->Names = Names;
 	AchievementDefinitionByName->Count = Count;
 	return AchievementDefinitionByName;
@@ -362,9 +376,19 @@ UOBP_Achievements_GetNextAchievementProgressArrayPage* UOBP_Achievements_GetNext
 //---GetProgressByName---
 void UOBP_Achievements_GetProgressByName::Activate()
 {
-	/* Temporarily removed to test everything else before fixing this issue. 
-	
-	ovrRequest RequestId = ovr_Achievements_GetProgressByName(TCHAR_TO_ANSI(*Names), Count);
+	const char* ThisName = TCHAR_TO_ANSI(*Names);
+	const char** ThisNewName = &ThisName;
+
+	if (Count > 1)
+	{
+		Count = 1;
+	}
+	else if (Count < 0)
+	{
+		Count = 0;
+	}
+
+	ovrRequest RequestId = ovr_Achievements_GetProgressByName(ThisNewName, Count);
 
 	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
 	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
@@ -391,12 +415,13 @@ void UOBP_Achievements_GetProgressByName::Activate()
 				OnFailure.Broadcast(nullptr);
 			}
 		}
-	})); */
+	})); 
 }
 
-UOBP_Achievements_GetProgressByName* UOBP_Achievements_GetProgressByName::GetProgressByName(UObject* WorldContextObject, TArray<FString> Names, int Count)
+UOBP_Achievements_GetProgressByName* UOBP_Achievements_GetProgressByName::GetProgressByName(UObject* WorldContextObject, FString Names, int Count)
 {
 	UOBP_Achievements_GetProgressByName* AchievementProgressByName = NewObject<UOBP_Achievements_GetProgressByName>();
+	AchievementProgressByName->AchievementProgressArray = NewObject<UOBP_AchievementProgressArray>();
 	AchievementProgressByName->Names = Names;
 	AchievementProgressByName->Count = Count;
 	return AchievementProgressByName;

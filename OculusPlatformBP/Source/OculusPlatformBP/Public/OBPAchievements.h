@@ -85,7 +85,7 @@ class OCULUSPLATFORMBP_API UOBP_Achievements_GetAllDefinitions : public UBluepri
 
 public:
 
-	UOBP_AchievementDefinitionArray* AchievementDefinitionArray = NewObject<UOBP_AchievementDefinitionArray>();
+	UOBP_AchievementDefinitionArray* AchievementDefinitionArray = nullptr;
 
 	UPROPERTY(BlueprintAssignable)
 		FAchievementsGetAllDefinitions OnSuccess;
@@ -109,7 +109,7 @@ class OCULUSPLATFORMBP_API UOBP_Achievements_GetAllProgress : public UBlueprintA
 
 public:
 
-	UOBP_AchievementProgressArray* AchievementProgressArray = NewObject<UOBP_AchievementProgressArray>();
+	UOBP_AchievementProgressArray* AchievementProgressArray = nullptr;
 
 	UPROPERTY(BlueprintAssignable)
 		FAchievementsGetAllProgress OnSuccess;
@@ -133,8 +133,9 @@ class OCULUSPLATFORMBP_API UOBP_Achievements_GetDefinitionsByName : public UBlue
 
 public:
 
-	UOBP_AchievementDefinitionArray* AchievementDefinitionArray = NewObject<UOBP_AchievementDefinitionArray>();
-	TArray<FString> Names;
+	UOBP_AchievementDefinitionArray* AchievementDefinitionArray = nullptr;
+	//TArray<FString> Names;
+	FString Names;
 	int Count;
 
 	UPROPERTY(BlueprintAssignable)
@@ -146,7 +147,7 @@ public:
 	/* Request the achievement definitions that match the specified names. 
 	Note: This node is currently non-functional. Coming soon.*/
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_Achievements_GetDefinitionsByName* GetDefinitionsByName(UObject* WorldContextObject, TArray<FString> Names, int Count);
+		static UOBP_Achievements_GetDefinitionsByName* GetDefinitionsByName(UObject* WorldContextObject, FString Names, int Count);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;
@@ -160,7 +161,7 @@ class OCULUSPLATFORMBP_API UOBP_Achievements_GetNextAchievementDefinitionArrayPa
 
 public:
 
-	UOBP_AchievementDefinitionArray* AchievementDefinitionArray = NewObject<UOBP_AchievementDefinitionArray>();
+	UOBP_AchievementDefinitionArray* AchievementDefinitionArray = nullptr;
 
 	UPROPERTY(BlueprintAssignable)
 		FAchievementsGetNextAchievementDefinitionArrayPage OnSuccess;
@@ -184,7 +185,7 @@ class OCULUSPLATFORMBP_API UOBP_Achievements_GetNextAchievementProgressArrayPage
 
 public:
 
-	UOBP_AchievementProgressArray* AchievementProgressArray = NewObject<UOBP_AchievementProgressArray>();
+	UOBP_AchievementProgressArray* AchievementProgressArray = nullptr;
 
 	UPROPERTY(BlueprintAssignable)
 		FAchievementsGetNextAchievementProgressArrayPage OnSuccess;
@@ -208,8 +209,9 @@ class OCULUSPLATFORMBP_API UOBP_Achievements_GetProgressByName : public UBluepri
 
 public:
 
-	UOBP_AchievementProgressArray* AchievementProgressArray = NewObject<UOBP_AchievementProgressArray>();
-	TArray<FString> Names;
+	UOBP_AchievementProgressArray* AchievementProgressArray = nullptr;
+	//TArray<FString> Names;
+	FString Names;
 	int Count;
 
 	UPROPERTY(BlueprintAssignable)
@@ -221,7 +223,7 @@ public:
 	/* Request the user's progress on the specified achievements. 
 	Note: This node is currently non-functional. Coming soon.*/
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_Achievements_GetProgressByName* GetProgressByName(UObject* WorldContextObject, TArray<FString> Names, int Count);
+		static UOBP_Achievements_GetProgressByName* GetProgressByName(UObject* WorldContextObject, FString Names, int Count);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;
