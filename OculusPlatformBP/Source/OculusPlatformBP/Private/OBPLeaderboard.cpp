@@ -93,7 +93,7 @@ void UOBP_GetEntries::Activate()
 	}));
 }
 
-UOBP_GetEntries* UOBP_GetEntries::GetEntries(UObject* WorldContextObject, FString LeaderboardName, int Limit, EOBPLeaderboardFilterType Filter, EOBPLeaderboardStartAt StartAt)
+UOBP_GetEntries* UOBP_GetEntries::GetEntries(UObject* WorldContextObject, FString LeaderboardName, int32 Limit, EOBPLeaderboardFilterType Filter, EOBPLeaderboardStartAt StartAt)
 {
 	UOBP_GetEntries* Entries = NewObject<UOBP_GetEntries>();
 	Entries->LeaderboardName = LeaderboardName;
@@ -138,7 +138,7 @@ void UOBP_GetEntriesAfterRank::Activate()
 	}));
 }
 
-UOBP_GetEntriesAfterRank* UOBP_GetEntriesAfterRank::GetEntriesAfterRank(UObject* WorldContextObject, FString LeaderboardName, int Limit, int64 AfterRank)
+UOBP_GetEntriesAfterRank* UOBP_GetEntriesAfterRank::GetEntriesAfterRank(UObject* WorldContextObject, FString LeaderboardName, int32 Limit, int64 AfterRank)
 {
 	UOBP_GetEntriesAfterRank* EntriesAfterRank = NewObject<UOBP_GetEntriesAfterRank>();
 	EntriesAfterRank->LeaderboardName = LeaderboardName;
@@ -189,7 +189,7 @@ void UOBP_GetEntriesByIds::Activate()
 #endif
 }
 
-UOBP_GetEntriesByIds* UOBP_GetEntriesByIds::GetEntriesByIds(UObject* WorldContextObject, FString LeaderboardName, int Limit, EOBPLeaderboardStartAt StartAt, TArray<int64> UserIdArray, int UserIdLength)
+UOBP_GetEntriesByIds* UOBP_GetEntriesByIds::GetEntriesByIds(UObject* WorldContextObject, FString LeaderboardName, int32 Limit, EOBPLeaderboardStartAt StartAt, TArray<int64> UserIdArray, int32 UserIdLength)
 {
 	UOBP_GetEntriesByIds* Entries = NewObject<UOBP_GetEntriesByIds>();
 	Entries->LeaderboardName = LeaderboardName;
@@ -313,7 +313,7 @@ void UOBP_WriteEntry::Activate()
 	}));
 }
 
-UOBP_WriteEntry* UOBP_WriteEntry::WriteEntry(UObject* WorldContextObject, FString LeaderboardName, int64 Score, FString ExtraData, int ExtraDataLength, bool bForceUpdate)
+UOBP_WriteEntry* UOBP_WriteEntry::WriteEntry(UObject* WorldContextObject, FString LeaderboardName, int64 Score, FString ExtraData, int32 ExtraDataLength, bool bForceUpdate)
 {
 	UOBP_WriteEntry* WriteEntry = NewObject<UOBP_WriteEntry>();
 	WriteEntry->LeaderboardName = LeaderboardName;
@@ -333,12 +333,12 @@ FString UOBP_LeaderboardEntry::GetExtraData()
 	return ovr_LeaderboardEntry_GetExtraData(ovrLeaderboardEntryHandle);
 }
 
-int UOBP_LeaderboardEntry::GetExtraDataLength()
+int32 UOBP_LeaderboardEntry::GetExtraDataLength()
 {
 	return ovr_LeaderboardEntry_GetExtraDataLength(ovrLeaderboardEntryHandle);
 }
 
-int UOBP_LeaderboardEntry::GetRank()
+int32 UOBP_LeaderboardEntry::GetRank()
 {
 	return ovr_LeaderboardEntry_GetRank(ovrLeaderboardEntryHandle);
 }
@@ -364,7 +364,7 @@ UOBP_User* UOBP_LeaderboardEntry::GetUser()
 // ovr_LeaderboardEntryArray.h
 // --------------------
 
-UOBP_LeaderboardEntry* UOBP_LeaderboardEntryArray::GetElement(int Index)
+UOBP_LeaderboardEntry* UOBP_LeaderboardEntryArray::GetElement(int32 Index)
 {
 	UOBP_LeaderboardEntry* LeaderboardEntryToGet = NewObject<UOBP_LeaderboardEntry>();
 	LeaderboardEntryToGet->ovrLeaderboardEntryHandle = ovr_LeaderboardEntryArray_GetElement(ovrLeaderboardEntryArrayHandle, Index);
@@ -381,7 +381,7 @@ FString UOBP_LeaderboardEntryArray::GetPreviousUrl()
 	return ovr_LeaderboardEntryArray_GetPreviousUrl(ovrLeaderboardEntryArrayHandle);
 }
 
-int UOBP_LeaderboardEntryArray::GetSize()
+int32 UOBP_LeaderboardEntryArray::GetSize()
 {
 	return ovr_LeaderboardEntryArray_GetSize(ovrLeaderboardEntryArrayHandle);
 }

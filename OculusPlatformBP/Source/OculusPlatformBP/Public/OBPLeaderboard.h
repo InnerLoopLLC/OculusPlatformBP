@@ -26,7 +26,7 @@ class OCULUSPLATFORMBP_API UOBP_GetEntries : public UBlueprintAsyncActionBase
 public:
 
 	FString LeaderboardName;
-	int Limit;
+	int32 Limit;
 	EOBPLeaderboardFilterType Filter;
 	EOBPLeaderboardStartAt StartAt;
 
@@ -40,7 +40,7 @@ public:
 	Note: Filter Enum value 'UserIds' Requires OculusPlatfromSDK v15 or later.
 		Otherwise, it defaults to 'None' */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_GetEntries* GetEntries(UObject* WorldContextObject, FString LeaderboardName, int Limit, EOBPLeaderboardFilterType Filter, EOBPLeaderboardStartAt StartAt);
+		static UOBP_GetEntries* GetEntries(UObject* WorldContextObject, FString LeaderboardName, int32 Limit, EOBPLeaderboardFilterType Filter, EOBPLeaderboardStartAt StartAt);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;
@@ -55,7 +55,7 @@ class OCULUSPLATFORMBP_API UOBP_GetEntriesAfterRank : public UBlueprintAsyncActi
 public:
 
 	FString LeaderboardName;
-	int Limit;
+	int32 Limit;
 	int64 AfterRank;
 
 	UPROPERTY(BlueprintAssignable)
@@ -66,7 +66,7 @@ public:
 
 	/* Requests a block of leaderboard Entries.*/
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_GetEntriesAfterRank* GetEntriesAfterRank(UObject* WorldContextObject, FString LeaderboardName, int Limit, int64 AfterRank);
+		static UOBP_GetEntriesAfterRank* GetEntriesAfterRank(UObject* WorldContextObject, FString LeaderboardName, int32 Limit, int64 AfterRank);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;
@@ -81,10 +81,10 @@ class OCULUSPLATFORMBP_API UOBP_GetEntriesByIds : public UBlueprintAsyncActionBa
 public:
 
 	FString LeaderboardName;
-	int Limit;
+	int32 Limit;
 	EOBPLeaderboardStartAt StartAt;
 	TArray<int64> UserIdArray;
-	int UserIdLength;
+	int32 UserIdLength;
 
 	UPROPERTY(BlueprintAssignable)
 		FGetEntriesByIds OnSuccess;
@@ -96,7 +96,7 @@ public:
 	Note: Requires OculusPlatfromSDK v15 or later 
 	Note: This node doesn't work yet. Coming sooner or later*/
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_GetEntriesByIds* GetEntriesByIds(UObject* WorldContextObject, FString LeaderboardName, int Limit, EOBPLeaderboardStartAt StartAt, TArray<int64> UserIdArray, int UserIdLength);
+		static UOBP_GetEntriesByIds* GetEntriesByIds(UObject* WorldContextObject, FString LeaderboardName, int32 Limit, EOBPLeaderboardStartAt StartAt, TArray<int64> UserIdArray, int32 UserIdLength);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;
@@ -161,7 +161,7 @@ public:
 	FString LeaderboardName;
 	int64 Score;
 	FString ExtraData;
-	int ExtraDataLength;
+	int32 ExtraDataLength;
 	bool bForceUpdate;
 
 	UPROPERTY(BlueprintAssignable)
@@ -172,7 +172,7 @@ public:
 
 	/* Writes a single entry to a leaderboard. */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_WriteEntry* WriteEntry(UObject* WorldContextObject, FString LeaderboardName, int64 Score, FString ExtraData, int ExtraDataLength, bool bForceUpdate);
+		static UOBP_WriteEntry* WriteEntry(UObject* WorldContextObject, FString LeaderboardName, int64 Score, FString ExtraData, int32 ExtraDataLength, bool bForceUpdate);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;
@@ -195,10 +195,10 @@ public:
 		FString GetExtraData();
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
-		int GetExtraDataLength();
+		int32 GetExtraDataLength();
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
-		int GetRank();
+		int32 GetRank();
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
 		int64 GetScore();
@@ -225,7 +225,7 @@ public:
 	ovrLeaderboardEntryArray* ovrLeaderboardEntryArrayHandle;
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
-		UOBP_LeaderboardEntry* GetElement(int Index);
+		UOBP_LeaderboardEntry* GetElement(int32 Index);
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
 		FString GetNextUrl();
@@ -234,7 +234,7 @@ public:
 		FString GetPreviousUrl();
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
-		int GetSize();
+		int32 GetSize();
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard")
 		int64 GetTotalCount();

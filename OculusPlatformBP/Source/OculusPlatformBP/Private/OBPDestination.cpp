@@ -50,7 +50,7 @@ FString UOBP_Destination::GetDisplayName()
 // OVR_DestinationArray.h (https://developer.oculus.com/reference/platform/v19/o_v_r_destination_array_8h/)
 // --------------------
 
-UOBP_Destination* UOBP_DestinationArray::GetElement(int Index)
+UOBP_Destination* UOBP_DestinationArray::GetElement(int32 Index)
 {
 #if PLATFORM_MINOR_VERSION >= 41
 	return ovr_DestinationArray_GetElement(ovrDestinationArrayHandle, Index);
@@ -70,7 +70,7 @@ FString UOBP_DestinationArray::GetNextUrl()
 #endif
 }
 
-int UOBP_DestinationArray::GetSize()
+int32 UOBP_DestinationArray::GetSize()
 {
 #if PLATFORM_MINOR_VERSION >= 41
 	return ovr_DestinationArray_GetSize(ovrDestinationArrayHandle);

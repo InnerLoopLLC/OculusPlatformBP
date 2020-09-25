@@ -55,7 +55,7 @@ public:
 	/*Pass it into ovr_RichPresenceOptions_SetApiName() when calling ovr_RichPresence_Set() to set this user's rich presence
 	Requires OculusPlatfromSDK 1.41 or later*/
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Destination|Array")
-		UOBP_Destination* GetElement(int Index);
+		UOBP_Destination* GetElement(int32 Index);
 
 	/*The information that will be in ovr_LaunchDetails_GetDeeplinkMessage() when a user enters via a deeplink. Alternatively will be in ovr_User_GetPresenceDeeplinkMessage() if the rich presence is set for the user.
 	Requires OculusPlatfromSDK 1.41 or later*/
@@ -64,7 +64,7 @@ public:
 
 	/*Requires OculusPlatfromSDK 1.41 or later*/
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Destination|Array")
-		int GetSize();
+		int32 GetSize();
 
 	/*Requires OculusPlatfromSDK 1.41 or later*/
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Destination|Array")

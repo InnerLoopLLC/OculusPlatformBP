@@ -284,7 +284,7 @@ void UOBP_Achievements_GetDefinitionsByName::Activate()
 	}));
 }
 
-UOBP_Achievements_GetDefinitionsByName* UOBP_Achievements_GetDefinitionsByName::GetDefinitionsByName(UObject* WorldContextObject, FString Names, int Count)
+UOBP_Achievements_GetDefinitionsByName* UOBP_Achievements_GetDefinitionsByName::GetDefinitionsByName(UObject* WorldContextObject, FString Names, int32 Count)
 {
 	UOBP_Achievements_GetDefinitionsByName* AchievementDefinitionByName = NewObject<UOBP_Achievements_GetDefinitionsByName>();
 	AchievementDefinitionByName->AchievementDefinitionArray = NewObject<UOBP_AchievementDefinitionArray>();
@@ -418,7 +418,7 @@ void UOBP_Achievements_GetProgressByName::Activate()
 	})); 
 }
 
-UOBP_Achievements_GetProgressByName* UOBP_Achievements_GetProgressByName::GetProgressByName(UObject* WorldContextObject, FString Names, int Count)
+UOBP_Achievements_GetProgressByName* UOBP_Achievements_GetProgressByName::GetProgressByName(UObject* WorldContextObject, FString Names, int32 Count)
 {
 	UOBP_Achievements_GetProgressByName* AchievementProgressByName = NewObject<UOBP_Achievements_GetProgressByName>();
 	AchievementProgressByName->AchievementProgressArray = NewObject<UOBP_AchievementProgressArray>();
@@ -477,7 +477,7 @@ FString UOBP_AchievementDefinition::GetName()
 	return ovr_AchievementDefinition_GetName(ovrAchievementDefinitionHandle);
 }
 
-int UOBP_AchievementDefinition::GetBitfieldLength()
+int32 UOBP_AchievementDefinition::GetBitfieldLength()
 {
 	return ovr_AchievementDefinition_GetBitfieldLength(ovrAchievementDefinitionHandle);
 }
@@ -508,7 +508,7 @@ EOBPAchievementType UOBP_AchievementDefinition::GetType()
 // ovr_AchievementDefinitionArray.h
 // --------------------
 
-UOBP_AchievementDefinition* UOBP_AchievementDefinitionArray::GetElement(int Index)
+UOBP_AchievementDefinition* UOBP_AchievementDefinitionArray::GetElement(int32 Index)
 {
 	UOBP_AchievementDefinition* AchievementDefinitionToGet = NewObject<UOBP_AchievementDefinition>();
 	AchievementDefinitionToGet->ovrAchievementDefinitionHandle = ovr_AchievementDefinitionArray_GetElement(ovrAchievementDefinitionArrayHandle, Index);
@@ -520,7 +520,7 @@ FString UOBP_AchievementDefinitionArray::GetNextUrl()
 	return ovr_AchievementDefinitionArray_GetNextUrl(ovrAchievementDefinitionArrayHandle);
 }
 
-int UOBP_AchievementDefinitionArray::GetSize()
+int32 UOBP_AchievementDefinitionArray::GetSize()
 {
 	return ovr_AchievementDefinitionArray_GetSize(ovrAchievementDefinitionArrayHandle);
 }
@@ -563,7 +563,7 @@ int64 UOBP_AchievementProgress::GetUnlockTime()
 // ovr_AchievementProgressArray.h
 // --------------------
 
-UOBP_AchievementProgress* UOBP_AchievementProgressArray::GetElement(int Index)
+UOBP_AchievementProgress* UOBP_AchievementProgressArray::GetElement(int32 Index)
 {
 	UOBP_AchievementProgress* AchievementProgressToGet = NewObject<UOBP_AchievementProgress>();
 	AchievementProgressToGet->ovrAchievementProgressHandle = ovr_AchievementProgressArray_GetElement(ovrAchievementProgressArrayHandle, Index);
@@ -575,7 +575,7 @@ FString UOBP_AchievementProgressArray::GetNextUrl()
 	return ovr_AchievementProgressArray_GetNextUrl(ovrAchievementProgressArrayHandle);
 }
 
-int UOBP_AchievementProgressArray::GetSize()
+int32 UOBP_AchievementProgressArray::GetSize()
 {
 	return ovr_AchievementProgressArray_GetSize(ovrAchievementProgressArrayHandle);
 }

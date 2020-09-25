@@ -289,7 +289,7 @@ void UOBP_RichPresence::SetJoinableId(const FString RichPresenceJoinableId)
 	ovr_RichPresenceOptions_SetJoinableId(OvrRichPresenceOptions, TCHAR_TO_ANSI(*RichPresenceJoinableId));
 }
 
-void UOBP_RichPresence::SetMaxCapacity(const int RichPresenceMaxCapacity)
+void UOBP_RichPresence::SetMaxCapacity(const int32 RichPresenceMaxCapacity)
 {
 	ovr_RichPresenceOptions_SetMaxCapacity(OvrRichPresenceOptions, RichPresenceMaxCapacity);
 }

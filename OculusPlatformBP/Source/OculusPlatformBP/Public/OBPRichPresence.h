@@ -157,7 +157,7 @@ public:
 		void SetJoinableId(const FString RichPresenceJoinableId);
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
-		void SetMaxCapacity(const int RichPresenceMaxCapacity);
+		void SetMaxCapacity(const int32 RichPresenceMaxCapacity);
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
 		void SetStartTime(const int64 RichPresenceStartTime);

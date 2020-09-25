@@ -136,7 +136,7 @@ public:
 	UOBP_AchievementDefinitionArray* AchievementDefinitionArray = nullptr;
 	//TArray<FString> Names;
 	FString Names;
-	int Count;
+	int32 Count;
 
 	UPROPERTY(BlueprintAssignable)
 		FAchievementsGetDefinitionsByName OnSuccess;
@@ -147,7 +147,7 @@ public:
 	/* Request the achievement definitions that match the specified names. 
 	Note: This node is currently non-functional. Coming soon.*/
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_Achievements_GetDefinitionsByName* GetDefinitionsByName(UObject* WorldContextObject, FString Names, int Count);
+		static UOBP_Achievements_GetDefinitionsByName* GetDefinitionsByName(UObject* WorldContextObject, FString Names, int32 Count);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;
@@ -212,7 +212,7 @@ public:
 	UOBP_AchievementProgressArray* AchievementProgressArray = nullptr;
 	//TArray<FString> Names;
 	FString Names;
-	int Count;
+	int32 Count;
 
 	UPROPERTY(BlueprintAssignable)
 		FAchievementsGetProgressByName OnSuccess;
@@ -223,7 +223,7 @@ public:
 	/* Request the user's progress on the specified achievements. 
 	Note: This node is currently non-functional. Coming soon.*/
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_Achievements_GetProgressByName* GetProgressByName(UObject* WorldContextObject, FString Names, int Count);
+		static UOBP_Achievements_GetProgressByName* GetProgressByName(UObject* WorldContextObject, FString Names, int32 Count);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;
@@ -271,7 +271,7 @@ public:
 		FString GetName();
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievement|Definition")
-		int GetBitfieldLength();
+		int32 GetBitfieldLength();
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievement|Definition")
 		int64 GetTarget();
@@ -295,13 +295,13 @@ public:
 	ovrAchievementDefinitionArray* ovrAchievementDefinitionArrayHandle;
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Definition")
-		UOBP_AchievementDefinition* GetElement(int Index);
+		UOBP_AchievementDefinition* GetElement(int32 Index);
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Definition")
 		FString GetNextUrl();
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Definition")
-		int GetSize();
+		int32 GetSize();
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Definition")
 		bool HasNextPage();
@@ -351,13 +351,13 @@ public:
 	ovrAchievementProgressArray* ovrAchievementProgressArrayHandle;
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Progress")
-		UOBP_AchievementProgress* GetElement(int Index);
+		UOBP_AchievementProgress* GetElement(int32 Index);
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Progress")
 		FString GetNextUrl();
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Progress")
-		int GetSize();
+		int32 GetSize();
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Progress")
 		bool HasNextPage();
