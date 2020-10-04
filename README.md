@@ -33,8 +33,9 @@ Find out more about InnerLoop LLC at [https://www.innerloopllc.com](https://www.
 * **Oculus Platform SDK** - [v19](https://developer.oculus.com/downloads/package/oculus-platform-sdk/19.0.0/)<br>
 *(UE4.23+ includes Oculus Platform SDK 1.40 by default. **~It is highly recommended to update to v19 to access all features and bug fixes.~** or rather it will be. At the moment, the plugin is only tested against 1.40 and not all v19 functions will compile properly.)*<br>
 *(This plugin attempts to handle whichever Oculus Platform SDK is installed. Though 1.40+ is required.)*<br>
-*(This plugin has only been tested for UE4.25.3-Oculus, however it may also work on other engine branches. No promises.)*<br>
 *(Launcher distributions of UE4 are not currently supported. You'll have to compile your own build of the engine.)*
+*(The following branches have not been tested for functionality, only to make sure it compiles)*
+* **Unreal Engine** - 4.24, 4.23, 4.22, 4.21
 
 ## Installation
 *(Optional)* - Update [*Oculus Platform SDK*](https://developer.oculus.com/downloads/package/oculus-platform-sdk/) to latest version (v19).
