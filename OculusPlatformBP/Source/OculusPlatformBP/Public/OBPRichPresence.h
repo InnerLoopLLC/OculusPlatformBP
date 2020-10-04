@@ -142,7 +142,7 @@ public:
 		void SetDeeplinkMessageOverride(const FString RichPresenceDeeplinkMessage);
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
-		void SetEndTime(const int64 RichPresenceEndTime);
+		void SetEndTime(const int32 RichPresenceEndTime);
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
 		void SetExtraContext(EOBP_RichPresenceExtraContext RichPresenceExtraContext);
@@ -160,5 +160,5 @@ public:
 		void SetMaxCapacity(const int32 RichPresenceMaxCapacity);
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
-		void SetStartTime(const int64 RichPresenceStartTime);
+		void SetStartTime(const int32 RichPresenceStartTime);
 };

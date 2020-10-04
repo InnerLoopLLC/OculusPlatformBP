@@ -138,7 +138,7 @@ void UOBP_GetEntriesAfterRank::Activate()
 	}));
 }
 
-UOBP_GetEntriesAfterRank* UOBP_GetEntriesAfterRank::GetEntriesAfterRank(UObject* WorldContextObject, FString LeaderboardName, int32 Limit, int64 AfterRank)
+UOBP_GetEntriesAfterRank* UOBP_GetEntriesAfterRank::GetEntriesAfterRank(UObject* WorldContextObject, FString LeaderboardName, int32 Limit, int32 AfterRank)
 {
 	UOBP_GetEntriesAfterRank* EntriesAfterRank = NewObject<UOBP_GetEntriesAfterRank>();
 	EntriesAfterRank->LeaderboardName = LeaderboardName;
@@ -189,7 +189,7 @@ void UOBP_GetEntriesByIds::Activate()
 #endif
 }
 
-UOBP_GetEntriesByIds* UOBP_GetEntriesByIds::GetEntriesByIds(UObject* WorldContextObject, FString LeaderboardName, int32 Limit, EOBPLeaderboardStartAt StartAt, TArray<int64> UserIdArray, int32 UserIdLength)
+UOBP_GetEntriesByIds* UOBP_GetEntriesByIds::GetEntriesByIds(UObject* WorldContextObject, FString LeaderboardName, int32 Limit, EOBPLeaderboardStartAt StartAt, TArray<int32> UserIdArray, int32 UserIdLength)
 {
 	UOBP_GetEntriesByIds* Entries = NewObject<UOBP_GetEntriesByIds>();
 	Entries->LeaderboardName = LeaderboardName;
@@ -313,7 +313,7 @@ void UOBP_WriteEntry::Activate()
 	}));
 }
 
-UOBP_WriteEntry* UOBP_WriteEntry::WriteEntry(UObject* WorldContextObject, FString LeaderboardName, int64 Score, FString ExtraData, int32 ExtraDataLength, bool bForceUpdate)
+UOBP_WriteEntry* UOBP_WriteEntry::WriteEntry(UObject* WorldContextObject, FString LeaderboardName, int32 Score, FString ExtraData, int32 ExtraDataLength, bool bForceUpdate)
 {
 	UOBP_WriteEntry* WriteEntry = NewObject<UOBP_WriteEntry>();
 	WriteEntry->LeaderboardName = LeaderboardName;
@@ -343,12 +343,12 @@ int32 UOBP_LeaderboardEntry::GetRank()
 	return ovr_LeaderboardEntry_GetRank(ovrLeaderboardEntryHandle);
 }
 
-int64 UOBP_LeaderboardEntry::GetScore()
+int32 UOBP_LeaderboardEntry::GetScore()
 {
 	return ovr_LeaderboardEntry_GetScore(ovrLeaderboardEntryHandle);
 }
 
-int64 UOBP_LeaderboardEntry::GetTimestamp()
+int32 UOBP_LeaderboardEntry::GetTimestamp()
 {
 	return ovr_LeaderboardEntry_GetTimestamp(ovrLeaderboardEntryHandle);
 }
@@ -386,7 +386,7 @@ int32 UOBP_LeaderboardEntryArray::GetSize()
 	return ovr_LeaderboardEntryArray_GetSize(ovrLeaderboardEntryArrayHandle);
 }
 
-int64 UOBP_LeaderboardEntryArray::GetTotalCount()
+int32 UOBP_LeaderboardEntryArray::GetTotalCount()
 {
 	return ovr_LeaderboardEntryArray_GetTotalCount(ovrLeaderboardEntryArrayHandle);
 }

@@ -29,7 +29,7 @@ class OCULUSPLATFORMBP_API UOBP_Achievements_AddCount : public UBlueprintAsyncAc
 public:
 
 	FString AchievementName;
-	int64 Count;
+	int32 Count;
 	bool bDidJustUnlock;
 
 	UPROPERTY(BlueprintAssignable)
@@ -42,7 +42,7 @@ public:
 	The largest number that is supported by this method is the max value of a signed 64-bit integer. 
 	If the number is larger than that, it is clamped to that max value before being passed to the servers. */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_Achievements_AddCount* AddCount(UObject* WorldContextObject, FString AchievementName, int64 Count);
+		static UOBP_Achievements_AddCount* AddCount(UObject* WorldContextObject, FString AchievementName, int32 Count);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;
@@ -274,7 +274,7 @@ public:
 		int32 GetBitfieldLength();
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievement|Definition")
-		int64 GetTarget();
+		int32 GetTarget();
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievement|Definition")
 		EOBPAchievementType GetType();
@@ -324,7 +324,7 @@ public:
 		FString GetBitfield();
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievement|Progress")
-		int64 GetCount();
+		int32 GetCount();
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievement|Progress")
 		bool GetIsUnlocked();
@@ -333,7 +333,7 @@ public:
 		FString GetName();
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievement|Progress")
-		int64 GetUnlockTime();
+		int32 GetUnlockTime();
 };
 
 // --------------------

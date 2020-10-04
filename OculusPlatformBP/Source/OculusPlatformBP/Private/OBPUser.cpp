@@ -80,7 +80,7 @@ void UOBP_GetUser::Activate()
 	}));
 }
 
-UOBP_GetUser* UOBP_GetUser::GetUser(UObject* WorldContextObject, int64 UserId)
+UOBP_GetUser* UOBP_GetUser::GetUser(UObject* WorldContextObject, int32 UserId)
 {
 	UOBP_GetUser* UserToGet = NewObject<UOBP_GetUser>();
 	UserToGet->ovrId = UserId;
@@ -240,7 +240,7 @@ void UOBP_GetOrgScopedID::Activate()
 	}));
 }
 
-UOBP_GetOrgScopedID* UOBP_GetOrgScopedID::GetOrgScopedID(UObject* WorldContextObject, int64 UserID)
+UOBP_GetOrgScopedID* UOBP_GetOrgScopedID::GetOrgScopedID(UObject* WorldContextObject, int32 UserID)
 {
 	UOBP_GetOrgScopedID* UserIDToGet = NewObject<UOBP_GetOrgScopedID>();
 	UserIDToGet->UserID = UserID;
@@ -279,7 +279,7 @@ void UOBP_LaunchProfile::Activate()
 	}));
 }
 
-UOBP_LaunchProfile* UOBP_LaunchProfile::LaunchProfile(UObject* WorldContextObject, int64 UserID)
+UOBP_LaunchProfile* UOBP_LaunchProfile::LaunchProfile(UObject* WorldContextObject, int32 UserID)
 {
 	UOBP_LaunchProfile* ProfileToLaunch = NewObject<UOBP_LaunchProfile>();
 	ProfileToLaunch->UserID = UserID;
@@ -341,7 +341,7 @@ EOBP_UserPresenceStatus UOBP_User::GetPresenceStatus()
 	}
 }
 
-int64 UOBP_User::GetID()
+int32 UOBP_User::GetID()
 {
 	return ovr_User_GetID(ovrUserHandle);
 }

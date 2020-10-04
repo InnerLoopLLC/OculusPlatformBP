@@ -244,7 +244,7 @@ void UOBP_RichPresence::SetDeeplinkMessageOverride(const FString RichPresenceDee
 	ovr_RichPresenceOptions_SetDeeplinkMessageOverride(OvrRichPresenceOptions, TCHAR_TO_ANSI(*RichPresenceDeeplinkMessage));
 }
 
-void UOBP_RichPresence::SetEndTime(const int64 RichPresenceEndTime)
+void UOBP_RichPresence::SetEndTime(const int32 RichPresenceEndTime)
 {
 	ovr_RichPresenceOptions_SetEndTime(OvrRichPresenceOptions, RichPresenceEndTime);
 }
@@ -294,7 +294,7 @@ void UOBP_RichPresence::SetMaxCapacity(const int32 RichPresenceMaxCapacity)
 	ovr_RichPresenceOptions_SetMaxCapacity(OvrRichPresenceOptions, RichPresenceMaxCapacity);
 }
 
-void UOBP_RichPresence::SetStartTime(const int64 RichPresenceStartTime)
+void UOBP_RichPresence::SetStartTime(const int32 RichPresenceStartTime)
 {
 	ovr_RichPresenceOptions_SetStartTime(OvrRichPresenceOptions, RichPresenceStartTime);
 }

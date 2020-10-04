@@ -109,7 +109,7 @@ void UOBP_Achievements_AddCount::Activate()
 	}));
 }
 
-UOBP_Achievements_AddCount* UOBP_Achievements_AddCount::AddCount(UObject* WorldContextObject, FString AchievementName, int64 Count)
+UOBP_Achievements_AddCount* UOBP_Achievements_AddCount::AddCount(UObject* WorldContextObject, FString AchievementName, int32 Count)
 {
 	UOBP_Achievements_AddCount* AchievementAddCount = NewObject<UOBP_Achievements_AddCount>();
 	AchievementAddCount->AchievementName = AchievementName;
@@ -482,7 +482,7 @@ int32 UOBP_AchievementDefinition::GetBitfieldLength()
 	return ovr_AchievementDefinition_GetBitfieldLength(ovrAchievementDefinitionHandle);
 }
 
-int64 UOBP_AchievementDefinition::GetTarget()
+int32 UOBP_AchievementDefinition::GetTarget()
 {
 	return ovr_AchievementDefinition_GetTarget(ovrAchievementDefinitionHandle);
 }
@@ -539,7 +539,7 @@ FString UOBP_AchievementProgress::GetBitfield()
 	return ovr_AchievementProgress_GetBitfield(ovrAchievementProgressHandle);
 }
 
-int64 UOBP_AchievementProgress::GetCount()
+int32 UOBP_AchievementProgress::GetCount()
 {
 	return ovr_AchievementProgress_GetCount(ovrAchievementProgressHandle);
 }
@@ -554,7 +554,7 @@ FString UOBP_AchievementProgress::GetName()
 	return ovr_AchievementProgress_GetName(ovrAchievementProgressHandle);
 }
 
-int64 UOBP_AchievementProgress::GetUnlockTime()
+int32 UOBP_AchievementProgress::GetUnlockTime()
 {
 	return ovr_AchievementProgress_GetUnlockTime(ovrAchievementProgressHandle);
 }
