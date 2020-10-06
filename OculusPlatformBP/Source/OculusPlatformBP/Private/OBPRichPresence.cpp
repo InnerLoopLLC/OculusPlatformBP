@@ -159,7 +159,7 @@ void UOBP_GetNextDestinationArrayPage::Activate()
 
 UOBP_GetNextDestinationArrayPage* UOBP_GetNextDestinationArrayPage::GetNextDestinationArrayPage(UObject* WorldContextObject, UOBP_DestinationArray* DestinationArray)
 {
-	UOBP_GetNextDestinationArrayPage* DestinationArrayPage = NewObject<UOBP_GetNextDestinationArrayPage>();
+	auto DestinationArrayPage = NewObject<UOBP_GetNextDestinationArrayPage>();
 #if PLATFORM_MINOR_VERSION >= 41
 	DestinationArrayPage->ovrDestinationArrayHandle = DestinationArray;
 #endif
@@ -200,7 +200,7 @@ void UOBP_SetRichPresence::Activate()
 
 UOBP_SetRichPresence* UOBP_SetRichPresence::SetRichPresence(UObject* WorldContextObject, UOBP_RichPresence* RichPresenceObject)
 {
-	UOBP_SetRichPresence* SetRichPresence = NewObject<UOBP_SetRichPresence>();
+	auto SetRichPresence = NewObject<UOBP_SetRichPresence>();
 	SetRichPresence->OvrRichPresenceOptions = RichPresenceObject->OvrRichPresenceOptions;
 	return SetRichPresence;
 }

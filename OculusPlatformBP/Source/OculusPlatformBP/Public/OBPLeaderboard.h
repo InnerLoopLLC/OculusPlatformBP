@@ -110,7 +110,7 @@ class OCULUSPLATFORMBP_API UOBP_GetNextEntries : public UBlueprintAsyncActionBas
 
 public:
 
-	UOBP_LeaderboardEntryArray* NextLeaderboardEntryArray;
+	UOBP_LeaderboardEntryArray* LeaderboardEntryArray;
 
 	UPROPERTY(BlueprintAssignable)
 		FGetNextEntries OnSuccess;
@@ -134,7 +134,7 @@ class OCULUSPLATFORMBP_API UOBP_GetPreviousEntries : public UBlueprintAsyncActio
 
 public:
 
-	UOBP_LeaderboardEntryArray* PreviousLeaderboardEntryArray;
+	UOBP_LeaderboardEntryArray* LeaderboardEntryArray;
 
 	UPROPERTY(BlueprintAssignable)
 		FGetPreviousEntries OnSuccess;
