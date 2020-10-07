@@ -96,9 +96,9 @@ void UOBP_Achievements_AddCount::Activate()
 			if (messageType == ovrMessage_Achievements_AddCount)
 			{
 				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully added count to achievement."));
-				AchievementName = ovr_AchievementUpdate_GetName(ovr_Message_GetAchievementUpdate(Message));
-				bDidJustUnlock = ovr_AchievementUpdate_GetJustUnlocked(ovr_Message_GetAchievementUpdate(Message));
-				OnSuccess.Broadcast(AchievementName, bDidJustUnlock);
+				auto ThisAchievementName = ovr_AchievementUpdate_GetName(ovr_Message_GetAchievementUpdate(Message));
+				auto bDidJustUnlock = ovr_AchievementUpdate_GetJustUnlocked(ovr_Message_GetAchievementUpdate(Message));
+				OnSuccess.Broadcast(ThisAchievementName, bDidJustUnlock);
 			}
 			else
 			{
@@ -111,7 +111,7 @@ void UOBP_Achievements_AddCount::Activate()
 
 UOBP_Achievements_AddCount* UOBP_Achievements_AddCount::AddCount(UObject* WorldContextObject, FString AchievementName, int32 Count)
 {
-	UOBP_Achievements_AddCount* AchievementAddCount = NewObject<UOBP_Achievements_AddCount>();
+	auto AchievementAddCount = NewObject<UOBP_Achievements_AddCount>();
 	AchievementAddCount->AchievementName = AchievementName;
 	AchievementAddCount->Count = Count;
 	return AchievementAddCount;
@@ -138,9 +138,9 @@ void UOBP_Achievements_AddFields::Activate()
 			if (messageType == ovrMessage_Achievements_AddFields)
 			{
 				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully added fields to achievement."));
-				AchievementName = ovr_AchievementUpdate_GetName(ovr_Message_GetAchievementUpdate(Message));
-				bDidJustUnlock = ovr_AchievementUpdate_GetJustUnlocked(ovr_Message_GetAchievementUpdate(Message));
-				OnSuccess.Broadcast(AchievementName, bDidJustUnlock);
+				auto ThisAchievementName = ovr_AchievementUpdate_GetName(ovr_Message_GetAchievementUpdate(Message));
+				auto bDidJustUnlock = ovr_AchievementUpdate_GetJustUnlocked(ovr_Message_GetAchievementUpdate(Message));
+				OnSuccess.Broadcast(ThisAchievementName, bDidJustUnlock);
 			}
 			else
 			{
@@ -153,7 +153,7 @@ void UOBP_Achievements_AddFields::Activate()
 
 UOBP_Achievements_AddFields* UOBP_Achievements_AddFields::AddFields(UObject* WorldContextObject, FString AchievementName, FString Fields)
 {
-	UOBP_Achievements_AddFields* AchievementAddFields = NewObject<UOBP_Achievements_AddFields>();
+	auto AchievementAddFields = NewObject<UOBP_Achievements_AddFields>();
 	AchievementAddFields->AchievementName = AchievementName;
 	AchievementAddFields->Fields = Fields;
 	return AchievementAddFields;
@@ -180,8 +180,9 @@ void UOBP_Achievements_GetAllDefinitions::Activate()
 			if (messageType == ovrMessage_Achievements_GetAllDefinitions)
 			{
 				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got all definitions."));
-				AchievementDefinitionArray->ovrAchievementDefinitionArrayHandle = ovr_Message_GetAchievementDefinitionArray(Message);
-				OnSuccess.Broadcast(AchievementDefinitionArray);
+				auto ThisAchievementDefinitionArray = NewObject<UOBP_AchievementDefinitionArray>(); 
+				ThisAchievementDefinitionArray->ovrAchievementDefinitionArrayHandle = ovr_Message_GetAchievementDefinitionArray(Message);
+				OnSuccess.Broadcast(ThisAchievementDefinitionArray);
 			}
 			else
 			{
@@ -194,9 +195,7 @@ void UOBP_Achievements_GetAllDefinitions::Activate()
 
 UOBP_Achievements_GetAllDefinitions* UOBP_Achievements_GetAllDefinitions::GetAllDefinitions(UObject* WorldContextObject)
 {
-	UOBP_Achievements_GetAllDefinitions* GetAllDefinitions = NewObject<UOBP_Achievements_GetAllDefinitions>();
-	GetAllDefinitions->AchievementDefinitionArray = NewObject<UOBP_AchievementDefinitionArray>();
-	return GetAllDefinitions;
+	return NewObject<UOBP_Achievements_GetAllDefinitions>();
 }
 
 //---GetAllProgress---
@@ -220,8 +219,9 @@ void UOBP_Achievements_GetAllProgress::Activate()
 			if (messageType == ovrMessage_Achievements_GetAllProgress)
 			{
 				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got all progress."));
-				AchievementProgressArray->ovrAchievementProgressArrayHandle = ovr_Message_GetAchievementProgressArray(Message);
-				OnSuccess.Broadcast(AchievementProgressArray);
+				auto ThisAchievementProgressArray = NewObject<UOBP_AchievementProgressArray>();
+				ThisAchievementProgressArray->ovrAchievementProgressArrayHandle = ovr_Message_GetAchievementProgressArray(Message);
+				OnSuccess.Broadcast(ThisAchievementProgressArray);
 			}
 			else
 			{
@@ -234,9 +234,7 @@ void UOBP_Achievements_GetAllProgress::Activate()
 
 UOBP_Achievements_GetAllProgress* UOBP_Achievements_GetAllProgress::GetAllProgress(UObject* WorldContextObject)
 {
-	UOBP_Achievements_GetAllProgress* GetAllProgress = NewObject<UOBP_Achievements_GetAllProgress>();
-	GetAllProgress->AchievementProgressArray = NewObject<UOBP_AchievementProgressArray>();
-	return GetAllProgress;
+	return NewObject<UOBP_Achievements_GetAllProgress>();
 }
 
 //---GetDefinitionsByName---
@@ -272,8 +270,9 @@ void UOBP_Achievements_GetDefinitionsByName::Activate()
 			if (messageType == ovrMessage_Achievements_GetDefinitionsByName)
 			{
 				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got achievement definitions by name."));
-				AchievementDefinitionArray->ovrAchievementDefinitionArrayHandle = ovr_Message_GetAchievementDefinitionArray(Message);
-				OnSuccess.Broadcast(AchievementDefinitionArray);
+				auto ThisAchievementDefinitionArray = NewObject<UOBP_AchievementDefinitionArray>();
+				ThisAchievementDefinitionArray->ovrAchievementDefinitionArrayHandle = ovr_Message_GetAchievementDefinitionArray(Message);
+				OnSuccess.Broadcast(ThisAchievementDefinitionArray);
 			}
 			else
 			{
@@ -286,8 +285,7 @@ void UOBP_Achievements_GetDefinitionsByName::Activate()
 
 UOBP_Achievements_GetDefinitionsByName* UOBP_Achievements_GetDefinitionsByName::GetDefinitionsByName(UObject* WorldContextObject, FString Names, int32 Count)
 {
-	UOBP_Achievements_GetDefinitionsByName* AchievementDefinitionByName = NewObject<UOBP_Achievements_GetDefinitionsByName>();
-	AchievementDefinitionByName->AchievementDefinitionArray = NewObject<UOBP_AchievementDefinitionArray>();
+	auto AchievementDefinitionByName = NewObject<UOBP_Achievements_GetDefinitionsByName>();
 	AchievementDefinitionByName->Names = Names;
 	AchievementDefinitionByName->Count = Count;
 	return AchievementDefinitionByName;
@@ -314,8 +312,9 @@ void UOBP_Achievements_GetNextAchievementDefinitionArrayPage::Activate()
 			if (messageType == ovrMessage_Achievements_GetNextAchievementDefinitionArrayPage)
 			{
 				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got next achievement definition array page."));
-				AchievementDefinitionArray->ovrAchievementDefinitionArrayHandle = ovr_Message_GetAchievementDefinitionArray(Message);
-				OnSuccess.Broadcast(AchievementDefinitionArray);
+				auto ThisAchievementDefinitionArray = NewObject<UOBP_AchievementDefinitionArray>();
+				ThisAchievementDefinitionArray->ovrAchievementDefinitionArrayHandle = ovr_Message_GetAchievementDefinitionArray(Message);
+				OnSuccess.Broadcast(ThisAchievementDefinitionArray);
 			}
 			else
 			{
@@ -328,7 +327,7 @@ void UOBP_Achievements_GetNextAchievementDefinitionArrayPage::Activate()
 
 UOBP_Achievements_GetNextAchievementDefinitionArrayPage* UOBP_Achievements_GetNextAchievementDefinitionArrayPage::GetNextAchievementDefinitionArrayPage(UObject* WorldContextObject, UOBP_AchievementDefinitionArray* AchievementDefinitionArray)
 {
-	UOBP_Achievements_GetNextAchievementDefinitionArrayPage* NextAchievementDefinitionArrayPage = NewObject<UOBP_Achievements_GetNextAchievementDefinitionArrayPage>();
+	auto NextAchievementDefinitionArrayPage = NewObject<UOBP_Achievements_GetNextAchievementDefinitionArrayPage>();
 	NextAchievementDefinitionArrayPage->AchievementDefinitionArray = AchievementDefinitionArray;
 	return NextAchievementDefinitionArrayPage;
 }
@@ -354,8 +353,9 @@ void UOBP_Achievements_GetNextAchievementProgressArrayPage::Activate()
 			if (messageType == ovrMessage_Achievements_GetNextAchievementProgressArrayPage)
 			{
 				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got next achievement progress array page."));
-				AchievementProgressArray->ovrAchievementProgressArrayHandle = ovr_Message_GetAchievementProgressArray(Message);
-				OnSuccess.Broadcast(AchievementProgressArray);
+				auto ThisAchievementProgressArray = NewObject<UOBP_AchievementProgressArray>();
+				ThisAchievementProgressArray->ovrAchievementProgressArrayHandle = ovr_Message_GetAchievementProgressArray(Message);
+				OnSuccess.Broadcast(ThisAchievementProgressArray);
 			}
 			else
 			{
@@ -368,7 +368,7 @@ void UOBP_Achievements_GetNextAchievementProgressArrayPage::Activate()
 
 UOBP_Achievements_GetNextAchievementProgressArrayPage* UOBP_Achievements_GetNextAchievementProgressArrayPage::GetNextAchievementProgressArrayPage(UObject* WorldContextObject, UOBP_AchievementProgressArray* AchievementProgressArray)
 {
-	UOBP_Achievements_GetNextAchievementProgressArrayPage* NextAchievementProgressArrayPage = NewObject<UOBP_Achievements_GetNextAchievementProgressArrayPage>();
+	auto NextAchievementProgressArrayPage = NewObject<UOBP_Achievements_GetNextAchievementProgressArrayPage>();
 	NextAchievementProgressArrayPage->AchievementProgressArray = AchievementProgressArray;
 	return NextAchievementProgressArrayPage;
 }
@@ -406,8 +406,9 @@ void UOBP_Achievements_GetProgressByName::Activate()
 			if (messageType == ovrMessage_Achievements_GetProgressByName)
 			{
 				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got achievement progress by name."));
-				AchievementProgressArray->ovrAchievementProgressArrayHandle = ovr_Message_GetAchievementProgressArray(Message);
-				OnSuccess.Broadcast(AchievementProgressArray);
+				auto ThisAchievementProgressArray = NewObject<UOBP_AchievementProgressArray>();
+				ThisAchievementProgressArray->ovrAchievementProgressArrayHandle = ovr_Message_GetAchievementProgressArray(Message);
+				OnSuccess.Broadcast(ThisAchievementProgressArray);
 			}
 			else
 			{
@@ -420,8 +421,7 @@ void UOBP_Achievements_GetProgressByName::Activate()
 
 UOBP_Achievements_GetProgressByName* UOBP_Achievements_GetProgressByName::GetProgressByName(UObject* WorldContextObject, FString Names, int32 Count)
 {
-	UOBP_Achievements_GetProgressByName* AchievementProgressByName = NewObject<UOBP_Achievements_GetProgressByName>();
-	AchievementProgressByName->AchievementProgressArray = NewObject<UOBP_AchievementProgressArray>();
+	auto AchievementProgressByName = NewObject<UOBP_Achievements_GetProgressByName>();
 	AchievementProgressByName->Names = Names;
 	AchievementProgressByName->Count = Count;
 	return AchievementProgressByName;
@@ -447,10 +447,12 @@ void UOBP_Achievements_Unlock::Activate()
 
 			if (messageType == ovrMessage_Achievements_Unlock)
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully unlocked achievement."));
-				AchievementName = ovr_AchievementUpdate_GetName(ovr_Message_GetAchievementUpdate(Message));
-				bDidJustUnlock = ovr_AchievementUpdate_GetJustUnlocked(ovr_Message_GetAchievementUpdate(Message));
-				OnSuccess.Broadcast(AchievementName, bDidJustUnlock);
+				auto ThisAchievementName = ovr_AchievementUpdate_GetName(ovr_Message_GetAchievementUpdate(Message));
+				auto bDidJustUnlock = ovr_AchievementUpdate_GetJustUnlocked(ovr_Message_GetAchievementUpdate(Message));
+				auto UnlockString = bDidJustUnlock ? TEXT("TRUE") : TEXT("FALSE");
+				auto LogString = FString("Successfully unlocked achievement: ") + ThisAchievementName + FString(" - Just unlocked: ") + UnlockString;
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("%s"), *LogString);
+				OnSuccess.Broadcast(ThisAchievementName, bDidJustUnlock);
 			}
 			else
 			{
@@ -463,7 +465,7 @@ void UOBP_Achievements_Unlock::Activate()
 
 UOBP_Achievements_Unlock* UOBP_Achievements_Unlock::UnlockAchievement(UObject* WorldContextObject, FString AchievementName)
 {
-	UOBP_Achievements_Unlock* AchievementToUnlock = NewObject<UOBP_Achievements_Unlock>();
+	auto AchievementToUnlock = NewObject<UOBP_Achievements_Unlock>();
 	AchievementToUnlock->AchievementName = AchievementName;
 	return AchievementToUnlock;
 }
@@ -510,7 +512,7 @@ EOBPAchievementType UOBP_AchievementDefinition::GetType()
 
 UOBP_AchievementDefinition* UOBP_AchievementDefinitionArray::GetElement(int32 Index)
 {
-	UOBP_AchievementDefinition* AchievementDefinitionToGet = NewObject<UOBP_AchievementDefinition>();
+	auto AchievementDefinitionToGet = NewObject<UOBP_AchievementDefinition>();
 	AchievementDefinitionToGet->ovrAchievementDefinitionHandle = ovr_AchievementDefinitionArray_GetElement(ovrAchievementDefinitionArrayHandle, Index);
 	return AchievementDefinitionToGet;
 }
@@ -565,7 +567,7 @@ int32 UOBP_AchievementProgress::GetUnlockTime()
 
 UOBP_AchievementProgress* UOBP_AchievementProgressArray::GetElement(int32 Index)
 {
-	UOBP_AchievementProgress* AchievementProgressToGet = NewObject<UOBP_AchievementProgress>();
+	auto AchievementProgressToGet = NewObject<UOBP_AchievementProgress>();
 	AchievementProgressToGet->ovrAchievementProgressHandle = ovr_AchievementProgressArray_GetElement(ovrAchievementProgressArrayHandle, Index);
 	return AchievementProgressToGet;
 }

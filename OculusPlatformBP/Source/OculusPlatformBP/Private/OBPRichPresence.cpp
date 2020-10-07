@@ -76,8 +76,6 @@ UOBP_ClearRichPresence* UOBP_ClearRichPresence::ClearRichPresence(UObject* World
 void UOBP_GetDestinations::Activate()
 {
 #if PLATFORM_MINOR_VERSION >= 41
-	UOBP_DestinationArray* DestinationArray = NewObject<UOBP_DestinationArray>();
-
 	ovrRequest RequestId = ovr_RichPresence_GetDestinations();
 
 	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
@@ -96,6 +94,7 @@ void UOBP_GetDestinations::Activate()
 			if (messageType == ovrMessage_RichPresence_GetDestinations)
 			{
 				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got destinations."));
+				auto DestinationArray = NewObject<UOBP_DestinationArray>();
 				DestinationArray->ovrDestinationArrayHandle = ovr_Message_GetDestinationArray(Message);
 				OnSuccess.Broadcast(DestinationArray);
 			}
@@ -121,9 +120,7 @@ UOBP_GetDestinations* UOBP_GetDestinations::GetDestinations(UObject* WorldContex
 void UOBP_GetNextDestinationArrayPage::Activate()
 {
 #if PLATFORM_MINOR_VERSION >= 41
-	UOBP_DestinationArray* DestinationArray = NewObject<UOBP_DestinationArray>();
-
-	ovrRequest RequestId = ovr_RichPresence_GetNextDestinationArrayPage(ovrDestinationArrayHandle);
+	ovrRequest RequestId = ovr_RichPresence_GetNextDestinationArrayPage(DestinationArray->ovrDestinationArrayHandle);
 
 	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
 	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
@@ -141,6 +138,7 @@ void UOBP_GetNextDestinationArrayPage::Activate()
 			if (messageType == ovrMessage_RichPresence_GetNextDestinationArrayPage)
 			{
 				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got destination array page."));
+				auto DestinationArray = NewObject<UOBP_DestinationArray>();
 				DestinationArray->ovrDestinationArrayHandle = ovr_Message_GetDestinationArray(Message);
 				OnSuccess.Broadcast(DestinationArray);
 			}
@@ -159,9 +157,9 @@ void UOBP_GetNextDestinationArrayPage::Activate()
 
 UOBP_GetNextDestinationArrayPage* UOBP_GetNextDestinationArrayPage::GetNextDestinationArrayPage(UObject* WorldContextObject, UOBP_DestinationArray* DestinationArray)
 {
-	UOBP_GetNextDestinationArrayPage* DestinationArrayPage = NewObject<UOBP_GetNextDestinationArrayPage>();
+	auto DestinationArrayPage = NewObject<UOBP_GetNextDestinationArrayPage>();
 #if PLATFORM_MINOR_VERSION >= 41
-	DestinationArrayPage->ovrDestinationArrayHandle = DestinationArray;
+	auto DestinationArray = DestinationArray;
 #endif
 	return DestinationArrayPage;
 }
@@ -200,7 +198,7 @@ void UOBP_SetRichPresence::Activate()
 
 UOBP_SetRichPresence* UOBP_SetRichPresence::SetRichPresence(UObject* WorldContextObject, UOBP_RichPresence* RichPresenceObject)
 {
-	UOBP_SetRichPresence* SetRichPresence = NewObject<UOBP_SetRichPresence>();
+	auto SetRichPresence = NewObject<UOBP_SetRichPresence>();
 	SetRichPresence->OvrRichPresenceOptions = RichPresenceObject->OvrRichPresenceOptions;
 	return SetRichPresence;
 }

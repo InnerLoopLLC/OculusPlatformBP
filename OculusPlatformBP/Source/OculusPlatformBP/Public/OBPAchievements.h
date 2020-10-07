@@ -30,7 +30,6 @@ public:
 
 	FString AchievementName;
 	int32 Count;
-	bool bDidJustUnlock;
 
 	UPROPERTY(BlueprintAssignable)
 		FAchievementsAddCount OnSuccess;
@@ -58,7 +57,6 @@ public:
 
 	FString AchievementName;
 	FString Fields;
-	bool bDidJustUnlock;
 
 	UPROPERTY(BlueprintAssignable)
 		FAchievementsAddFields OnSuccess;
@@ -85,8 +83,6 @@ class OCULUSPLATFORMBP_API UOBP_Achievements_GetAllDefinitions : public UBluepri
 
 public:
 
-	UOBP_AchievementDefinitionArray* AchievementDefinitionArray = nullptr;
-
 	UPROPERTY(BlueprintAssignable)
 		FAchievementsGetAllDefinitions OnSuccess;
 
@@ -108,8 +104,6 @@ class OCULUSPLATFORMBP_API UOBP_Achievements_GetAllProgress : public UBlueprintA
 	GENERATED_UCLASS_BODY()
 
 public:
-
-	UOBP_AchievementProgressArray* AchievementProgressArray = nullptr;
 
 	UPROPERTY(BlueprintAssignable)
 		FAchievementsGetAllProgress OnSuccess;
@@ -133,7 +127,6 @@ class OCULUSPLATFORMBP_API UOBP_Achievements_GetDefinitionsByName : public UBlue
 
 public:
 
-	UOBP_AchievementDefinitionArray* AchievementDefinitionArray = nullptr;
 	//TArray<FString> Names;
 	FString Names;
 	int32 Count;
@@ -209,7 +202,6 @@ class OCULUSPLATFORMBP_API UOBP_Achievements_GetProgressByName : public UBluepri
 
 public:
 
-	UOBP_AchievementProgressArray* AchievementProgressArray = nullptr;
 	//TArray<FString> Names;
 	FString Names;
 	int32 Count;
@@ -238,7 +230,6 @@ class OCULUSPLATFORMBP_API UOBP_Achievements_Unlock : public UBlueprintAsyncActi
 public:
 
 	FString AchievementName;
-	bool bDidJustUnlock;
 
 	UPROPERTY(BlueprintAssignable)
 		FAchievementsUnlock OnSuccess;

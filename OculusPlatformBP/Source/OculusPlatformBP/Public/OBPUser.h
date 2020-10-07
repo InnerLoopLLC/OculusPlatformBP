@@ -17,7 +17,6 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGetOrgScopedID, int32, OrgScopedID)
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGetSdkAccounts, UOBP_User*, LoggedInUser);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGetUserProof, UOBP_User*, LoggedInUser);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLaunchFriendRequestFlow, UOBP_User*, LoggedInUser);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FLaunchProfile);
 
 // --------------------
 // OVR_Requests_User.h
@@ -55,8 +54,6 @@ class OCULUSPLATFORMBP_API UOBP_GetAccessToken : public UBlueprintAsyncActionBas
 	GENERATED_UCLASS_BODY()
 
 public:
-
-	FString AccessToken;
 
 	UPROPERTY(BlueprintAssignable)
 		FGetAccessToken OnSuccess;
@@ -151,12 +148,6 @@ class OCULUSPLATFORMBP_API UOBP_LaunchProfile : public UBlueprintAsyncActionBase
 public:
 
 	int32 UserID;
-
-	UPROPERTY(BlueprintAssignable)
-		FLaunchProfile OnSuccess;
-
-	UPROPERTY(BlueprintAssignable)
-		FLaunchProfile OnFailure;
 
 	/*Launch the profile of the given user. The profile surfaces information about the user and supports relevant actions that the viewer may take on that user, e.g. sending a friend request.
 	Note: Only works on mobile.*/
