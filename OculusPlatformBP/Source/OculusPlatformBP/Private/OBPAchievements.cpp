@@ -447,9 +447,11 @@ void UOBP_Achievements_Unlock::Activate()
 
 			if (messageType == ovrMessage_Achievements_Unlock)
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully unlocked achievement."));
 				auto ThisAchievementName = ovr_AchievementUpdate_GetName(ovr_Message_GetAchievementUpdate(Message));
 				auto bDidJustUnlock = ovr_AchievementUpdate_GetJustUnlocked(ovr_Message_GetAchievementUpdate(Message));
+				auto UnlockString = bDidJustUnlock ? TEXT("TRUE") : TEXT("FALSE");
+				auto LogString = FString("Successfully unlocked achievement: ") + ThisAchievementName + FString(" - Just unlocked: ") + UnlockString;
+				UE_LOG(LogOculusPlatformBP, Log, TEXT("%s"), *LogString);
 				OnSuccess.Broadcast(ThisAchievementName, bDidJustUnlock);
 			}
 			else

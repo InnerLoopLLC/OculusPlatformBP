@@ -224,7 +224,7 @@ void UOBP_GetOrgScopedID::Activate()
 			if (messageType == ovrMessage_User_GetOrgScopedID)
 			{
 				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got org scoped ID."));
-				// message returns and org scoped ID handle, but it doesn't contain anything other than an ID, so we're skipping a step and just returning the ID directly
+				// message returns an org scoped ID handle, but it doesn't contain anything other than an ID, so we're skipping a step and just returning the ID directly
 				OnSuccess.Broadcast(ovr_OrgScopedID_GetID(ovr_Message_GetOrgScopedID(Message)));
 			}
 			else
