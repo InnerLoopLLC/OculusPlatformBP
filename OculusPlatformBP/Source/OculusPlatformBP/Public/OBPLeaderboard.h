@@ -83,7 +83,8 @@ public:
 	FString LeaderboardName;
 	int32 Limit;
 	EOBPLeaderboardStartAt StartAt;
-	TArray<int64> UserIdArray;
+	//TArray<int64> UserIdArray;
+	int64 UserId;
 	int32 UserIdLength;
 
 	UPROPERTY(BlueprintAssignable)
@@ -96,7 +97,7 @@ public:
 	Note: Requires OculusPlatfromSDK v15 or later 
 	Note: This node doesn't work yet. Coming sooner or later*/
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_GetEntriesByIds* GetEntriesByIds(UObject* WorldContextObject, FString LeaderboardName, int32 Limit, EOBPLeaderboardStartAt StartAt, TArray<int64> UserIdArray, int32 UserIdLength);
+		static UOBP_GetEntriesByIds* GetEntriesByIds(UObject* WorldContextObject, FString LeaderboardName, int32 Limit, EOBPLeaderboardStartAt StartAt, int64 UserId, int32 UserIdLength);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;
