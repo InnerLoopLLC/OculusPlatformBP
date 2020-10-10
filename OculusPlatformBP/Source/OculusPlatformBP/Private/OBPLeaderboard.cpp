@@ -148,16 +148,18 @@ UOBP_GetEntriesAfterRank* UOBP_GetEntriesAfterRank::GetEntriesAfterRank(UObject*
 //---GetEntriesByIds---
 void UOBP_GetEntriesByIds::Activate()
 {
+#if OBP_IS_IMPLEMENTED
 #if PLATFORM_MINOR_VERSION >= 47
-	UOBP_LeaderboardEntryArray* LeaderboardEntryArray = NewObject<UOBP_LeaderboardEntryArray>();
-
 	ovrLeaderboardStartAt LeaderboardStartAt = OBP_LeaderboardStartAtToEnum(StartAt);
 
-	ovrRequest RequestId = ovr_Leaderboard_GetEntriesByIds(TCHAR_TO_ANSI(*LeaderboardName), Limit, LeaderboardStartAt, UserIdArray, UserIdLength);
+	ovrID ThisUserIdArray = UserId;
+	ovrID* ThisUserId = &ThisUserIdArray;
+
+	ovrRequest RequestId = ovr_Leaderboard_GetEntriesByIds(TCHAR_TO_ANSI(*LeaderboardName), Limit, LeaderboardStartAt, ThisUserId, UserIdLength);
 
 	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
 	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this, LeaderboardEntryArray](ovrMessageHandle Message, bool bIsError)
+		[this](ovrMessageHandle Message, bool bIsError)
 	{
 		if (bIsError)
 		{
@@ -171,6 +173,7 @@ void UOBP_GetEntriesByIds::Activate()
 			if (messageType == ovrMessage_Leaderboard_GetEntriesByIds)
 			{
 				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got leaderboard entries by IDs."));
+				auto LeaderboardEntryArray = NewObject<UOBP_LeaderboardEntryArray>();
 				LeaderboardEntryArray->ovrLeaderboardEntryArrayHandle = ovr_Message_GetLeaderboardEntryArray(Message);
 				OnSuccess.Broadcast(LeaderboardEntryArray);
 			}
@@ -185,15 +188,19 @@ void UOBP_GetEntriesByIds::Activate()
 	OBP_PlatformVersionError("Leaderboard::GetEntriesByIds", "v15");
 	OnFailure.Broadcast(nullptr);
 #endif
+#else
+	OBP_NotImplementedError("Leaderboard::GetEntriesByIds");
+	OnFailure.Broadcast(nullptr);
+#endif //OBP_IS_IMPLEMENTED
 }
 
-UOBP_GetEntriesByIds* UOBP_GetEntriesByIds::GetEntriesByIds(UObject* WorldContextObject, FString LeaderboardName, int32 Limit, EOBPLeaderboardStartAt StartAt, TArray<int32> UserIdArray, int32 UserIdLength)
+UOBP_GetEntriesByIds* UOBP_GetEntriesByIds::GetEntriesByIds(UObject* WorldContextObject, FString LeaderboardName, int32 Limit, EOBPLeaderboardStartAt StartAt, int32 UserId, int32 UserIdLength)
 {
 	auto Entries = NewObject<UOBP_GetEntriesByIds>();
 	Entries->LeaderboardName = LeaderboardName;
 	Entries->Limit = Limit;
 	Entries->StartAt = StartAt;
-	Entries->UserIdArray = UserIdArray;
+	Entries->UserId = UserId;
 	Entries->UserIdLength = UserIdLength;
 	return Entries;
 }

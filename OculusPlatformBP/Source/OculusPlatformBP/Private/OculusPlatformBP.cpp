@@ -117,4 +117,12 @@ void OBP_MessageError(FString NodeName, ovrMessageHandle Message)
 
 	FString ErrorMessage = ovr_Error_GetMessage(ovr_Message_GetError(Message));
 	UE_LOG(LogOculusPlatformBP, Log, TEXT("%s"), *ErrorMessage);
-};
+}
+
+/*Log errors caused by a function that hasn't been fully implemented.*/
+void OBP_NotImplementedError(FString NodeName)
+{
+	FString ErrorString = NodeName + FString(" has not yet been fully implemented. This node will work in a future version of this plugin.");
+	UE_LOG(LogOculusPlatformBP, Log, TEXT("%s"), *ErrorString);
+}
+;

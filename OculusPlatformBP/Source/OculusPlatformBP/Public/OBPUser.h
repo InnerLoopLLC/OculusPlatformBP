@@ -42,7 +42,7 @@ public:
 	/* Retrieve the user with the given ID. This might fail if the ID is invalid or the user is blocked.
 	NOTE: Users will have a unique ID per application.*/
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_GetUser* GetUser(UObject* WorldContextObject, int32 UserID);
+		static UOBP_GetUser* GetUser(UObject* WorldContextObject, int32 UserId);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;

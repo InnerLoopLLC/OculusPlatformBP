@@ -240,6 +240,7 @@ UOBP_Achievements_GetAllProgress* UOBP_Achievements_GetAllProgress::GetAllProgre
 //---GetDefinitionsByName---
 void UOBP_Achievements_GetDefinitionsByName::Activate()
 {
+#if OBP_IS_IMPLEMENTED
 	const char* ThisName = TCHAR_TO_ANSI(*Names);
 	const char** ThisNewName = &ThisName;
 
@@ -281,6 +282,10 @@ void UOBP_Achievements_GetDefinitionsByName::Activate()
 			}
 		}
 	}));
+#else
+	OBP_NotImplementedError("Leaderboard::GetEntriesByIds");
+	OnFailure.Broadcast(nullptr);
+#endif //OBP_IS_IMPLEMENTED
 }
 
 UOBP_Achievements_GetDefinitionsByName* UOBP_Achievements_GetDefinitionsByName::GetDefinitionsByName(UObject* WorldContextObject, FString Names, int32 Count)
@@ -376,6 +381,7 @@ UOBP_Achievements_GetNextAchievementProgressArrayPage* UOBP_Achievements_GetNext
 //---GetProgressByName---
 void UOBP_Achievements_GetProgressByName::Activate()
 {
+#if OBP_IS_IMPLEMENTED
 	const char* ThisName = TCHAR_TO_ANSI(*Names);
 	const char** ThisNewName = &ThisName;
 
@@ -417,6 +423,10 @@ void UOBP_Achievements_GetProgressByName::Activate()
 			}
 		}
 	})); 
+#else
+	OBP_NotImplementedError("Leaderboard::GetEntriesByIds");
+	OnFailure.Broadcast(nullptr);
+#endif //OBP_IS_IMPLEMENTED
 }
 
 UOBP_Achievements_GetProgressByName* UOBP_Achievements_GetProgressByName::GetProgressByName(UObject* WorldContextObject, FString Names, int32 Count)

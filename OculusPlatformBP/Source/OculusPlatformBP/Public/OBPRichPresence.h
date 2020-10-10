@@ -28,7 +28,8 @@ public:
 	UPROPERTY(BlueprintAssignable)
 		FClearRichPresence OnFailure;
 
-	/*Clear rich presence for running app*/
+	/*Clear rich presence for running app
+	Rich Presence requires OculusPlatfromSDK 1.39 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 		static UOBP_ClearRichPresence* ClearRichPresence(UObject* WorldContextObject);
 
@@ -67,6 +68,8 @@ class OCULUSPLATFORMBP_API UOBP_GetNextDestinationArrayPage : public UBlueprintA
 
 public:
 
+	UOBP_DestinationArray* DestinationArray;
+
 	UPROPERTY(BlueprintAssignable)
 		FGetDestinationsArrayPage OnSuccess;
 
@@ -98,7 +101,8 @@ public:
 	UPROPERTY(BlueprintAssignable)
 		FSetRichPresence OnFailure;
 
-	/*Set rich presence for running app*/
+	/*Set rich presence for running app
+	Rich Presence requires OculusPlatfromSDK 1.39 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 		static UOBP_SetRichPresence* SetRichPresence(UObject* WorldContextObject, UOBP_RichPresence* RichPresenceObject);
 
