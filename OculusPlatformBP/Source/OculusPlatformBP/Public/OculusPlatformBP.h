@@ -40,7 +40,7 @@ public:
 // Enums - UEnums have to be declared here, I guess? They don't work when declared in each OBP_xxx.h file
 // --------------------
 
-/* AchievementType.h */
+/* ovr_AchievementType.h */
 UENUM(BlueprintType)
 enum class EOBPAchievementType : uint8
 {
@@ -50,7 +50,7 @@ enum class EOBPAchievementType : uint8
 	Count
 };
 
-/* LeaderboardFilterType.h */
+/* ovr_LeaderboardFilterType.h */
 UENUM(BlueprintType)
 enum class EOBPLeaderboardFilterType : uint8
 {
@@ -60,7 +60,7 @@ enum class EOBPLeaderboardFilterType : uint8
 	UserIds
 };
 
-/* LeaderboardStartAt.h */
+/* ovr_LeaderboardStartAt.h */
 UENUM(BlueprintType)
 enum class EOBPLeaderboardStartAt : uint8
 {
@@ -70,7 +70,7 @@ enum class EOBPLeaderboardStartAt : uint8
 	Unknown
 };
 
-/* RichPresenceExtraContext.h */
+/* ovr_RichPresenceExtraContext.h */
 UENUM(BlueprintType)
 enum class EOBP_RichPresenceExtraContext : uint8
 {
@@ -82,7 +82,40 @@ enum class EOBP_RichPresenceExtraContext : uint8
 	LookingForMatch
 };
 
-/* UserPresenceStatus.h */
+/* ovr_ServiceProvider.h */
+UENUM(BlueprintType)
+enum class EOBPServiceProvider : uint8
+{
+	Unknown,
+	Dropbox,
+	Facebook,
+	Google,
+	Instagram,
+	RemoteMedia
+};
+
+/* ovr_SdkAccountType.h */
+UENUM(BlueprintType)
+enum class EOBPSdkAccountType : uint8
+{
+	Unknown,
+	Oculus,
+	FacebookGameroom
+};
+
+/* ovr_TimeWindow.h */
+UENUM(BlueprintType)
+enum class EOBPTimeWindow : uint8
+{
+	Unknown,
+	OneHour,
+	OneDay,
+	OneWeek,
+	ThirtyDays,
+	NinetyDays
+};
+
+/* ovr_UserPresenceStatus.h */
 UENUM(BlueprintType)
 enum class EOBP_UserPresenceStatus : uint8
 {
