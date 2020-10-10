@@ -299,7 +299,8 @@ public:
 	UPROPERTY(BlueprintAssignable)
 		FLaunchFriendRequestFlow OnFailure;
 
-	/*Launch the flow for sending a friend request to a user.*/
+	/*Launch the flow for sending a friend request to a user.
+	Requires OculusPlatfromSDK 1.28 or later*/
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 		static UOBP_LaunchFriendRequestFlow* LaunchFriendRequestFlow(UObject* WorldContextObject, int64 UserID);
 

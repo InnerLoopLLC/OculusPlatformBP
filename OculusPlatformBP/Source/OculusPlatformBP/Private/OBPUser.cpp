@@ -550,6 +550,7 @@ UOBP_GetUserProof* UOBP_GetUserProof::GetUserProof(UObject* WorldContextObject)
 //---LaunchFriendRequestFlow---
 void UOBP_LaunchFriendRequestFlow::Activate()
 {
+#if PLATFORM_MINOR_VERSION >= 28
 	ovrRequest RequestId = ovr_User_LaunchFriendRequestFlow(UserID);
 
 	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
@@ -580,6 +581,10 @@ void UOBP_LaunchFriendRequestFlow::Activate()
 			}
 		}
 	}));
+#else
+	OBP_PlatformVersionError("User::LaunchFriendRequestFlow", "1.28");
+	OnFailure.Broadcast();
+#endif
 }
 
 UOBP_LaunchFriendRequestFlow* UOBP_LaunchFriendRequestFlow::LaunchFriendRequestFlow(UObject* WorldContextObject, int64 UserID)
