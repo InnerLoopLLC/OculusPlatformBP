@@ -50,7 +50,7 @@ Find out more about InnerLoop LLC at [https://www.innerloopllc.com](https://www.
 *(This is optional, but highly recommended in order to access all Oculus Platform SDK features and bugfixes)*
 1) Download the latest [*Oculus Platform SDK*](https://developer.oculus.com/downloads/package/oculus-platform-sdk/)
 2) In that zip file, go to the *'Windows'* folder and copy *'LibOVRPlatform32_1.lib'* and *'LibOVRPlatform64_1.lib'* into the following folder within your engine directory: *'Engine\Source\ThirdParty\Oculus\LibOVRPlatform\LibOVRPlatform\lib'* replacing the existing files.
-3) If you're building for Quest, copy the two folders from the *'Android/libs'* directory of the zip file into that same engine directory.
+3) If you're building for Quest, copy the two folders from the *'Android\libs'* directory of the zip file into that same engine directory.
 4) Copy the entire *'Include'* folder from the zip file and overwrite the files within *'Engine\Source\ThirdParty\Oculus\LibOVRPlatform\LibOVRPlatform\include'*.
 5) That's it. Regenerate project files to be safe, then compile and you're good to go.
 
