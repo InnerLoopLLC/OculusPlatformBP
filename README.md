@@ -5,6 +5,12 @@ A UE4 plugin library of Blueprint nodes for Oculus Platform functions.
 *If you enjoy this plugin and want to see it improve, please consider helping me buy some caffeine.<br>
 [**Donate via Patreon**](https://www.patreon.com/innerloopllc)*
 
+## Features
++ [Achievements](https://developer.oculus.com/documentation/unreal/ps-achievements)
++ [Leaderboards](https://developer.oculus.com/documentation/unreal/ps-leaderboards/)
++ [Rich Presence/Destinations](https://developer.oculus.com/documentation/unreal/ps-rich-presence/)
++ [User/Identity](https://developer.oculus.com/documentation/unreal/ps-presence/)
+
 #### What this is:
 + ...the [*Oculus Platform SDK (v19)*](https://developer.oculus.com/reference/platform/v19/) exposed from C++ to Blueprints as directly as possible.
 + ...or at least some of it. There's a still a lot of work to do.
@@ -31,7 +37,7 @@ Find out more about InnerLoop LLC at [https://www.innerloopllc.com](https://www.
 * **Unreal Engine** - [4.25.3-Oculus](https://github.com/Oculus-VR/UnrealEngine/tree/4.25)
 * **Platforms** - Win64, Android *(note: not yet tested on Android) (todo: test on Android)*
 * **Oculus Platform SDK** - [v19](https://developer.oculus.com/downloads/package/oculus-platform-sdk/19.0.0/)<br>
-*(**~It is highly recommended to update to v19 to access all features and bug fixes.~** or rather it will be. At the moment, the plugin is only tested against 1.40 and not all newer functions will compile properly.)*<br>
+*(**It is highly recommended to update to v19 to access all features and bug fixes.** )*<br>
 *(This plugin attempts to handle whichever Oculus Platform SDK is installed. Though 1.24+ is required.)*<br>
 *(Launcher distributions of UE4 are not currently supported. You'll have to compile the engine from source.)*<br><br>
 *(The following branches have not been tested for functionality, only to make sure it compiles)*
@@ -53,12 +59,6 @@ Find out more about InnerLoop LLC at [https://www.innerloopllc.com](https://www.
 3) If you're building for Quest, copy the two folders from the *'Android\libs'* directory of the zip file into that same engine directory.
 4) Copy the entire *'Include'* folder from the zip file and overwrite the files within *'Engine\Source\ThirdParty\Oculus\LibOVRPlatform\LibOVRPlatform\include'*.
 5) That's it. Regenerate project files to be safe, then compile and you're good to go.
-
-## Features
-+ [Achievements](https://developer.oculus.com/documentation/unreal/ps-achievements)
-+ [Leaderboards](https://developer.oculus.com/documentation/unreal/ps-leaderboards/)
-+ [Rich Presence/Destinations](https://developer.oculus.com/documentation/unreal/ps-rich-presence/)
-+ [User/Identity](https://developer.oculus.com/documentation/unreal/ps-presence/)
 
 ## Legal
 *OculusPlatformBP Plugin* by ItsNotMeTrustMe *(Brian Edward Hicks)* of InnerLoop LLC, 2020<br>
