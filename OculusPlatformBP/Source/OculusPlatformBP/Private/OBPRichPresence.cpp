@@ -38,6 +38,7 @@ UOBP_SetRichPresence::UOBP_SetRichPresence(const FObjectInitializer& ObjectIniti
 //---ClearRichPresence---
 void UOBP_ClearRichPresence::Activate()
 {
+#if PLATFORM_MINOR_VERSION >= 39
 	ovrRequest RequestId = ovr_RichPresence_Clear();
 
 	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
@@ -65,6 +66,10 @@ void UOBP_ClearRichPresence::Activate()
 			}
 		}
 	}));
+#else
+	OBP_PlatformVersionError("RichPresence::ClearRichPresence", "1.39");
+	OnFailure.Broadcast();
+#endif
 }
 
 UOBP_ClearRichPresence* UOBP_ClearRichPresence::ClearRichPresence(UObject* WorldContextObject)
@@ -167,6 +172,7 @@ UOBP_GetNextDestinationArrayPage* UOBP_GetNextDestinationArrayPage::GetNextDesti
 //---SetRichPresence---
 void UOBP_SetRichPresence::Activate()
 {
+#if PLATFORM_MINOR_VERSION >= 39
 	ovrRequest RequestId = ovr_RichPresence_Set(OvrRichPresenceOptions);
 
 	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
@@ -194,12 +200,18 @@ void UOBP_SetRichPresence::Activate()
 			}
 		}
 	}));
+#else
+	OBP_PlatformVersionError("RichPresence::SetRichPresence", "1.39");
+	OnFailure.Broadcast();
+#endif
 }
 
 UOBP_SetRichPresence* UOBP_SetRichPresence::SetRichPresence(UObject* WorldContextObject, UOBP_RichPresence* RichPresenceObject)
 {
 	auto SetRichPresence = NewObject<UOBP_SetRichPresence>();
+#if PLATFORM_MINOR_VERSION >= 39
 	SetRichPresence->OvrRichPresenceOptions = RichPresenceObject->OvrRichPresenceOptions;
+#endif
 	return SetRichPresence;
 }
 
@@ -209,46 +221,65 @@ UOBP_SetRichPresence* UOBP_SetRichPresence::SetRichPresence(UObject* WorldContex
 
 UOBP_RichPresence* UOBP_RichPresence::CreateRichPresenceOptions(UObject* WorldContextObject)
 {
+#if PLATFORM_MINOR_VERSION >= 39
 	return NewObject<UOBP_RichPresence>();
+#else
+	return nullptr;
+#endif
 }
 
 void UOBP_RichPresence::DestroyRichPresenceOptions()
 {
+#if PLATFORM_MINOR_VERSION >= 39
 	ovr_RichPresenceOptions_Destroy(OvrRichPresenceOptions);
+#endif
 }
 
 void UOBP_RichPresence::SetApiName(const FString RichPresenceApiName)
 {
+#if PLATFORM_MINOR_VERSION >= 39
 	ovr_RichPresenceOptions_SetApiName(OvrRichPresenceOptions, TCHAR_TO_ANSI(*RichPresenceApiName));
+#endif
 }
 
 void UOBP_RichPresence::SetArgsString(const FString RichPresenceApiKey, const FString RichPresenceApiValue)
 {
+#if PLATFORM_MINOR_VERSION >= 39
 	ovr_RichPresenceOptions_SetArgsString(OvrRichPresenceOptions, TCHAR_TO_ANSI(*RichPresenceApiKey), TCHAR_TO_ANSI(*RichPresenceApiValue));
+#endif
 }
 
 void UOBP_RichPresence::ClearArgs()
 {
+#if PLATFORM_MINOR_VERSION >= 39
 	ovr_RichPresenceOptions_ClearArgs(OvrRichPresenceOptions);
+#endif
 }
 
 void UOBP_RichPresence::SetCurrentCapacity(const int32 RichPresenceCurrentCapacity)
 {
+#if PLATFORM_MINOR_VERSION >= 40
 	ovr_RichPresenceOptions_SetCurrentCapacity(OvrRichPresenceOptions, RichPresenceCurrentCapacity);
+#endif
 }
 
 void UOBP_RichPresence::SetDeeplinkMessageOverride(const FString RichPresenceDeeplinkMessage)
 {
+#if PLATFORM_MINOR_VERSION >= 40
 	ovr_RichPresenceOptions_SetDeeplinkMessageOverride(OvrRichPresenceOptions, TCHAR_TO_ANSI(*RichPresenceDeeplinkMessage));
+#endif
 }
 
 void UOBP_RichPresence::SetEndTime(const int64 RichPresenceEndTime)
 {
+#if PLATFORM_MINOR_VERSION >= 39
 	ovr_RichPresenceOptions_SetEndTime(OvrRichPresenceOptions, RichPresenceEndTime);
+#endif
 }
 
 void UOBP_RichPresence::SetExtraContext(EOBP_RichPresenceExtraContext RichPresenceExtraContext)
 {
+#if PLATFORM_MINOR_VERSION >= 40
 	switch (RichPresenceExtraContext)
 	{
 	case EOBP_RichPresenceExtraContext::Unknown:
@@ -270,29 +301,40 @@ void UOBP_RichPresence::SetExtraContext(EOBP_RichPresenceExtraContext RichPresen
 		ovr_RichPresenceOptions_SetExtraContext(OvrRichPresenceOptions, ovrRichPresenceExtraContext_LookingForAMatch);
 		break;
 	}
+#endif
 }
 
 void UOBP_RichPresence::SetIsIdle(const bool RichPresenceIsIdle)
 {
+#if PLATFORM_MINOR_VERSION >= 39
 	ovr_RichPresenceOptions_SetIsIdle(OvrRichPresenceOptions, RichPresenceIsIdle);
+#endif
 }
 
 void UOBP_RichPresence::SetIsJoinable(const bool RichPresenceIsJoinable)
 {
+#if PLATFORM_MINOR_VERSION >= 39
 	ovr_RichPresenceOptions_SetIsJoinable(OvrRichPresenceOptions, RichPresenceIsJoinable);
+#endif
 }
 
 void UOBP_RichPresence::SetJoinableId(const FString RichPresenceJoinableId)
 {
+#if PLATFORM_MINOR_VERSION >= 39
 	ovr_RichPresenceOptions_SetJoinableId(OvrRichPresenceOptions, TCHAR_TO_ANSI(*RichPresenceJoinableId));
+#endif
 }
 
 void UOBP_RichPresence::SetMaxCapacity(const int32 RichPresenceMaxCapacity)
 {
+#if PLATFORM_MINOR_VERSION >= 40
 	ovr_RichPresenceOptions_SetMaxCapacity(OvrRichPresenceOptions, RichPresenceMaxCapacity);
+#endif
 }
 
 void UOBP_RichPresence::SetStartTime(const int64 RichPresenceStartTime)
 {
+#if PLATFORM_MINOR_VERSION >= 40
 	ovr_RichPresenceOptions_SetStartTime(OvrRichPresenceOptions, RichPresenceStartTime);
+#endif
 }
