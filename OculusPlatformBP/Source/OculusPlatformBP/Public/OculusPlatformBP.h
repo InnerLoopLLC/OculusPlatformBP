@@ -21,6 +21,9 @@
 
 DECLARE_LOG_CATEGORY_EXTERN(LogOculusPlatformBP, Log, All);
 
+// Used to prevent incomplete functions from being compiled
+#define OBP_IS_IMPLEMENTED 0
+
 class IOculusPlatformBP : public IModuleInterface
 {
 public:
@@ -147,3 +150,6 @@ void OBP_PlatformVersionError(FString NodeName, FString RequiredPlatformVersion)
 
 /*Log errors receiving ovr messages.*/
 void OBP_MessageError(FString NodeName, ovrMessageHandle Message);
+
+/*Log errors caused by a function that hasn't been fully implemented.*/
+void OBP_NotImplementedError(FString NodeName);

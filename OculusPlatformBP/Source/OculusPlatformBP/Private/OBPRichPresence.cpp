@@ -1,6 +1,7 @@
 // OculusPlatformBP plugin by InnerLoop LLC 2020
 
 #include "OBPRichPresence.h"
+#include "OBPDestination.h"
 
 // --------------------
 // Initializers
@@ -85,7 +86,7 @@ void UOBP_GetDestinations::Activate()
 
 	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
 	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this, DestinationArray](ovrMessageHandle Message, bool bIsError)
+		[this](ovrMessageHandle Message, bool bIsError)
 	{
 		if (bIsError)
 		{
@@ -129,7 +130,7 @@ void UOBP_GetNextDestinationArrayPage::Activate()
 
 	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
 	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this, DestinationArray](ovrMessageHandle Message, bool bIsError)
+		[this](ovrMessageHandle Message, bool bIsError)
 	{
 		if (bIsError)
 		{
@@ -163,9 +164,7 @@ void UOBP_GetNextDestinationArrayPage::Activate()
 UOBP_GetNextDestinationArrayPage* UOBP_GetNextDestinationArrayPage::GetNextDestinationArrayPage(UObject* WorldContextObject, UOBP_DestinationArray* DestinationArray)
 {
 	auto DestinationArrayPage = NewObject<UOBP_GetNextDestinationArrayPage>();
-#if PLATFORM_MINOR_VERSION >= 41
-	auto DestinationArray = DestinationArray;
-#endif
+	DestinationArrayPage->DestinationArray = DestinationArray;
 	return DestinationArrayPage;
 }
 
