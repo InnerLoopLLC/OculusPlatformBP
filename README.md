@@ -39,7 +39,7 @@ Find out more about InnerLoop LLC at [https://www.innerloopllc.com](https://www.
 
 ## Installation
 *(Optional)* - Update [*Oculus Platform SDK*](https://developer.oculus.com/downloads/package/oculus-platform-sdk/) to latest version (v19).
-1) Place the *'OculusPlatformBP'* folder in *'Engine/Plugins/Marketplace'* or your project's *'Plugins'* folder
+1) Place the *'OculusPlatformBP'* folder in *'Engine\Plugins\Marketplace'* or your project's *'Plugins'* folder
 2) Regenerate project files
 3) Compile engine
 4) Enable the *OculusVR*, *OnlineSubsystemOculus*, and *OculusPlatformBP* plugins in your project
