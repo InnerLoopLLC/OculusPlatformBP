@@ -118,47 +118,63 @@ class OCULUSPLATFORMBP_API UOBP_RichPresence : public UBlueprintFunctionLibrary
 
 public:
 
+#if PLATFORM_MINOR_VERSION >= 39
 	ovrRichPresenceOptions* OvrRichPresenceOptions = ovr_RichPresenceOptions_Create();
+#endif
 
+	/* Rich Presence requires OculusPlatfromSDK 1.39 or later */
 	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Rich Presence", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 		static UOBP_RichPresence* CreateRichPresenceOptions(UObject* WorldContextObject);
 	
+	/* Rich Presence requires OculusPlatfromSDK 1.39 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
 		void DestroyRichPresenceOptions();
 
+	/* Rich Presence requires OculusPlatfromSDK 1.39 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
 		void SetApiName(const FString RichPresenceApiName);
 
+	/* Rich Presence requires OculusPlatfromSDK 1.39 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
 		void SetArgsString(const FString RichPresenceApiKey, const FString RichPresenceApiValue);
 
+	/* Rich Presence requires OculusPlatfromSDK 1.39 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
 		void ClearArgs();
 
+	/* Requires OculusPlatfromSDK 1.40 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
 		void SetCurrentCapacity(const int32 RichPresenceCurrentCapacity);
 	
+	/* Requires OculusPlatfromSDK 1.40 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
 		void SetDeeplinkMessageOverride(const FString RichPresenceDeeplinkMessage);
 
+	/* Rich Presence requires OculusPlatfromSDK 1.39 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
 		void SetEndTime(const int32 RichPresenceEndTime);
 
+	/* Requires OculusPlatfromSDK 1.40 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
 		void SetExtraContext(EOBP_RichPresenceExtraContext RichPresenceExtraContext);
 
+	/* Rich Presence requires OculusPlatfromSDK 1.39 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
 		void SetIsIdle(const bool RichPresenceIsIdle);
 
+	/* Rich Presence requires OculusPlatfromSDK 1.39 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
 		void SetIsJoinable(const bool RichPresenceIsJoinable);
 
+	/* Rich Presence requires OculusPlatfromSDK 1.39 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
 		void SetJoinableId(const FString RichPresenceJoinableId);
 
+	/* Requires OculusPlatfromSDK 1.40 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
 		void SetMaxCapacity(const int32 RichPresenceMaxCapacity);
 
+	/* Requires OculusPlatfromSDK 1.40 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
 		void SetStartTime(const int32 RichPresenceStartTime);
 };
