@@ -53,7 +53,9 @@ FString UOBP_Destination::GetDisplayName()
 UOBP_Destination* UOBP_DestinationArray::GetElement(int32 Index)
 {
 #if PLATFORM_MINOR_VERSION >= 41
-	return ovr_DestinationArray_GetElement(ovrDestinationArrayHandle, Index);
+	auto Destination = NewObject<UOBP_Destination>();
+	Destination->ovrDestinationHandle = ovr_DestinationArray_GetElement(ovrDestinationArrayHandle, Index);
+	return Destination;
 #else
 	OBP_PlatformVersionError("GetElement", "1.41");
 	return nullptr;
