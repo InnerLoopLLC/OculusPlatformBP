@@ -31,20 +31,28 @@ Find out more about InnerLoop LLC at [https://www.innerloopllc.com](https://www.
 * **Unreal Engine** - [4.25.3-Oculus](https://github.com/Oculus-VR/UnrealEngine/tree/4.25)
 * **Platforms** - Win64, Android *(note: not yet tested on Android) (todo: test on Android)*
 * **Oculus Platform SDK** - [v19](https://developer.oculus.com/downloads/package/oculus-platform-sdk/19.0.0/)<br>
-*(UE4.23+ includes Oculus Platform SDK 1.40 by default. **~It is highly recommended to update to v19 to access all features and bug fixes.~** or rather it will be. At the moment, the plugin is only tested against 1.40 and not all v19 functions will compile properly.)*<br>
-*(This plugin attempts to handle whichever Oculus Platform SDK is installed. Though 1.40+ is required.)*<br>
-*(Launcher distributions of UE4 are not currently supported. You'll have to compile your own build of the engine.)*<br><br>
+*(**~It is highly recommended to update to v19 to access all features and bug fixes.~** or rather it will be. At the moment, the plugin is only tested against 1.40 and not all newer functions will compile properly.)*<br>
+*(This plugin attempts to handle whichever Oculus Platform SDK is installed. Though 1.24+ is required.)*<br>
+*(Launcher distributions of UE4 are not currently supported. You'll have to compile the engine from source.)*<br><br>
 *(The following branches have not been tested for functionality, only to make sure it compiles)*
 * **Unreal Engine** - 4.24, 4.23, 4.22, 4.21
 
 ## Installation
 *(Optional)* - Update [*Oculus Platform SDK*](https://developer.oculus.com/downloads/package/oculus-platform-sdk/) to latest version (v19).
-1) Place the *'OculusPlatformBP'* folder in *'Engine/Plugins/Marketplace'* or your project's *'Plugins'* folder<br>
-2) Regenerate project files<br>
-3) Compile engine<br>
+1) Place the *'OculusPlatformBP'* folder in *'Engine/Plugins/Marketplace'* or your project's *'Plugins'* folder
+2) Regenerate project files
+3) Compile engine
 4) Enable the *OculusVR*, *OnlineSubsystemOculus*, and *OculusPlatformBP* plugins in your project
 5) Check Oculus Entitlement
 6) Use *OculusPlatformBP* to do cool stuff
+
+## Updating the Oculus Platform SDK
+*(This is optional, but highly recommended in order to access all Oculus Platform SDK features and bugfixes)*
+1) Download the latest [*Oculus Platform SDK*](https://developer.oculus.com/downloads/package/oculus-platform-sdk/)
+2) In that zip file, go to the *'Windows'* folder and copy *'LibOVRPlatform32_1.lib'* and *'LibOVRPlatform64_1.lib'* into the following folder within your engine directory: *'Engine\Source\ThirdParty\Oculus\LibOVRPlatform\LibOVRPlatform\lib'* replacing the existing files.
+3) If you're building for Quest, copy the two folders from the *'Android/libs'* directory of the zip file into that same engine directory.
+4) Copy the entire *'Include'* folder from the zip file and overwrite the files within *'Engine\Source\ThirdParty\Oculus\LibOVRPlatform\LibOVRPlatform\include'*.
+5) That's it. Regenerate project files to be safe, then compile and you're good to go.
 
 ## Features
 + [Achievements](https://developer.oculus.com/documentation/unreal/ps-achievements)
