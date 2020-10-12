@@ -15,7 +15,7 @@
 #include "OnlineSubsystem.h"
 #include "OnlineSubsystemOculus.h"
 
-#include <ThirdParty\Oculus\LibOVRPlatform\LibOVRPlatform\include\OVR_Platform.h>
+#include <ThirdParty/Oculus/LibOVRPlatform/LibOVRPlatform/include/OVR_Platform.h>
 
 #include "Modules/ModuleManager.h"
 
