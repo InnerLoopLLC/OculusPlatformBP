@@ -109,7 +109,7 @@ void UOBP_Achievements_AddCount::Activate()
 	}));
 }
 
-UOBP_Achievements_AddCount* UOBP_Achievements_AddCount::AddCount(UObject* WorldContextObject, FString AchievementName, int64 Count)
+UOBP_Achievements_AddCount* UOBP_Achievements_AddCount::AddCount(UObject* WorldContextObject, FString AchievementName, int32 Count)
 {
 	auto AchievementAddCount = NewObject<UOBP_Achievements_AddCount>();
 	AchievementAddCount->AchievementName = AchievementName;
@@ -240,20 +240,7 @@ UOBP_Achievements_GetAllProgress* UOBP_Achievements_GetAllProgress::GetAllProgre
 //---GetDefinitionsByName---
 void UOBP_Achievements_GetDefinitionsByName::Activate()
 {
-#if OBP_IS_IMPLEMENTED
-	const char* ThisName = TCHAR_TO_ANSI(*Names);
-	const char** ThisNewName = &ThisName;
-
-	if(Count > 1)
-	{ 
-		Count = 1;
-	}
-	else if (Count < 0)
-	{
-		Count = 0;
-	}
-
-	ovrRequest RequestId = ovr_Achievements_GetDefinitionsByName(ThisNewName, Count);
+	ovrRequest RequestId = ovr_Achievements_GetDefinitionsByName(OBP_FStringArrayToChar(Names), Count);
 
 	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
 	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
@@ -282,13 +269,9 @@ void UOBP_Achievements_GetDefinitionsByName::Activate()
 			}
 		}
 	}));
-#else
-	OBP_NotImplementedError("Leaderboard::GetEntriesByIds");
-	OnFailure.Broadcast(nullptr);
-#endif //OBP_IS_IMPLEMENTED
 }
 
-UOBP_Achievements_GetDefinitionsByName* UOBP_Achievements_GetDefinitionsByName::GetDefinitionsByName(UObject* WorldContextObject, FString Names, int32 Count)
+UOBP_Achievements_GetDefinitionsByName* UOBP_Achievements_GetDefinitionsByName::GetDefinitionsByName(UObject* WorldContextObject, TArray<FString> Names, int32 Count)
 {
 	auto AchievementDefinitionByName = NewObject<UOBP_Achievements_GetDefinitionsByName>();
 	AchievementDefinitionByName->Names = Names;
@@ -381,20 +364,7 @@ UOBP_Achievements_GetNextAchievementProgressArrayPage* UOBP_Achievements_GetNext
 //---GetProgressByName---
 void UOBP_Achievements_GetProgressByName::Activate()
 {
-#if OBP_IS_IMPLEMENTED
-	const char* ThisName = TCHAR_TO_ANSI(*Names);
-	const char** ThisNewName = &ThisName;
-
-	if (Count > 1)
-	{
-		Count = 1;
-	}
-	else if (Count < 0)
-	{
-		Count = 0;
-	}
-
-	ovrRequest RequestId = ovr_Achievements_GetProgressByName(ThisNewName, Count);
+	ovrRequest RequestId = ovr_Achievements_GetProgressByName(OBP_FStringArrayToChar(Names), Count);
 
 	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
 	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
@@ -423,13 +393,9 @@ void UOBP_Achievements_GetProgressByName::Activate()
 			}
 		}
 	})); 
-#else
-	OBP_NotImplementedError("Leaderboard::GetEntriesByIds");
-	OnFailure.Broadcast(nullptr);
-#endif //OBP_IS_IMPLEMENTED
 }
 
-UOBP_Achievements_GetProgressByName* UOBP_Achievements_GetProgressByName::GetProgressByName(UObject* WorldContextObject, FString Names, int32 Count)
+UOBP_Achievements_GetProgressByName* UOBP_Achievements_GetProgressByName::GetProgressByName(UObject* WorldContextObject, TArray<FString> Names, int32 Count)
 {
 	auto AchievementProgressByName = NewObject<UOBP_Achievements_GetProgressByName>();
 	AchievementProgressByName->Names = Names;
@@ -494,7 +460,7 @@ int32 UOBP_AchievementDefinition::GetBitfieldLength()
 	return ovr_AchievementDefinition_GetBitfieldLength(ovrAchievementDefinitionHandle);
 }
 
-int64 UOBP_AchievementDefinition::GetTarget()
+int32 UOBP_AchievementDefinition::GetTarget()
 {
 	return ovr_AchievementDefinition_GetTarget(ovrAchievementDefinitionHandle);
 }
@@ -551,7 +517,7 @@ FString UOBP_AchievementProgress::GetBitfield()
 	return ovr_AchievementProgress_GetBitfield(ovrAchievementProgressHandle);
 }
 
-int64 UOBP_AchievementProgress::GetCount()
+int32 UOBP_AchievementProgress::GetCount()
 {
 	return ovr_AchievementProgress_GetCount(ovrAchievementProgressHandle);
 }
@@ -566,7 +532,7 @@ FString UOBP_AchievementProgress::GetName()
 	return ovr_AchievementProgress_GetName(ovrAchievementProgressHandle);
 }
 
-int64 UOBP_AchievementProgress::GetUnlockTime()
+int32 UOBP_AchievementProgress::GetUnlockTime()
 {
 	return ovr_AchievementProgress_GetUnlockTime(ovrAchievementProgressHandle);
 }

@@ -101,28 +101,72 @@ ovrLeaderboardStartAt OBP_LeaderboardStartAtToEnum(EOBPLeaderboardStartAt OBPLea
 // Logging Functions
 // --------------------
 
-/*Log errors caused by incorrect OculusPlatformSDK.*/
+/*Log errors caused by incorrect OculusPlatformSDK */
 void OBP_PlatformVersionError(FString NodeName, FString RequiredPlatformVersion)
 {
 	FString ErrorString = FString("Unable to use ") + NodeName + FString(" node. Incorrect OculusPlatformSDK version in use. ") + RequiredPlatformVersion + FString(" or later required.");
 	UE_LOG(LogOculusPlatformBP, Log, TEXT("%s"), *ErrorString);
-};
+}
 
-/*Log ovr message errors.*/
+/* Log ovr message errors.*/
 void OBP_MessageError(FString NodeName, ovrMessageHandle Message)
 {
 	FString ErrorCode = FString::FromInt(ovr_Error_GetCode(ovr_Message_GetError(Message)));
-	FString ErrorString = FString("Error on ") + NodeName + FString(". Error Code: ") + ErrorCode + FString(")");
+	FString ErrorString = FString("Error on ") + NodeName + FString(". Error Code: ") + ErrorCode;
 	UE_LOG(LogOculusPlatformBP, Log, TEXT("%s"), *ErrorString);
 
 	FString ErrorMessage = ovr_Error_GetMessage(ovr_Message_GetError(Message));
 	UE_LOG(LogOculusPlatformBP, Log, TEXT("%s"), *ErrorMessage);
 }
 
-/*Log errors caused by a function that hasn't been fully implemented.*/
+/* Log errors caused by a function that hasn't been fully implemented */
 void OBP_NotImplementedError(FString NodeName)
 {
 	FString ErrorString = NodeName + FString(" has not yet been fully implemented. This node will work in a future version of this plugin.");
 	UE_LOG(LogOculusPlatformBP, Log, TEXT("%s"), *ErrorString);
 }
-;
+
+// --------------------
+// Helper Functions
+// --------------------
+
+/* Converts an TArray of FStrings to an array of const char */
+const char** OBP_FStringArrayToChar(TArray<FString> Names)
+{
+	std::vector<std::string> StringArray;
+	for (size_t i = 0; i < Names.Num(); i++)
+	{
+		StringArray.push_back(std::string(TCHAR_TO_UTF8(*(Names[i]))));
+	}
+	std::vector<const char*> CharPtrArray;
+	for (size_t i = 0; i < StringArray.size(); i++)
+	{
+		CharPtrArray.push_back(StringArray[i].c_str());
+	}
+	return CharPtrArray.data();
+}
+
+/* Converts an TArray of FStrings to an array of ovrIDs - This is broken. Do not use. */
+ovrID* OBP_FStringArrayToOvrId(TArray<FString> UserIds)
+{
+	std::vector<ovrID> ovrIdArray;
+	for (size_t i = 0; i < UserIds.Num(); i++)
+	{
+		ovrIdArray.push_back(FCString::Atoi64(*UserIds[i]));
+	}
+	ovrID* ovrId = ovrIdArray.data();
+	
+	return ovrIdArray.data();
+}
+
+/* Converts an FString to an int64 or ovrID - Function exists in case it needs to be modified later*/
+int64 OBP_FStringToInt64(FString InFString)
+{
+	return FCString::Atoi64(*InFString);
+}
+
+/* Converts an int64 or ovrID to an FString - Function exists in case it needs to be modified later */
+FString OBP_Int64ToFString(int64 InInt64)
+{
+	return FString::Printf(TEXT("%lld"), InInt64);
+}
