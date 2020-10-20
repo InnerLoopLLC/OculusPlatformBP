@@ -127,8 +127,7 @@ class OCULUSPLATFORMBP_API UOBP_Achievements_GetDefinitionsByName : public UBlue
 
 public:
 
-	//TArray<FString> Names;
-	FString Names;
+	TArray<FString> Names;
 	int32 Count;
 
 	UPROPERTY(BlueprintAssignable)
@@ -138,9 +137,9 @@ public:
 		FAchievementsGetDefinitionsByName OnFailure;
 
 	/* Request the achievement definitions that match the specified names. 
-	Note: This node is currently non-functional. Coming soon.*/
+	Note: For some reason, if count != 0 then this request will succeed but return no data. The API doesn't clearly explain what count is for. If count = 0 then it works fine, regardless of array size. */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_Achievements_GetDefinitionsByName* GetDefinitionsByName(UObject* WorldContextObject, FString Names, int32 Count);
+		static UOBP_Achievements_GetDefinitionsByName* GetDefinitionsByName(UObject* WorldContextObject, TArray<FString> Names, int32 Count);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;
@@ -202,8 +201,7 @@ class OCULUSPLATFORMBP_API UOBP_Achievements_GetProgressByName : public UBluepri
 
 public:
 
-	//TArray<FString> Names;
-	FString Names;
+	TArray<FString> Names;
 	int32 Count;
 
 	UPROPERTY(BlueprintAssignable)
@@ -213,9 +211,9 @@ public:
 		FAchievementsGetProgressByName OnFailure;
 
 	/* Request the user's progress on the specified achievements. 
-	Note: This node is currently non-functional. Coming soon.*/
+	Note: For some reason, if count != 0 then this request will succeed but return no data. The API doesn't clearly explain what count is for. If count = 0 then it works fine, regardless of array size. */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_Achievements_GetProgressByName* GetProgressByName(UObject* WorldContextObject, FString Names, int32 Count);
+		static UOBP_Achievements_GetProgressByName* GetProgressByName(UObject* WorldContextObject, TArray<FString> Names, int32 Count);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;

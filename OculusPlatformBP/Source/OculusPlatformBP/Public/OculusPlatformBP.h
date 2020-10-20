@@ -145,11 +145,27 @@ ovrLeaderboardStartAt OBP_LeaderboardStartAtToEnum(EOBPLeaderboardStartAt OBPLea
 // Logging Functions
 // --------------------
 
-/*Log errors caused by incorrect OculusPlatformSDK.*/
+/* Log errors caused by incorrect OculusPlatformSDK */
 void OBP_PlatformVersionError(FString NodeName, FString RequiredPlatformVersion);
 
-/*Log errors receiving ovr messages.*/
+/* Log errors receiving ovr messages */
 void OBP_MessageError(FString NodeName, ovrMessageHandle Message);
 
-/*Log errors caused by a function that hasn't been fully implemented.*/
+/* Log errors caused by a function that hasn't been fully implemented */
 void OBP_NotImplementedError(FString NodeName);
+
+// --------------------
+// Helper Functions
+// --------------------
+
+/* Converts an TArray of FStrings to an array of const char */
+const char** OBP_FStringArrayToChar(TArray<FString> Names);
+
+/* Converts an TArray of FStrings to an array of ovrIDs */
+ovrID* OBP_FStringArrayToOvrId(TArray<FString> UserIds);
+
+/* Converts an FString to an int64/ovrID */
+int64 OBP_FStringToInt64(FString InFString);
+
+/* Converts an int64/ovrID to an FString */
+FString OBP_Int64ToFString(int64 InInt64);

@@ -13,7 +13,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGetLoggedInUserFriendsAndRooms, UOB
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGetLoggedInUserRecentlyMetUsersAndRooms, UOBP_UserAndRoomArray*, LoggedInUserRecentlyMetUsersAndRooms);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGetNextUserAndRoomArrayPage, UOBP_UserAndRoomArray*, NextUserAndRoomArray);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGetNextUserArrayPage, UOBP_UserArray*, NextUserArray);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGetOrgScopedID, int32, OrgScopedID);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGetOrgScopedID, FString, OrgScopedID);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGetSdkAccounts, UOBP_SdkAccountArray*, SdkAccounts);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGetUserProof, FString, UserProof);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FLaunchFriendRequestFlow, bool, bDidCancel, bool, bDidSendRequest);
@@ -31,7 +31,7 @@ class OCULUSPLATFORMBP_API UOBP_GetUser : public UBlueprintAsyncActionBase
 
 public:
 
-	int32 ovrId;
+	FString ovrId;
 
 	UPROPERTY(BlueprintAssignable)
 		FGetUser OnSuccess;
@@ -42,7 +42,7 @@ public:
 	/* Retrieve the user with the given ID. This might fail if the ID is invalid or the user is blocked.
 	NOTE: Users will have a unique ID per application.*/
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_GetUser* GetUser(UObject* WorldContextObject, int32 UserId);
+		static UOBP_GetUser* GetUser(UObject* WorldContextObject, FString UserId);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;
@@ -219,7 +219,7 @@ class OCULUSPLATFORMBP_API UOBP_GetOrgScopedID : public UBlueprintAsyncActionBas
 
 public:
 
-	int32 UserID;
+	FString UserID;
 
 	UPROPERTY(BlueprintAssignable)
 		FGetOrgScopedID OnSuccess;
@@ -229,7 +229,7 @@ public:
 
 	/*returns an ovrID which is unique per org. allows different apps within the same org to identify the user.*/
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_GetOrgScopedID* GetOrgScopedID(UObject* WorldContextObject, int32 UserID);
+		static UOBP_GetOrgScopedID* GetOrgScopedID(UObject* WorldContextObject, FString UserID);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;
@@ -266,7 +266,7 @@ class OCULUSPLATFORMBP_API UOBP_GetUserProof : public UBlueprintAsyncActionBase
 
 public:
 
-	int32 UserID;
+	FString UserID;
 
 	UPROPERTY(BlueprintAssignable)
 		FGetUserProof OnSuccess;
@@ -291,7 +291,7 @@ class OCULUSPLATFORMBP_API UOBP_LaunchFriendRequestFlow : public UBlueprintAsync
 
 public:
 
-	int32 UserID;
+	FString UserID;
 
 	UPROPERTY(BlueprintAssignable)
 		FLaunchFriendRequestFlow OnSuccess;
@@ -302,7 +302,7 @@ public:
 	/*Launch the flow for sending a friend request to a user.
 	Requires OculusPlatfromSDK 1.28 or later*/
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_LaunchFriendRequestFlow* LaunchFriendRequestFlow(UObject* WorldContextObject, int32 UserID);
+		static UOBP_LaunchFriendRequestFlow* LaunchFriendRequestFlow(UObject* WorldContextObject, FString UserID);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;
@@ -316,7 +316,7 @@ class OCULUSPLATFORMBP_API UOBP_LaunchProfile : public UBlueprintAsyncActionBase
 
 public:
 
-	int32 UserID;
+	FString UserID;
 
 	UPROPERTY(BlueprintAssignable)
 		FLaunchProfile OnSuccess;
@@ -327,7 +327,7 @@ public:
 	/*Launch the profile of the given user. The profile surfaces information about the user and supports relevant actions that the viewer may take on that user, e.g. sending a friend request.
 	Note: Only works on mobile.*/
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_LaunchProfile* LaunchProfile(UObject* WorldContextObject, int32 UserID);
+		static UOBP_LaunchProfile* LaunchProfile(UObject* WorldContextObject, FString UserID);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;
@@ -371,7 +371,7 @@ public:
 		EOBP_UserPresenceStatus GetPresenceStatus();
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User")
-		int32 GetID();
+		FString GetID();
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User")
 		FString GetImageURL();
@@ -536,5 +536,5 @@ public:
 		EOBPSdkAccountType GetAccountType();
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User|SdkAccount")
-		int32 GetUserId();
+		FString GetUserId();
 };
