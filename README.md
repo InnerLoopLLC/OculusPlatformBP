@@ -32,7 +32,6 @@ This means you'll find blueprint nodes for the functions included in the [*Oculu
 * **Plugins** - OculusVR, OnlineSubsystemOculus<br>
 *(**It is highly recommended to update to Oculus Platform SDK v19 to access all features and bug fixes.** )*<br>
 *(This plugin attempts to handle whichever Oculus Platform SDK is installed. Though 1.24+ is required.)*<br>
-*(Launcher distributions of UE4 are not currently supported. You'll have to compile the engine from source.)*
 
 ## Installation
 *(Optional)* - Update [*Oculus Platform SDK*](https://developer.oculus.com/downloads/package/oculus-platform-sdk/) to latest version (v19).
