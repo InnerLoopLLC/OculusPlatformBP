@@ -136,7 +136,7 @@ void UOBP_GetEntriesAfterRank::Activate()
 	}));
 }
 
-UOBP_GetEntriesAfterRank* UOBP_GetEntriesAfterRank::GetEntriesAfterRank(UObject* WorldContextObject, FString LeaderboardName, int32 Limit, int64 AfterRank)
+UOBP_GetEntriesAfterRank* UOBP_GetEntriesAfterRank::GetEntriesAfterRank(UObject* WorldContextObject, FString LeaderboardName, int32 Limit, int32 AfterRank)
 {
 	auto EntriesAfterRank = NewObject<UOBP_GetEntriesAfterRank>();
 	EntriesAfterRank->LeaderboardName = LeaderboardName;
@@ -148,14 +148,18 @@ UOBP_GetEntriesAfterRank* UOBP_GetEntriesAfterRank::GetEntriesAfterRank(UObject*
 //---GetEntriesByIds---
 void UOBP_GetEntriesByIds::Activate()
 {
-#if OBP_IS_IMPLEMENTED
 #if PLATFORM_MINOR_VERSION >= 47
 	ovrLeaderboardStartAt LeaderboardStartAt = OBP_LeaderboardStartAtToEnum(StartAt);
 
-	ovrID ThisUserIdArray = UserId;
-	ovrID* ThisUserId = &ThisUserIdArray;
+	ovrID* ovrIds = NULL; // initialize an array pointer
+	ovrIds = new ovrID[UserIds.Num()]; // dynamically size the array
 
-	ovrRequest RequestId = ovr_Leaderboard_GetEntriesByIds(TCHAR_TO_ANSI(*LeaderboardName), Limit, LeaderboardStartAt, ThisUserId, UserIdLength);
+	for (size_t i = 0; i < UserIds.Num(); i++)
+	{
+		ovrIds[i] = FCString::Atoi64(*UserIds[i]); // copy data to the new array
+	}
+
+	ovrRequest RequestId = ovr_Leaderboard_GetEntriesByIds(TCHAR_TO_ANSI(*LeaderboardName), Limit, LeaderboardStartAt, ovrIds, UserIdLength);
 
 	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
 	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
@@ -184,23 +188,20 @@ void UOBP_GetEntriesByIds::Activate()
 			}
 		}
 	}));
+	delete[] ovrIds; // release the memory allocated for the array
 #else
 	OBP_PlatformVersionError("Leaderboard::GetEntriesByIds", "v15");
 	OnFailure.Broadcast(nullptr);
 #endif
-#else
-	OBP_NotImplementedError("Leaderboard::GetEntriesByIds");
-	OnFailure.Broadcast(nullptr);
-#endif //OBP_IS_IMPLEMENTED
 }
 
-UOBP_GetEntriesByIds* UOBP_GetEntriesByIds::GetEntriesByIds(UObject* WorldContextObject, FString LeaderboardName, int32 Limit, EOBPLeaderboardStartAt StartAt, int64 UserId, int32 UserIdLength)
+UOBP_GetEntriesByIds* UOBP_GetEntriesByIds::GetEntriesByIds(UObject* WorldContextObject, FString LeaderboardName, int32 Limit, EOBPLeaderboardStartAt StartAt, TArray<FString> UserIds, int32 UserIdLength)
 {
 	auto Entries = NewObject<UOBP_GetEntriesByIds>();
 	Entries->LeaderboardName = LeaderboardName;
 	Entries->Limit = Limit;
 	Entries->StartAt = StartAt;
-	Entries->UserId = UserId;
+	Entries->UserIds = UserIds;
 	Entries->UserIdLength = UserIdLength;
 	return Entries;
 }
@@ -320,7 +321,7 @@ void UOBP_WriteEntry::Activate()
 	}));
 }
 
-UOBP_WriteEntry* UOBP_WriteEntry::WriteEntry(UObject* WorldContextObject, FString LeaderboardName, int64 Score, FString ExtraData, int32 ExtraDataLength, bool bForceUpdate)
+UOBP_WriteEntry* UOBP_WriteEntry::WriteEntry(UObject* WorldContextObject, FString LeaderboardName, int32 Score, FString ExtraData, int32 ExtraDataLength, bool bForceUpdate)
 {
 	auto WriteEntry = NewObject<UOBP_WriteEntry>();
 	WriteEntry->LeaderboardName = LeaderboardName;
@@ -350,12 +351,12 @@ int32 UOBP_LeaderboardEntry::GetRank()
 	return ovr_LeaderboardEntry_GetRank(ovrLeaderboardEntryHandle);
 }
 
-int64 UOBP_LeaderboardEntry::GetScore()
+int32 UOBP_LeaderboardEntry::GetScore()
 {
 	return ovr_LeaderboardEntry_GetScore(ovrLeaderboardEntryHandle);
 }
 
-int64 UOBP_LeaderboardEntry::GetTimestamp()
+int32 UOBP_LeaderboardEntry::GetTimestamp()
 {
 	return ovr_LeaderboardEntry_GetTimestamp(ovrLeaderboardEntryHandle);
 }
@@ -393,7 +394,7 @@ int32 UOBP_LeaderboardEntryArray::GetSize()
 	return ovr_LeaderboardEntryArray_GetSize(ovrLeaderboardEntryArrayHandle);
 }
 
-int64 UOBP_LeaderboardEntryArray::GetTotalCount()
+int32 UOBP_LeaderboardEntryArray::GetTotalCount()
 {
 	return ovr_LeaderboardEntryArray_GetTotalCount(ovrLeaderboardEntryArrayHandle);
 }

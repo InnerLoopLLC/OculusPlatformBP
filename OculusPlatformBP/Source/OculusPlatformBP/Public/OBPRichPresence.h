@@ -158,7 +158,7 @@ public:
 
 	/* Rich Presence requires OculusPlatfromSDK 1.39 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
-		void SetEndTime(const int64 RichPresenceEndTime);
+		void SetEndTime(const int32 RichPresenceEndTime);
 
 	/* Requires OculusPlatfromSDK 1.40 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
@@ -182,5 +182,5 @@ public:
 
 	/* Requires OculusPlatfromSDK 1.40 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence")
-		void SetStartTime(const int64 RichPresenceStartTime);
+		void SetStartTime(const int32 RichPresenceStartTime);
 };
