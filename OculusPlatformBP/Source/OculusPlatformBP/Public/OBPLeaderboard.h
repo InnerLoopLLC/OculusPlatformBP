@@ -93,8 +93,7 @@ public:
 		FGetEntriesByIds OnFailure;
 
 	/* Requests a block of leaderboard entries. Will return only entries matching the user IDs passed in.
-	Note: Requires OculusPlatfromSDK v15 or later 
-	Note: This node doesn't work yet. Coming sooner or later*/
+	Note: Requires OculusPlatfromSDK v15 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 		static UOBP_GetEntriesByIds* GetEntriesByIds(UObject* WorldContextObject, FString LeaderboardName, int32 Limit, EOBPLeaderboardStartAt StartAt, TArray<FString> UserIds, int32 UserIdLength);
 

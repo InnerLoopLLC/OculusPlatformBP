@@ -240,7 +240,22 @@ UOBP_Achievements_GetAllProgress* UOBP_Achievements_GetAllProgress::GetAllProgre
 //---GetDefinitionsByName---
 void UOBP_Achievements_GetDefinitionsByName::Activate()
 {
-	ovrRequest RequestId = ovr_Achievements_GetDefinitionsByName(OBP_FStringArrayToChar(Names), Count);
+	char* NamesArray = NULL; // initialize an array pointer
+	NamesArray = new char[Names.Num()]; // dynamically size the array
+	for (size_t i = 0; i < Names.Num(); i++)
+	{
+		NamesArray[i] = FCString::Atoi64(*Names[i]); // copy data to the new array
+	}
+
+	const char** NamesArray2 = NULL; // initialize an array pointer
+	NamesArray2 = new const char*[Names.Num()]; // dynamically size the array
+	for (size_t i = 0; i < Names.Num(); i++)
+	{
+		NamesArray2[i] = &NamesArray[i]; // copy data to the new array
+	}
+
+	ovrRequest RequestId = ovr_Achievements_GetDefinitionsByName(NamesArray2, Count);
+	//ovrRequest RequestId = ovr_Achievements_GetDefinitionsByName(OBP_FStringArrayToChar(Names), Count);
 
 	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
 	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
@@ -269,6 +284,8 @@ void UOBP_Achievements_GetDefinitionsByName::Activate()
 			}
 		}
 	}));
+	delete[] NamesArray; // this is important or memory will leak
+	delete[] NamesArray2;
 }
 
 UOBP_Achievements_GetDefinitionsByName* UOBP_Achievements_GetDefinitionsByName::GetDefinitionsByName(UObject* WorldContextObject, TArray<FString> Names, int32 Count)
@@ -364,7 +381,22 @@ UOBP_Achievements_GetNextAchievementProgressArrayPage* UOBP_Achievements_GetNext
 //---GetProgressByName---
 void UOBP_Achievements_GetProgressByName::Activate()
 {
-	ovrRequest RequestId = ovr_Achievements_GetProgressByName(OBP_FStringArrayToChar(Names), Count);
+	char* NamesArray = NULL; // initialize an array pointer
+	NamesArray = new char[Names.Num()]; // dynamically size the array
+	for (size_t i = 0; i < Names.Num(); i++)
+	{
+		NamesArray[i] = FCString::Atoi64(*Names[i]); // copy data to the new array
+	}
+
+	const char** NamesArray2 = NULL; // initialize an array pointer
+	NamesArray2 = new const char* [Names.Num()]; // dynamically size the array
+	for (size_t i = 0; i < Names.Num(); i++)
+	{
+		NamesArray2[i] = &NamesArray[i]; // copy data to the new array
+	}
+
+	ovrRequest RequestId = ovr_Achievements_GetProgressByName(NamesArray2, Count);
+	//ovrRequest RequestId = ovr_Achievements_GetProgressByName(OBP_FStringArrayToChar(Names), Count);
 
 	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
 	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
@@ -393,6 +425,8 @@ void UOBP_Achievements_GetProgressByName::Activate()
 			}
 		}
 	})); 
+	delete[] NamesArray; // this is important or memory will leak
+	delete[] NamesArray2;
 }
 
 UOBP_Achievements_GetProgressByName* UOBP_Achievements_GetProgressByName::GetProgressByName(UObject* WorldContextObject, TArray<FString> Names, int32 Count)

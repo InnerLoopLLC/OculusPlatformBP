@@ -137,7 +137,7 @@ public:
 		FAchievementsGetDefinitionsByName OnFailure;
 
 	/* Request the achievement definitions that match the specified names. 
-	Note: This node is currently non-functional. Coming soon.*/
+	Note: For some reason, if count != 0 then this request will succeed but return no data. The API doesn't clearly explain what count is for. If count = 0 then it works fine, regardless of array size. */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 		static UOBP_Achievements_GetDefinitionsByName* GetDefinitionsByName(UObject* WorldContextObject, TArray<FString> Names, int32 Count);
 
@@ -211,7 +211,7 @@ public:
 		FAchievementsGetProgressByName OnFailure;
 
 	/* Request the user's progress on the specified achievements. 
-	Note: This node is currently non-functional. Coming soon.*/
+	Note: For some reason, if count != 0 then this request will succeed but return no data. The API doesn't clearly explain what count is for. If count = 0 then it works fine, regardless of array size. */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 		static UOBP_Achievements_GetProgressByName* GetProgressByName(UObject* WorldContextObject, TArray<FString> Names, int32 Count);
 

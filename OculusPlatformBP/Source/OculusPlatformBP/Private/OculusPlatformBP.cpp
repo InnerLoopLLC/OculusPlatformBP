@@ -130,9 +130,10 @@ void OBP_NotImplementedError(FString NodeName)
 // Helper Functions
 // --------------------
 
-/* Converts an TArray of FStrings to an array of const char */
+/* Converts an TArray of FStrings to an array of const char - This works... except on 4.21. This is safer than the in-use method... but oh well. */
 const char** OBP_FStringArrayToChar(TArray<FString> Names)
 {
+	/*
 	std::vector<std::string> StringArray;
 	for (size_t i = 0; i < Names.Num(); i++)
 	{
@@ -143,20 +144,22 @@ const char** OBP_FStringArrayToChar(TArray<FString> Names)
 	{
 		CharPtrArray.push_back(StringArray[i].c_str());
 	}
-	return CharPtrArray.data();
+	return CharPtrArray.data(); */
+	return nullptr;
 }
 
 /* Converts an TArray of FStrings to an array of ovrIDs - This is broken. Do not use. */
 ovrID* OBP_FStringArrayToOvrId(TArray<FString> UserIds)
 {
-	std::vector<ovrID> ovrIdArray;
+	/* std::vector<ovrID> ovrIdArray;
 	for (size_t i = 0; i < UserIds.Num(); i++)
 	{
 		ovrIdArray.push_back(FCString::Atoi64(*UserIds[i]));
 	}
 	ovrID* ovrId = ovrIdArray.data();
 	
-	return ovrIdArray.data();
+	return ovrIdArray.data(); */
+	return nullptr;
 }
 
 /* Converts an FString to an int64 or ovrID - Function exists in case it needs to be modified later*/

@@ -585,7 +585,7 @@ void UOBP_LaunchFriendRequestFlow::Activate()
 	}));
 #else
 	OBP_PlatformVersionError("User::LaunchFriendRequestFlow", "1.28");
-	OnFailure.Broadcast();
+	OnFailure.Broadcast(false, false);
 #endif
 }
 

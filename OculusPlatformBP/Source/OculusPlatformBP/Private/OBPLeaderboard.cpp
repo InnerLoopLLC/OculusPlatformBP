@@ -154,7 +154,7 @@ void UOBP_GetEntriesByIds::Activate()
 	ovrID* ovrIds = NULL; // initialize an array pointer
 	ovrIds = new ovrID[UserIds.Num()]; // dynamically size the array
 
-	for (size_t i = 0; i < UserIdLength; i++)
+	for (size_t i = 0; i < UserIds.Num(); i++)
 	{
 		ovrIds[i] = FCString::Atoi64(*UserIds[i]); // copy data to the new array
 	}
