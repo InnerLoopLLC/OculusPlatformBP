@@ -114,7 +114,7 @@ UOBP_LaunchProfile::UOBP_LaunchProfile(const FObjectInitializer& ObjectInitializ
 //---GetUser---
 void UOBP_GetUser::Activate()
 {
-	ovrRequest RequestId = ovr_User_Get(ovrId);
+	ovrRequest RequestId = ovr_User_Get(OBP_FStringToInt64(ovrId));
 
 	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
 	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
@@ -145,7 +145,7 @@ void UOBP_GetUser::Activate()
 	}));
 }
 
-UOBP_GetUser* UOBP_GetUser::GetUser(UObject* WorldContextObject, int64 UserId)
+UOBP_GetUser* UOBP_GetUser::GetUser(UObject* WorldContextObject, FString UserId)
 {
 	auto UserToGet = NewObject<UOBP_GetUser>();
 	UserToGet->ovrId = UserId;
@@ -433,7 +433,7 @@ UOBP_GetNextUserArrayPage* UOBP_GetNextUserArrayPage::GetNextUserArrayPage(UObje
 //---GetOrgScopedID---
 void UOBP_GetOrgScopedID::Activate()
 {
-	ovrRequest RequestId = ovr_User_GetOrgScopedID(UserID);
+	ovrRequest RequestId = ovr_User_GetOrgScopedID(OBP_FStringToInt64(UserID));
 
 	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
 	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
@@ -442,7 +442,7 @@ void UOBP_GetOrgScopedID::Activate()
 		if (bIsError)
 		{
 			OBP_MessageError("User::GetOrgScopedID", Message);
-			OnFailure.Broadcast(0);
+			OnFailure.Broadcast("");
 		}
 		else
 		{
@@ -452,18 +452,20 @@ void UOBP_GetOrgScopedID::Activate()
 			{
 				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got org scoped ID."));
 				// message returns an org scoped ID handle, but it doesn't contain anything other than an ID, so we're skipping a step and just returning the ID directly
-				OnSuccess.Broadcast(ovr_OrgScopedID_GetID(ovr_Message_GetOrgScopedID(Message)));
+				int64 OrgScopedId = ovr_OrgScopedID_GetID(ovr_Message_GetOrgScopedID(Message));
+				FString OrgScopedIdString = OBP_Int64ToFString(OrgScopedId);
+				OnSuccess.Broadcast(OrgScopedIdString);
 			}
 			else
 			{
 				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get org scoped ID."));
-				OnFailure.Broadcast(0);
+				OnFailure.Broadcast("");
 			}
 		}
 	}));
 }
 
-UOBP_GetOrgScopedID* UOBP_GetOrgScopedID::GetOrgScopedID(UObject* WorldContextObject, int64 UserID)
+UOBP_GetOrgScopedID* UOBP_GetOrgScopedID::GetOrgScopedID(UObject* WorldContextObject, FString UserID)
 {
 	auto UserIDToGet = NewObject<UOBP_GetOrgScopedID>();
 	UserIDToGet->UserID = UserID;
@@ -551,7 +553,7 @@ UOBP_GetUserProof* UOBP_GetUserProof::GetUserProof(UObject* WorldContextObject)
 void UOBP_LaunchFriendRequestFlow::Activate()
 {
 #if PLATFORM_MINOR_VERSION >= 28
-	ovrRequest RequestId = ovr_User_LaunchFriendRequestFlow(UserID);
+	ovrRequest RequestId = ovr_User_LaunchFriendRequestFlow(OBP_FStringToInt64(UserID));
 
 	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
 	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
@@ -587,7 +589,7 @@ void UOBP_LaunchFriendRequestFlow::Activate()
 #endif
 }
 
-UOBP_LaunchFriendRequestFlow* UOBP_LaunchFriendRequestFlow::LaunchFriendRequestFlow(UObject* WorldContextObject, int64 UserID)
+UOBP_LaunchFriendRequestFlow* UOBP_LaunchFriendRequestFlow::LaunchFriendRequestFlow(UObject* WorldContextObject, FString UserID)
 {
 	auto FriendRequestFlowToLaunch = NewObject<UOBP_LaunchFriendRequestFlow>();
 	FriendRequestFlowToLaunch->UserID = UserID;
@@ -597,7 +599,7 @@ UOBP_LaunchFriendRequestFlow* UOBP_LaunchFriendRequestFlow::LaunchFriendRequestF
 //---LaunchProfile---
 void UOBP_LaunchProfile::Activate()
 {
-	ovrRequest RequestId = ovr_User_LaunchProfile(UserID);
+	ovrRequest RequestId = ovr_User_LaunchProfile(OBP_FStringToInt64(UserID));
 
 	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
 	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
@@ -626,7 +628,7 @@ void UOBP_LaunchProfile::Activate()
 	}));
 }
 
-UOBP_LaunchProfile* UOBP_LaunchProfile::LaunchProfile(UObject* WorldContextObject, int64 UserID)
+UOBP_LaunchProfile* UOBP_LaunchProfile::LaunchProfile(UObject* WorldContextObject, FString UserID)
 {
 	auto ProfileToLaunch = NewObject<UOBP_LaunchProfile>();
 	ProfileToLaunch->UserID = UserID;
@@ -694,9 +696,10 @@ EOBP_UserPresenceStatus UOBP_User::GetPresenceStatus()
 	}
 }
 
-int64 UOBP_User::GetID()
+FString UOBP_User::GetID()
 {
-	return ovr_User_GetID(ovrUserHandle);
+	int64 ovrID = ovr_User_GetID(ovrUserHandle);
+	return OBP_Int64ToFString(ovrID);
 }
 
 FString UOBP_User::GetImageURL()
@@ -907,7 +910,8 @@ EOBPSdkAccountType UOBP_SdkAccount::GetAccountType()
 	}
 }
 
-int32 UOBP_SdkAccount::GetUserId()
+FString UOBP_SdkAccount::GetUserId()
 {
-	return ovr_SdkAccount_GetUserId(ovrSdkAccountHandle);
+	int64 ovrID = ovr_SdkAccount_GetUserId(ovrSdkAccountHandle);
+	return OBP_Int64ToFString(ovrID);
 }

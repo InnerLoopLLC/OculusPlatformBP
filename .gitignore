@@ -75,3 +75,7 @@ DerivedDataCache/*
 
 # Private Developer Data
 Ignore/*
+
+# Specific names
+!README
+!LICENSE
