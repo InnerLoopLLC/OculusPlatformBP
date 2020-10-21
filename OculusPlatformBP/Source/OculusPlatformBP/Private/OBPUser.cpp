@@ -114,35 +114,45 @@ UOBP_LaunchProfile::UOBP_LaunchProfile(const FObjectInitializer& ObjectInitializ
 //---GetUser---
 void UOBP_GetUser::Activate()
 {
-	ovrRequest RequestId = ovr_User_Get(OBP_FStringToInt64(ovrId));
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
 
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
+	if (OculusIdentityInterface.IsValid())
 	{
-		if (bIsError)
-		{
-			OBP_MessageError("User::GetUser", Message);
-			OnFailure.Broadcast(nullptr);
-		}
-		else
-		{
-			ovrMessageType messageType = ovr_Message_GetType(Message);
+		ovrRequest RequestId = ovr_User_Get(OBP_FStringToInt64(ovrId));
 
-			if (messageType == ovrMessage_User_Get)
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got user."));
-				auto ThisUser = NewObject<UOBP_User>();
-				ThisUser->ovrUserHandle = ovr_Message_GetUser(Message);
-				OnSuccess.Broadcast(ThisUser);
+				OBP_MessageError("User::GetUser", Message);
+				OnFailure.Broadcast(nullptr);
 			}
 			else
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get user."));
-				OnFailure.Broadcast(nullptr);
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_User_Get)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got user."));
+					auto ThisUser = NewObject<UOBP_User>();
+					ThisUser->ovrUserHandle = ovr_Message_GetUser(Message);
+					OnSuccess.Broadcast(ThisUser);
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get user."));
+					OnFailure.Broadcast(nullptr);
+				}
 			}
-		}
-	}));
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast(nullptr);
+	}
 }
 
 UOBP_GetUser* UOBP_GetUser::GetUser(UObject* WorldContextObject, FString UserId)
@@ -155,34 +165,44 @@ UOBP_GetUser* UOBP_GetUser::GetUser(UObject* WorldContextObject, FString UserId)
 //---GetAccessToken---
 void UOBP_GetAccessToken::Activate()
 {
-	ovrRequest RequestId = ovr_User_GetAccessToken();
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
 
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
+	if (OculusIdentityInterface.IsValid())
 	{
-		if (bIsError)
-		{
-			OBP_MessageError("User::GetAccessToken", Message);
-			OnFailure.Broadcast("");
-		}
-		else
-		{
-			ovrMessageType messageType = ovr_Message_GetType(Message);
+		ovrRequest RequestId = ovr_User_GetAccessToken();
 
-			if (messageType == ovrMessage_User_GetAccessToken)
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got access token."));
-				auto ThisAccessToken = ovr_Message_GetString(Message);
-				OnSuccess.Broadcast(ThisAccessToken);
+				OBP_MessageError("User::GetAccessToken", Message);
+				OnFailure.Broadcast("");
 			}
 			else
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get acess token."));
-				OnFailure.Broadcast("");
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_User_GetAccessToken)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got access token."));
+					auto ThisAccessToken = ovr_Message_GetString(Message);
+					OnSuccess.Broadcast(ThisAccessToken);
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get acess token."));
+					OnFailure.Broadcast("");
+				}
 			}
-		}
-	}));
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast("");
+	}
 }
 
 UOBP_GetAccessToken* UOBP_GetAccessToken::GetAccessToken(UObject* WorldContextObject)
@@ -193,35 +213,45 @@ UOBP_GetAccessToken* UOBP_GetAccessToken::GetAccessToken(UObject* WorldContextOb
 //---GetLoggedInUser---
 void UOBP_GetLoggedInUser::Activate()
 {
-	ovrRequest RequestId = ovr_User_GetLoggedInUser();
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
 
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
-	{		
-		if (bIsError) 
-		{
-			OBP_MessageError("User::GetLoggedInUser", Message);
-			OnFailure.Broadcast(nullptr);
-		}
-		else 
-		{
-			ovrMessageType messageType = ovr_Message_GetType(Message);
+	if (OculusIdentityInterface.IsValid())
+	{
+		ovrRequest RequestId = ovr_User_GetLoggedInUser();
 
-			if (messageType == ovrMessage_User_GetLoggedInUser)
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got logged in user."));
-				auto LoggedInUser = NewObject<UOBP_User>();
-				LoggedInUser->ovrUserHandle = ovr_Message_GetUser(Message);
-				OnSuccess.Broadcast(LoggedInUser);
+				OBP_MessageError("User::GetLoggedInUser", Message);
+				OnFailure.Broadcast(nullptr);
 			}
 			else
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get logged in user."));
-				OnFailure.Broadcast(nullptr);
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_User_GetLoggedInUser)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got logged in user."));
+					auto LoggedInUser = NewObject<UOBP_User>();
+					LoggedInUser->ovrUserHandle = ovr_Message_GetUser(Message);
+					OnSuccess.Broadcast(LoggedInUser);
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get logged in user."));
+					OnFailure.Broadcast(nullptr);
+				}
 			}
-		}
-	}));
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast(nullptr);
+	}
 }
 
 UOBP_GetLoggedInUser* UOBP_GetLoggedInUser::GetLoggedInUser(UObject* WorldContextObject)
@@ -232,35 +262,45 @@ UOBP_GetLoggedInUser* UOBP_GetLoggedInUser::GetLoggedInUser(UObject* WorldContex
 //---GetLoggedInUserFriends---
 void UOBP_GetLoggedInUserFriends::Activate()
 {
-	ovrRequest RequestId = ovr_User_GetLoggedInUserFriends();
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
 
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
+	if (OculusIdentityInterface.IsValid())
 	{
-		if (bIsError)
-		{
-			OBP_MessageError("User::GetLoggedInUserFriends", Message);
-			OnFailure.Broadcast(nullptr);
-		}
-		else
-		{
-			ovrMessageType messageType = ovr_Message_GetType(Message);
+		ovrRequest RequestId = ovr_User_GetLoggedInUserFriends();
 
-			if (messageType == ovrMessage_User_GetLoggedInUserFriends)
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got logged in user's friends."));
-				auto LoggedInUserFriends = NewObject<UOBP_UserArray>();
-				LoggedInUserFriends->ovrUserArrayHandle = ovr_Message_GetUserArray(Message);
-				OnSuccess.Broadcast(LoggedInUserFriends);
+				OBP_MessageError("User::GetLoggedInUserFriends", Message);
+				OnFailure.Broadcast(nullptr);
 			}
 			else
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get logged in user's friends."));
-				OnFailure.Broadcast(nullptr);
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_User_GetLoggedInUserFriends)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got logged in user's friends."));
+					auto LoggedInUserFriends = NewObject<UOBP_UserArray>();
+					LoggedInUserFriends->ovrUserArrayHandle = ovr_Message_GetUserArray(Message);
+					OnSuccess.Broadcast(LoggedInUserFriends);
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get logged in user's friends."));
+					OnFailure.Broadcast(nullptr);
+				}
 			}
-		}
-	}));
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast(nullptr);
+	}
 }
 
 UOBP_GetLoggedInUserFriends* UOBP_GetLoggedInUserFriends::GetLoggedInUserFriends(UObject* WorldContextObject)
@@ -271,35 +311,45 @@ UOBP_GetLoggedInUserFriends* UOBP_GetLoggedInUserFriends::GetLoggedInUserFriends
 //---GetLoggedInUserFriendsAndRooms---
 void UOBP_GetLoggedInUserFriendsAndRooms::Activate()
 {
-	ovrRequest RequestId = ovr_User_GetLoggedInUserFriendsAndRooms();
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
 
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
+	if (OculusIdentityInterface.IsValid())
 	{
-		if (bIsError)
-		{
-			OBP_MessageError("User::GetLoggedInUserFriendsAndRooms", Message);
-			OnFailure.Broadcast(nullptr);
-		}
-		else
-		{
-			ovrMessageType messageType = ovr_Message_GetType(Message);
+		ovrRequest RequestId = ovr_User_GetLoggedInUserFriendsAndRooms();
 
-			if (messageType == ovrMessage_User_GetLoggedInUserFriendsAndRooms)
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got logged in user's friends and rooms."));
-				auto LoggedInUserFriendsAndRooms = NewObject<UOBP_UserAndRoomArray>();
-				LoggedInUserFriendsAndRooms->ovrUserAndRoomArrayHandle = ovr_Message_GetUserAndRoomArray(Message);
-				OnSuccess.Broadcast(LoggedInUserFriendsAndRooms);
+				OBP_MessageError("User::GetLoggedInUserFriendsAndRooms", Message);
+				OnFailure.Broadcast(nullptr);
 			}
 			else
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get logged in user's friends and rooms."));
-				OnFailure.Broadcast(nullptr);
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_User_GetLoggedInUserFriendsAndRooms)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got logged in user's friends and rooms."));
+					auto LoggedInUserFriendsAndRooms = NewObject<UOBP_UserAndRoomArray>();
+					LoggedInUserFriendsAndRooms->ovrUserAndRoomArrayHandle = ovr_Message_GetUserAndRoomArray(Message);
+					OnSuccess.Broadcast(LoggedInUserFriendsAndRooms);
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get logged in user's friends and rooms."));
+					OnFailure.Broadcast(nullptr);
+				}
 			}
-		}
-	}));
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast(nullptr);
+	}
 }
 
 UOBP_GetLoggedInUserFriendsAndRooms* UOBP_GetLoggedInUserFriendsAndRooms::GetLoggedInUserFriendsAndRooms(UObject* WorldContextObject)
@@ -310,35 +360,45 @@ UOBP_GetLoggedInUserFriendsAndRooms* UOBP_GetLoggedInUserFriendsAndRooms::GetLog
 //---GetLoggedInUserRecentlyMetUsersAndRooms---
 void UOBP_GetLoggedInUserRecentlyMetUsersAndRooms::Activate()
 {
-	ovrRequest RequestId = ovr_User_GetLoggedInUserRecentlyMetUsersAndRooms(UserOptions->ovrUserOptionsHandle);
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
 
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
+	if (OculusIdentityInterface.IsValid())
 	{
-		if (bIsError)
-		{
-			OBP_MessageError("User::GetLoggedInUserRecentlyMetUsersAndRooms", Message);
-			OnFailure.Broadcast(nullptr);
-		}
-		else
-		{
-			ovrMessageType messageType = ovr_Message_GetType(Message);
+		ovrRequest RequestId = ovr_User_GetLoggedInUserRecentlyMetUsersAndRooms(UserOptions->ovrUserOptionsHandle);
 
-			if (messageType == ovrMessage_User_GetLoggedInUserRecentlyMetUsersAndRooms)
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got logged in user's recently met users and rooms."));
-				auto LoggedInUserRecentlyMetUsersAndRooms = NewObject<UOBP_UserAndRoomArray>();
-				LoggedInUserRecentlyMetUsersAndRooms->ovrUserAndRoomArrayHandle = ovr_Message_GetUserAndRoomArray(Message);
-				OnSuccess.Broadcast(LoggedInUserRecentlyMetUsersAndRooms);
+				OBP_MessageError("User::GetLoggedInUserRecentlyMetUsersAndRooms", Message);
+				OnFailure.Broadcast(nullptr);
 			}
 			else
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get logged in user's recently met users and rooms."));
-				OnFailure.Broadcast(nullptr);
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_User_GetLoggedInUserRecentlyMetUsersAndRooms)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got logged in user's recently met users and rooms."));
+					auto LoggedInUserRecentlyMetUsersAndRooms = NewObject<UOBP_UserAndRoomArray>();
+					LoggedInUserRecentlyMetUsersAndRooms->ovrUserAndRoomArrayHandle = ovr_Message_GetUserAndRoomArray(Message);
+					OnSuccess.Broadcast(LoggedInUserRecentlyMetUsersAndRooms);
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get logged in user's recently met users and rooms."));
+					OnFailure.Broadcast(nullptr);
+				}
 			}
-		}
-	}));
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast(nullptr);
+	}
 }
 
 UOBP_GetLoggedInUserRecentlyMetUsersAndRooms* UOBP_GetLoggedInUserRecentlyMetUsersAndRooms::GetLoggedInUserRecentlyMetUsersAndRooms(UObject* WorldContextObject, UOBP_UserOptions* UserOptions)
@@ -351,35 +411,45 @@ UOBP_GetLoggedInUserRecentlyMetUsersAndRooms* UOBP_GetLoggedInUserRecentlyMetUse
 //---GetNextUserAndRoomArrayPage---
 void UOBP_GetNextUserAndRoomArrayPage::Activate()
 {
-	ovrRequest RequestId = ovr_User_GetNextUserAndRoomArrayPage(UserAndRoomArray->ovrUserAndRoomArrayHandle);
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
 
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
+	if (OculusIdentityInterface.IsValid())
 	{
-		if (bIsError)
-		{
-			OBP_MessageError("User::GetNextUserAndRoomArrayPage", Message);
-			OnFailure.Broadcast(nullptr);
-		}
-		else
-		{
-			ovrMessageType messageType = ovr_Message_GetType(Message);
+		ovrRequest RequestId = ovr_User_GetNextUserAndRoomArrayPage(UserAndRoomArray->ovrUserAndRoomArrayHandle);
 
-			if (messageType == ovrMessage_User_GetNextUserAndRoomArrayPage)
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got next user and room array page."));
-				auto NextUserAndRoomArrayPage = NewObject<UOBP_UserAndRoomArray>();
-				NextUserAndRoomArrayPage->ovrUserAndRoomArrayHandle = ovr_Message_GetUserAndRoomArray(Message);
-				OnSuccess.Broadcast(NextUserAndRoomArrayPage);
+				OBP_MessageError("User::GetNextUserAndRoomArrayPage", Message);
+				OnFailure.Broadcast(nullptr);
 			}
 			else
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get next user and room array page."));
-				OnFailure.Broadcast(nullptr);
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_User_GetNextUserAndRoomArrayPage)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got next user and room array page."));
+					auto NextUserAndRoomArrayPage = NewObject<UOBP_UserAndRoomArray>();
+					NextUserAndRoomArrayPage->ovrUserAndRoomArrayHandle = ovr_Message_GetUserAndRoomArray(Message);
+					OnSuccess.Broadcast(NextUserAndRoomArrayPage);
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get next user and room array page."));
+					OnFailure.Broadcast(nullptr);
+				}
 			}
-		}
-	}));
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast(nullptr);
+	}
 }
 
 UOBP_GetNextUserAndRoomArrayPage* UOBP_GetNextUserAndRoomArrayPage::GetNextUserAndRoomArrayPage(UObject* WorldContextObject, UOBP_UserAndRoomArray* UserAndRoomArray)
@@ -392,35 +462,45 @@ UOBP_GetNextUserAndRoomArrayPage* UOBP_GetNextUserAndRoomArrayPage::GetNextUserA
 //---GetNextUserArrayPage---
 void UOBP_GetNextUserArrayPage::Activate()
 {
-	ovrRequest RequestId = ovr_User_GetNextUserArrayPage(UserArray->ovrUserArrayHandle);
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
 
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
+	if (OculusIdentityInterface.IsValid())
 	{
-		if (bIsError)
-		{
-			OBP_MessageError("User::GetNextUserArrayPage", Message);
-			OnFailure.Broadcast(nullptr);
-		}
-		else
-		{
-			ovrMessageType messageType = ovr_Message_GetType(Message);
+		ovrRequest RequestId = ovr_User_GetNextUserArrayPage(UserArray->ovrUserArrayHandle);
 
-			if (messageType == ovrMessage_User_GetNextUserArrayPage)
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got next user array page."));
-				auto NextUserArrayPage = NewObject<UOBP_UserArray>();
-				NextUserArrayPage->ovrUserArrayHandle = ovr_Message_GetUserArray(Message);
-				OnSuccess.Broadcast(NextUserArrayPage);
+				OBP_MessageError("User::GetNextUserArrayPage", Message);
+				OnFailure.Broadcast(nullptr);
 			}
 			else
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get next user array page."));
-				OnFailure.Broadcast(nullptr);
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_User_GetNextUserArrayPage)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got next user array page."));
+					auto NextUserArrayPage = NewObject<UOBP_UserArray>();
+					NextUserArrayPage->ovrUserArrayHandle = ovr_Message_GetUserArray(Message);
+					OnSuccess.Broadcast(NextUserArrayPage);
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get next user array page."));
+					OnFailure.Broadcast(nullptr);
+				}
 			}
-		}
-	}));
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast(nullptr);
+	}
 }
 
 UOBP_GetNextUserArrayPage* UOBP_GetNextUserArrayPage::GetNextUserArrayPage(UObject* WorldContextObject, UOBP_UserArray* UserArray)
@@ -433,36 +513,46 @@ UOBP_GetNextUserArrayPage* UOBP_GetNextUserArrayPage::GetNextUserArrayPage(UObje
 //---GetOrgScopedID---
 void UOBP_GetOrgScopedID::Activate()
 {
-	ovrRequest RequestId = ovr_User_GetOrgScopedID(OBP_FStringToInt64(UserID));
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
 
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
+	if (OculusIdentityInterface.IsValid())
 	{
-		if (bIsError)
-		{
-			OBP_MessageError("User::GetOrgScopedID", Message);
-			OnFailure.Broadcast("");
-		}
-		else
-		{
-			ovrMessageType messageType = ovr_Message_GetType(Message);
+		ovrRequest RequestId = ovr_User_GetOrgScopedID(OBP_FStringToInt64(UserID));
 
-			if (messageType == ovrMessage_User_GetOrgScopedID)
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got org scoped ID."));
-				// message returns an org scoped ID handle, but it doesn't contain anything other than an ID, so we're skipping a step and just returning the ID directly
-				int64 OrgScopedId = ovr_OrgScopedID_GetID(ovr_Message_GetOrgScopedID(Message));
-				FString OrgScopedIdString = OBP_Int64ToFString(OrgScopedId);
-				OnSuccess.Broadcast(OrgScopedIdString);
+				OBP_MessageError("User::GetOrgScopedID", Message);
+				OnFailure.Broadcast("");
 			}
 			else
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get org scoped ID."));
-				OnFailure.Broadcast("");
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_User_GetOrgScopedID)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got org scoped ID."));
+					// message returns an org scoped ID handle, but it doesn't contain anything other than an ID, so we're skipping a step and just returning the ID directly
+					int64 OrgScopedId = ovr_OrgScopedID_GetID(ovr_Message_GetOrgScopedID(Message));
+					FString OrgScopedIdString = OBP_Int64ToFString(OrgScopedId);
+					OnSuccess.Broadcast(OrgScopedIdString);
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get org scoped ID."));
+					OnFailure.Broadcast("");
+				}
 			}
-		}
-	}));
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast("");
+	}
 }
 
 UOBP_GetOrgScopedID* UOBP_GetOrgScopedID::GetOrgScopedID(UObject* WorldContextObject, FString UserID)
@@ -475,35 +565,45 @@ UOBP_GetOrgScopedID* UOBP_GetOrgScopedID::GetOrgScopedID(UObject* WorldContextOb
 //---GetSdkAccounts---
 void UOBP_GetSdkAccounts::Activate()
 {
-	ovrRequest RequestId = ovr_User_GetSdkAccounts();
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
 
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
+	if (OculusIdentityInterface.IsValid())
 	{
-		if (bIsError)
-		{
-			OBP_MessageError("User::GetSdkAccounts", Message);
-			OnFailure.Broadcast(nullptr);
-		}
-		else
-		{
-			ovrMessageType messageType = ovr_Message_GetType(Message);
+		ovrRequest RequestId = ovr_User_GetSdkAccounts();
 
-			if (messageType == ovrMessage_User_GetSdkAccounts)
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got org scoped ID."));
-				auto SdkAccountsArray = NewObject<UOBP_SdkAccountArray>();
-				SdkAccountsArray->ovrSdkAccountArrayHandle = ovr_Message_GetSdkAccountArray(Message);
-				OnSuccess.Broadcast(SdkAccountsArray);
+				OBP_MessageError("User::GetSdkAccounts", Message);
+				OnFailure.Broadcast(nullptr);
 			}
 			else
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get org scoped ID."));
-				OnFailure.Broadcast(nullptr);
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_User_GetSdkAccounts)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got org scoped ID."));
+					auto SdkAccountsArray = NewObject<UOBP_SdkAccountArray>();
+					SdkAccountsArray->ovrSdkAccountArrayHandle = ovr_Message_GetSdkAccountArray(Message);
+					OnSuccess.Broadcast(SdkAccountsArray);
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get org scoped ID."));
+					OnFailure.Broadcast(nullptr);
+				}
 			}
-		}
-	}));
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast(nullptr);
+	}
 }
 
 UOBP_GetSdkAccounts* UOBP_GetSdkAccounts::GetSdkAccounts(UObject* WorldContextObject)
@@ -514,34 +614,44 @@ UOBP_GetSdkAccounts* UOBP_GetSdkAccounts::GetSdkAccounts(UObject* WorldContextOb
 //---GetUserProof---
 void UOBP_GetUserProof::Activate()
 {
-	ovrRequest RequestId = ovr_User_GetUserProof();
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
 
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
+	if (OculusIdentityInterface.IsValid())
 	{
-		if (bIsError)
-		{
-			OBP_MessageError("User::GetUserProof", Message);
-			OnFailure.Broadcast("");
-		}
-		else
-		{
-			ovrMessageType messageType = ovr_Message_GetType(Message);
+		ovrRequest RequestId = ovr_User_GetUserProof();
 
-			if (messageType == ovrMessage_User_GetUserProof)
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got org scoped ID."));
-				// message returns an ovrUserProofHandle, but it doesn't contain anything other than a nonce, so we're skipping a step and just returning the nonce directly
-				OnSuccess.Broadcast(ovr_UserProof_GetNonce(ovr_Message_GetUserProof(Message)));
+				OBP_MessageError("User::GetUserProof", Message);
+				OnFailure.Broadcast("");
 			}
 			else
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get org scoped ID."));
-				OnFailure.Broadcast("");
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_User_GetUserProof)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got org scoped ID."));
+					// message returns an ovrUserProofHandle, but it doesn't contain anything other than a nonce, so we're skipping a step and just returning the nonce directly
+					OnSuccess.Broadcast(ovr_UserProof_GetNonce(ovr_Message_GetUserProof(Message)));
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get org scoped ID."));
+					OnFailure.Broadcast("");
+				}
 			}
-		}
-	}));
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast("");
+	}
 }
 
 UOBP_GetUserProof* UOBP_GetUserProof::GetUserProof(UObject* WorldContextObject)
@@ -553,36 +663,46 @@ UOBP_GetUserProof* UOBP_GetUserProof::GetUserProof(UObject* WorldContextObject)
 void UOBP_LaunchFriendRequestFlow::Activate()
 {
 #if PLATFORM_MINOR_VERSION >= 28
-	ovrRequest RequestId = ovr_User_LaunchFriendRequestFlow(OBP_FStringToInt64(UserID));
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
 
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
+	if (OculusIdentityInterface.IsValid())
 	{
-		if (bIsError)
-		{
-			OBP_MessageError("User::LaunchFriendRequestFlow", Message);
-			OnFailure.Broadcast(false, false);
-		}
-		else
-		{
-			ovrMessageType messageType = ovr_Message_GetType(Message);
+		ovrRequest RequestId = ovr_User_LaunchFriendRequestFlow(OBP_FStringToInt64(UserID));
 
-			if (messageType == ovrMessage_User_LaunchFriendRequestFlow)
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully launched friend request flow."));
-				auto FriendRequestFlowResult = ovr_Message_GetLaunchFriendRequestFlowResult(Message);
-				auto bDidCancel = ovr_LaunchFriendRequestFlowResult_GetDidCancel(FriendRequestFlowResult);
-				auto bDidSendRequest = ovr_LaunchFriendRequestFlowResult_GetDidSendRequest(FriendRequestFlowResult);
-				OnSuccess.Broadcast(bDidCancel, bDidSendRequest);
+				OBP_MessageError("User::LaunchFriendRequestFlow", Message);
+				OnFailure.Broadcast(false, false);
 			}
 			else
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to launch friend request flow."));
-				OnFailure.Broadcast(false, false);
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_User_LaunchFriendRequestFlow)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully launched friend request flow."));
+					auto FriendRequestFlowResult = ovr_Message_GetLaunchFriendRequestFlowResult(Message);
+					auto bDidCancel = ovr_LaunchFriendRequestFlowResult_GetDidCancel(FriendRequestFlowResult);
+					auto bDidSendRequest = ovr_LaunchFriendRequestFlowResult_GetDidSendRequest(FriendRequestFlowResult);
+					OnSuccess.Broadcast(bDidCancel, bDidSendRequest);
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to launch friend request flow."));
+					OnFailure.Broadcast(false, false);
+				}
 			}
-		}
-	}));
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast(false, false);
+	}
 #else
 	OBP_PlatformVersionError("User::LaunchFriendRequestFlow", "1.28");
 	OnFailure.Broadcast(false, false);
@@ -599,33 +719,43 @@ UOBP_LaunchFriendRequestFlow* UOBP_LaunchFriendRequestFlow::LaunchFriendRequestF
 //---LaunchProfile---
 void UOBP_LaunchProfile::Activate()
 {
-	ovrRequest RequestId = ovr_User_LaunchProfile(OBP_FStringToInt64(UserID));
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
 
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
+	if (OculusIdentityInterface.IsValid())
 	{
-		if (bIsError)
-		{
-			OBP_MessageError("User::LaunchProfile", Message);
-			OnFailure.Broadcast();
-		}
-		else
-		{
-			ovrMessageType messageType = ovr_Message_GetType(Message);
+		ovrRequest RequestId = ovr_User_LaunchProfile(OBP_FStringToInt64(UserID));
 
-			if (messageType == ovrMessage_User_LaunchProfile)
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully launched profile."));
-				OnSuccess.Broadcast();
+				OBP_MessageError("User::LaunchProfile", Message);
+				OnFailure.Broadcast();
 			}
 			else
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to launch profile."));
-				OnFailure.Broadcast();
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_User_LaunchProfile)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully launched profile."));
+					OnSuccess.Broadcast();
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to launch profile."));
+					OnFailure.Broadcast();
+				}
 			}
-		}
-	}));
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast();
+	}
 }
 
 UOBP_LaunchProfile* UOBP_LaunchProfile::LaunchProfile(UObject* WorldContextObject, FString UserID)
