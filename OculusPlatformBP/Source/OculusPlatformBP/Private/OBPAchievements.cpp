@@ -78,35 +78,45 @@ UOBP_AchievementProgressArray::UOBP_AchievementProgressArray(const FObjectInitia
 //---AddCount---
 void UOBP_Achievements_AddCount::Activate()
 {
-	ovrRequest RequestId = ovr_Achievements_AddCount(TCHAR_TO_ANSI(*AchievementName), Count);
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
 
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
+	if (OculusIdentityInterface.IsValid())
 	{
-		if (bIsError)
-		{
-			OBP_MessageError("Achievements::AddCount", Message);
-			OnFailure.Broadcast("", false);
-		}
-		else
-		{
-			ovrMessageType messageType = ovr_Message_GetType(Message);
+		ovrRequest RequestId = ovr_Achievements_AddCount(TCHAR_TO_ANSI(*AchievementName), Count);
 
-			if (messageType == ovrMessage_Achievements_AddCount)
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully added count to achievement."));
-				auto ThisAchievementName = ovr_AchievementUpdate_GetName(ovr_Message_GetAchievementUpdate(Message));
-				auto bDidJustUnlock = ovr_AchievementUpdate_GetJustUnlocked(ovr_Message_GetAchievementUpdate(Message));
-				OnSuccess.Broadcast(ThisAchievementName, bDidJustUnlock);
+				OBP_MessageError("Achievements::AddCount", Message);
+				OnFailure.Broadcast("", false);
 			}
 			else
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to add count to achievement."));
-				OnFailure.Broadcast("", false);
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_Achievements_AddCount)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully added count to achievement."));
+					auto ThisAchievementName = ovr_AchievementUpdate_GetName(ovr_Message_GetAchievementUpdate(Message));
+					auto bDidJustUnlock = ovr_AchievementUpdate_GetJustUnlocked(ovr_Message_GetAchievementUpdate(Message));
+					OnSuccess.Broadcast(ThisAchievementName, bDidJustUnlock);
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to add count to achievement."));
+					OnFailure.Broadcast("", false);
+				}
 			}
-		}
-	}));
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast("", false);
+	}
 }
 
 UOBP_Achievements_AddCount* UOBP_Achievements_AddCount::AddCount(UObject* WorldContextObject, FString AchievementName, int32 Count)
@@ -120,35 +130,45 @@ UOBP_Achievements_AddCount* UOBP_Achievements_AddCount::AddCount(UObject* WorldC
 //---AddFields---
 void UOBP_Achievements_AddFields::Activate()
 {
-	ovrRequest RequestId = ovr_Achievements_AddFields(TCHAR_TO_ANSI(*AchievementName), TCHAR_TO_ANSI(*Fields));
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
 
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
+	if (OculusIdentityInterface.IsValid())
 	{
-		if (bIsError)
-		{
-			OBP_MessageError("Achievements::AddFields", Message);
-			OnFailure.Broadcast("", false);
-		}
-		else
-		{
-			ovrMessageType messageType = ovr_Message_GetType(Message);
+		ovrRequest RequestId = ovr_Achievements_AddFields(TCHAR_TO_ANSI(*AchievementName), TCHAR_TO_ANSI(*Fields));
 
-			if (messageType == ovrMessage_Achievements_AddFields)
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully added fields to achievement."));
-				auto ThisAchievementName = ovr_AchievementUpdate_GetName(ovr_Message_GetAchievementUpdate(Message));
-				auto bDidJustUnlock = ovr_AchievementUpdate_GetJustUnlocked(ovr_Message_GetAchievementUpdate(Message));
-				OnSuccess.Broadcast(ThisAchievementName, bDidJustUnlock);
+				OBP_MessageError("Achievements::AddFields", Message);
+				OnFailure.Broadcast("", false);
 			}
 			else
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to add fields to achievement."));
-				OnFailure.Broadcast("", false);
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_Achievements_AddFields)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully added fields to achievement."));
+					auto ThisAchievementName = ovr_AchievementUpdate_GetName(ovr_Message_GetAchievementUpdate(Message));
+					auto bDidJustUnlock = ovr_AchievementUpdate_GetJustUnlocked(ovr_Message_GetAchievementUpdate(Message));
+					OnSuccess.Broadcast(ThisAchievementName, bDidJustUnlock);
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to add fields to achievement."));
+					OnFailure.Broadcast("", false);
+				}
 			}
-		}
-	}));
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast("", false);
+	}
 }
 
 UOBP_Achievements_AddFields* UOBP_Achievements_AddFields::AddFields(UObject* WorldContextObject, FString AchievementName, FString Fields)
@@ -162,35 +182,45 @@ UOBP_Achievements_AddFields* UOBP_Achievements_AddFields::AddFields(UObject* Wor
 //---GetAllDefinitions---
 void UOBP_Achievements_GetAllDefinitions::Activate()
 {
-	ovrRequest RequestId = ovr_Achievements_GetAllDefinitions();
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
 
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
+	if (OculusIdentityInterface.IsValid())
 	{
-		if (bIsError)
-		{
-			OBP_MessageError("Achievements::GetAllDefinitions", Message);
-			OnFailure.Broadcast(nullptr);
-		}
-		else
-		{
-			ovrMessageType messageType = ovr_Message_GetType(Message);
+		ovrRequest RequestId = ovr_Achievements_GetAllDefinitions();
 
-			if (messageType == ovrMessage_Achievements_GetAllDefinitions)
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got all definitions."));
-				auto ThisAchievementDefinitionArray = NewObject<UOBP_AchievementDefinitionArray>(); 
-				ThisAchievementDefinitionArray->ovrAchievementDefinitionArrayHandle = ovr_Message_GetAchievementDefinitionArray(Message);
-				OnSuccess.Broadcast(ThisAchievementDefinitionArray);
+				OBP_MessageError("Achievements::GetAllDefinitions", Message);
+				OnFailure.Broadcast(nullptr);
 			}
 			else
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get all definitions."));
-				OnFailure.Broadcast(nullptr);
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_Achievements_GetAllDefinitions)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got all definitions."));
+					auto ThisAchievementDefinitionArray = NewObject<UOBP_AchievementDefinitionArray>();
+					ThisAchievementDefinitionArray->ovrAchievementDefinitionArrayHandle = ovr_Message_GetAchievementDefinitionArray(Message);
+					OnSuccess.Broadcast(ThisAchievementDefinitionArray);
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get all definitions."));
+					OnFailure.Broadcast(nullptr);
+				}
 			}
-		}
-	}));
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast(nullptr);
+	}
 }
 
 UOBP_Achievements_GetAllDefinitions* UOBP_Achievements_GetAllDefinitions::GetAllDefinitions(UObject* WorldContextObject)
@@ -201,35 +231,45 @@ UOBP_Achievements_GetAllDefinitions* UOBP_Achievements_GetAllDefinitions::GetAll
 //---GetAllProgress---
 void UOBP_Achievements_GetAllProgress::Activate()
 {
-	ovrRequest RequestId = ovr_Achievements_GetAllProgress();
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
 
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
+	if (OculusIdentityInterface.IsValid())
 	{
-		if (bIsError)
-		{
-			OBP_MessageError("Achievements::GetAllProgress", Message);
-			OnFailure.Broadcast(nullptr);
-		}
-		else
-		{
-			ovrMessageType messageType = ovr_Message_GetType(Message);
+		ovrRequest RequestId = ovr_Achievements_GetAllProgress();
 
-			if (messageType == ovrMessage_Achievements_GetAllProgress)
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got all progress."));
-				auto ThisAchievementProgressArray = NewObject<UOBP_AchievementProgressArray>();
-				ThisAchievementProgressArray->ovrAchievementProgressArrayHandle = ovr_Message_GetAchievementProgressArray(Message);
-				OnSuccess.Broadcast(ThisAchievementProgressArray);
+				OBP_MessageError("Achievements::GetAllProgress", Message);
+				OnFailure.Broadcast(nullptr);
 			}
 			else
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get all progress."));
-				OnFailure.Broadcast(nullptr);
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_Achievements_GetAllProgress)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got all progress."));
+					auto ThisAchievementProgressArray = NewObject<UOBP_AchievementProgressArray>();
+					ThisAchievementProgressArray->ovrAchievementProgressArrayHandle = ovr_Message_GetAchievementProgressArray(Message);
+					OnSuccess.Broadcast(ThisAchievementProgressArray);
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get all progress."));
+					OnFailure.Broadcast(nullptr);
+				}
 			}
-		}
-	}));
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast(nullptr);
+	}
 }
 
 UOBP_Achievements_GetAllProgress* UOBP_Achievements_GetAllProgress::GetAllProgress(UObject* WorldContextObject)
@@ -240,52 +280,62 @@ UOBP_Achievements_GetAllProgress* UOBP_Achievements_GetAllProgress::GetAllProgre
 //---GetDefinitionsByName---
 void UOBP_Achievements_GetDefinitionsByName::Activate()
 {
-	char* NamesArray = NULL; // initialize an array pointer
-	NamesArray = new char[Names.Num()]; // dynamically size the array
-	for (size_t i = 0; i < Names.Num(); i++)
-	{
-		NamesArray[i] = FCString::Atoi64(*Names[i]); // copy data to the new array
-	}
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
 
-	const char** NamesArray2 = NULL; // initialize an array pointer
-	NamesArray2 = new const char*[Names.Num()]; // dynamically size the array
-	for (size_t i = 0; i < Names.Num(); i++)
+	if (OculusIdentityInterface.IsValid())
 	{
-		NamesArray2[i] = &NamesArray[i]; // copy data to the new array
-	}
-
-	ovrRequest RequestId = ovr_Achievements_GetDefinitionsByName(NamesArray2, Count);
-	//ovrRequest RequestId = ovr_Achievements_GetDefinitionsByName(OBP_FStringArrayToChar(Names), Count);
-
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
-	{
-		if (bIsError)
+		char* NamesArray = NULL; // initialize an array pointer
+		NamesArray = new char[Names.Num()]; // dynamically size the array
+		for (size_t i = 0; i < Names.Num(); i++)
 		{
-			OBP_MessageError("Achievements::GetDefinitionsByName", Message);
-			OnFailure.Broadcast(nullptr);
+			NamesArray[i] = FCString::Atoi64(*Names[i]); // copy data to the new array
 		}
-		else
-		{
-			ovrMessageType messageType = ovr_Message_GetType(Message);
 
-			if (messageType == ovrMessage_Achievements_GetDefinitionsByName)
+		const char** NamesArray2 = NULL; // initialize an array pointer
+		NamesArray2 = new const char* [Names.Num()]; // dynamically size the array
+		for (size_t i = 0; i < Names.Num(); i++)
+		{
+			NamesArray2[i] = &NamesArray[i]; // copy data to the new array
+		}
+
+		ovrRequest RequestId = ovr_Achievements_GetDefinitionsByName(NamesArray2, Count);
+		//ovrRequest RequestId = ovr_Achievements_GetDefinitionsByName(OBP_FStringArrayToChar(Names), Count);
+
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got achievement definitions by name."));
-				auto ThisAchievementDefinitionArray = NewObject<UOBP_AchievementDefinitionArray>();
-				ThisAchievementDefinitionArray->ovrAchievementDefinitionArrayHandle = ovr_Message_GetAchievementDefinitionArray(Message);
-				OnSuccess.Broadcast(ThisAchievementDefinitionArray);
+				OBP_MessageError("Achievements::GetDefinitionsByName", Message);
+				OnFailure.Broadcast(nullptr);
 			}
 			else
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get achievement definitions by name."));
-				OnFailure.Broadcast(nullptr);
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_Achievements_GetDefinitionsByName)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got achievement definitions by name."));
+					auto ThisAchievementDefinitionArray = NewObject<UOBP_AchievementDefinitionArray>();
+					ThisAchievementDefinitionArray->ovrAchievementDefinitionArrayHandle = ovr_Message_GetAchievementDefinitionArray(Message);
+					OnSuccess.Broadcast(ThisAchievementDefinitionArray);
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get achievement definitions by name."));
+					OnFailure.Broadcast(nullptr);
+				}
 			}
-		}
-	}));
-	delete[] NamesArray; // this is important or memory will leak
-	delete[] NamesArray2;
+		}));
+		delete[] NamesArray; // this is important or memory will leak
+		delete[] NamesArray2;
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast(nullptr);
+	}
 }
 
 UOBP_Achievements_GetDefinitionsByName* UOBP_Achievements_GetDefinitionsByName::GetDefinitionsByName(UObject* WorldContextObject, TArray<FString> Names, int32 Count)
@@ -299,35 +349,45 @@ UOBP_Achievements_GetDefinitionsByName* UOBP_Achievements_GetDefinitionsByName::
 //---GetNextAchievementDefinitionArrayPage---
 void UOBP_Achievements_GetNextAchievementDefinitionArrayPage::Activate()
 {
-	ovrRequest RequestId = ovr_Achievements_GetNextAchievementDefinitionArrayPage(AchievementDefinitionArray->ovrAchievementDefinitionArrayHandle);
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
 
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
+	if (OculusIdentityInterface.IsValid())
 	{
-		if (bIsError)
-		{
-			OBP_MessageError("Achievements::GetNextAchievementDefinitionArrayPage", Message);
-			OnFailure.Broadcast(nullptr);
-		}
-		else
-		{
-			ovrMessageType messageType = ovr_Message_GetType(Message);
+		ovrRequest RequestId = ovr_Achievements_GetNextAchievementDefinitionArrayPage(AchievementDefinitionArray->ovrAchievementDefinitionArrayHandle);
 
-			if (messageType == ovrMessage_Achievements_GetNextAchievementDefinitionArrayPage)
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got next achievement definition array page."));
-				auto ThisAchievementDefinitionArray = NewObject<UOBP_AchievementDefinitionArray>();
-				ThisAchievementDefinitionArray->ovrAchievementDefinitionArrayHandle = ovr_Message_GetAchievementDefinitionArray(Message);
-				OnSuccess.Broadcast(ThisAchievementDefinitionArray);
+				OBP_MessageError("Achievements::GetNextAchievementDefinitionArrayPage", Message);
+				OnFailure.Broadcast(nullptr);
 			}
 			else
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get next achievement definition array page."));
-				OnFailure.Broadcast(nullptr);
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_Achievements_GetNextAchievementDefinitionArrayPage)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got next achievement definition array page."));
+					auto ThisAchievementDefinitionArray = NewObject<UOBP_AchievementDefinitionArray>();
+					ThisAchievementDefinitionArray->ovrAchievementDefinitionArrayHandle = ovr_Message_GetAchievementDefinitionArray(Message);
+					OnSuccess.Broadcast(ThisAchievementDefinitionArray);
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get next achievement definition array page."));
+					OnFailure.Broadcast(nullptr);
+				}
 			}
-		}
-	}));
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast(nullptr);
+	}
 }
 
 UOBP_Achievements_GetNextAchievementDefinitionArrayPage* UOBP_Achievements_GetNextAchievementDefinitionArrayPage::GetNextAchievementDefinitionArrayPage(UObject* WorldContextObject, UOBP_AchievementDefinitionArray* AchievementDefinitionArray)
@@ -340,35 +400,45 @@ UOBP_Achievements_GetNextAchievementDefinitionArrayPage* UOBP_Achievements_GetNe
 //---GetNextAchievementProgressArrayPage---
 void UOBP_Achievements_GetNextAchievementProgressArrayPage::Activate()
 {
-	ovrRequest RequestId = ovr_Achievements_GetNextAchievementProgressArrayPage(AchievementProgressArray->ovrAchievementProgressArrayHandle);
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
 
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
+	if (OculusIdentityInterface.IsValid())
 	{
-		if (bIsError)
-		{
-			OBP_MessageError("Achievements::GetNextAchievementProgressArrayPage", Message);
-			OnFailure.Broadcast(nullptr);
-		}
-		else
-		{
-			ovrMessageType messageType = ovr_Message_GetType(Message);
+		ovrRequest RequestId = ovr_Achievements_GetNextAchievementProgressArrayPage(AchievementProgressArray->ovrAchievementProgressArrayHandle);
 
-			if (messageType == ovrMessage_Achievements_GetNextAchievementProgressArrayPage)
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got next achievement progress array page."));
-				auto ThisAchievementProgressArray = NewObject<UOBP_AchievementProgressArray>();
-				ThisAchievementProgressArray->ovrAchievementProgressArrayHandle = ovr_Message_GetAchievementProgressArray(Message);
-				OnSuccess.Broadcast(ThisAchievementProgressArray);
+				OBP_MessageError("Achievements::GetNextAchievementProgressArrayPage", Message);
+				OnFailure.Broadcast(nullptr);
 			}
 			else
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get next achievement progress array page."));
-				OnFailure.Broadcast(nullptr);
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_Achievements_GetNextAchievementProgressArrayPage)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got next achievement progress array page."));
+					auto ThisAchievementProgressArray = NewObject<UOBP_AchievementProgressArray>();
+					ThisAchievementProgressArray->ovrAchievementProgressArrayHandle = ovr_Message_GetAchievementProgressArray(Message);
+					OnSuccess.Broadcast(ThisAchievementProgressArray);
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get next achievement progress array page."));
+					OnFailure.Broadcast(nullptr);
+				}
 			}
-		}
-	}));
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast(nullptr);
+	}
 }
 
 UOBP_Achievements_GetNextAchievementProgressArrayPage* UOBP_Achievements_GetNextAchievementProgressArrayPage::GetNextAchievementProgressArrayPage(UObject* WorldContextObject, UOBP_AchievementProgressArray* AchievementProgressArray)
@@ -381,52 +451,62 @@ UOBP_Achievements_GetNextAchievementProgressArrayPage* UOBP_Achievements_GetNext
 //---GetProgressByName---
 void UOBP_Achievements_GetProgressByName::Activate()
 {
-	char* NamesArray = NULL; // initialize an array pointer
-	NamesArray = new char[Names.Num()]; // dynamically size the array
-	for (size_t i = 0; i < Names.Num(); i++)
-	{
-		NamesArray[i] = FCString::Atoi64(*Names[i]); // copy data to the new array
-	}
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
 
-	const char** NamesArray2 = NULL; // initialize an array pointer
-	NamesArray2 = new const char* [Names.Num()]; // dynamically size the array
-	for (size_t i = 0; i < Names.Num(); i++)
+	if (OculusIdentityInterface.IsValid())
 	{
-		NamesArray2[i] = &NamesArray[i]; // copy data to the new array
-	}
-
-	ovrRequest RequestId = ovr_Achievements_GetProgressByName(NamesArray2, Count);
-	//ovrRequest RequestId = ovr_Achievements_GetProgressByName(OBP_FStringArrayToChar(Names), Count);
-
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
-	{
-		if (bIsError)
+		char* NamesArray = NULL; // initialize an array pointer
+		NamesArray = new char[Names.Num()]; // dynamically size the array
+		for (size_t i = 0; i < Names.Num(); i++)
 		{
-			OBP_MessageError("Achievements::GetProgressByName", Message);
-			OnFailure.Broadcast(nullptr);
+			NamesArray[i] = FCString::Atoi64(*Names[i]); // copy data to the new array
 		}
-		else
-		{
-			ovrMessageType messageType = ovr_Message_GetType(Message);
 
-			if (messageType == ovrMessage_Achievements_GetProgressByName)
+		const char** NamesArray2 = NULL; // initialize an array pointer
+		NamesArray2 = new const char* [Names.Num()]; // dynamically size the array
+		for (size_t i = 0; i < Names.Num(); i++)
+		{
+			NamesArray2[i] = &NamesArray[i]; // copy data to the new array
+		}
+
+		ovrRequest RequestId = ovr_Achievements_GetProgressByName(NamesArray2, Count);
+		//ovrRequest RequestId = ovr_Achievements_GetProgressByName(OBP_FStringArrayToChar(Names), Count);
+
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got achievement progress by name."));
-				auto ThisAchievementProgressArray = NewObject<UOBP_AchievementProgressArray>();
-				ThisAchievementProgressArray->ovrAchievementProgressArrayHandle = ovr_Message_GetAchievementProgressArray(Message);
-				OnSuccess.Broadcast(ThisAchievementProgressArray);
+				OBP_MessageError("Achievements::GetProgressByName", Message);
+				OnFailure.Broadcast(nullptr);
 			}
 			else
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get achievement progress by name."));
-				OnFailure.Broadcast(nullptr);
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_Achievements_GetProgressByName)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got achievement progress by name."));
+					auto ThisAchievementProgressArray = NewObject<UOBP_AchievementProgressArray>();
+					ThisAchievementProgressArray->ovrAchievementProgressArrayHandle = ovr_Message_GetAchievementProgressArray(Message);
+					OnSuccess.Broadcast(ThisAchievementProgressArray);
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get achievement progress by name."));
+					OnFailure.Broadcast(nullptr);
+				}
 			}
-		}
-	})); 
-	delete[] NamesArray; // this is important or memory will leak
-	delete[] NamesArray2;
+		}));
+		delete[] NamesArray; // this is important or memory will leak
+		delete[] NamesArray2;
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast(nullptr);
+	}
 }
 
 UOBP_Achievements_GetProgressByName* UOBP_Achievements_GetProgressByName::GetProgressByName(UObject* WorldContextObject, TArray<FString> Names, int32 Count)
@@ -440,37 +520,47 @@ UOBP_Achievements_GetProgressByName* UOBP_Achievements_GetProgressByName::GetPro
 //---UnlockAchievement---
 void UOBP_Achievements_Unlock::Activate()
 {
-	ovrRequest RequestId = ovr_Achievements_Unlock(TCHAR_TO_ANSI(*AchievementName));
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
 
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
+	if (OculusIdentityInterface.IsValid())
 	{
-		if (bIsError)
-		{
-			OBP_MessageError("Achievements::Unlock", Message);
-			OnFailure.Broadcast("", false);
-		}
-		else
-		{
-			ovrMessageType messageType = ovr_Message_GetType(Message);
+		ovrRequest RequestId = ovr_Achievements_Unlock(TCHAR_TO_ANSI(*AchievementName));
 
-			if (messageType == ovrMessage_Achievements_Unlock)
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
 			{
-				auto ThisAchievementName = ovr_AchievementUpdate_GetName(ovr_Message_GetAchievementUpdate(Message));
-				auto bDidJustUnlock = ovr_AchievementUpdate_GetJustUnlocked(ovr_Message_GetAchievementUpdate(Message));
-				auto UnlockString = bDidJustUnlock ? TEXT("TRUE") : TEXT("FALSE");
-				auto LogString = FString("Successfully unlocked achievement: ") + ThisAchievementName + FString(" - Just unlocked: ") + UnlockString;
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("%s"), *LogString);
-				OnSuccess.Broadcast(ThisAchievementName, bDidJustUnlock);
+				OBP_MessageError("Achievements::Unlock", Message);
+				OnFailure.Broadcast("", false);
 			}
 			else
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to unlock achievement."));
-				OnFailure.Broadcast("", false);
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_Achievements_Unlock)
+				{
+					auto ThisAchievementName = ovr_AchievementUpdate_GetName(ovr_Message_GetAchievementUpdate(Message));
+					auto bDidJustUnlock = ovr_AchievementUpdate_GetJustUnlocked(ovr_Message_GetAchievementUpdate(Message));
+					auto UnlockString = bDidJustUnlock ? TEXT("TRUE") : TEXT("FALSE");
+					auto LogString = FString("Successfully unlocked achievement: ") + ThisAchievementName + FString(" - Just unlocked: ") + UnlockString;
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("%s"), *LogString);
+					OnSuccess.Broadcast(ThisAchievementName, bDidJustUnlock);
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to unlock achievement."));
+					OnFailure.Broadcast("", false);
+				}
 			}
-		}
-	}));
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast("", false);
+	}
 }
 
 UOBP_Achievements_Unlock* UOBP_Achievements_Unlock::UnlockAchievement(UObject* WorldContextObject, FString AchievementName)

@@ -40,33 +40,43 @@ UOBP_SetRichPresence::UOBP_SetRichPresence(const FObjectInitializer& ObjectIniti
 void UOBP_ClearRichPresence::Activate()
 {
 #if PLATFORM_MINOR_VERSION >= 39
-	ovrRequest RequestId = ovr_RichPresence_Clear();
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
 
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
+	if (OculusIdentityInterface.IsValid())
 	{
-		if (bIsError)
-		{
-			OBP_MessageError("RichPresence::ClearRichPresence", Message);
-			OnFailure.Broadcast();
-		}
-		else
-		{
-			ovrMessageType messageType = ovr_Message_GetType(Message);
+		ovrRequest RequestId = ovr_RichPresence_Clear();
 
-			if (messageType == ovrMessage_RichPresence_Clear)
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully cleared rich presence."));
-				OnSuccess.Broadcast();
+				OBP_MessageError("RichPresence::ClearRichPresence", Message);
+				OnFailure.Broadcast();
 			}
 			else
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to clear rich presence."));
-				OnFailure.Broadcast();
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_RichPresence_Clear)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully cleared rich presence."));
+					OnSuccess.Broadcast();
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to clear rich presence."));
+					OnFailure.Broadcast();
+				}
 			}
-		}
-	}));
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast();
+	}
 #else
 	OBP_PlatformVersionError("RichPresence::ClearRichPresence", "1.39");
 	OnFailure.Broadcast();
@@ -82,35 +92,45 @@ UOBP_ClearRichPresence* UOBP_ClearRichPresence::ClearRichPresence(UObject* World
 void UOBP_GetDestinations::Activate()
 {
 #if PLATFORM_MINOR_VERSION >= 41
-	ovrRequest RequestId = ovr_RichPresence_GetDestinations();
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
 
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
+	if (OculusIdentityInterface.IsValid())
 	{
-		if (bIsError)
-		{
-			OBP_MessageError("RichPresence::GetDestinations", Message);
-			OnFailure.Broadcast(nullptr);
-		}
-		else
-		{
-			ovrMessageType messageType = ovr_Message_GetType(Message);
+		ovrRequest RequestId = ovr_RichPresence_GetDestinations();
 
-			if (messageType == ovrMessage_RichPresence_GetDestinations)
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got destinations."));
-				auto DestinationArray = NewObject<UOBP_DestinationArray>();
-				DestinationArray->ovrDestinationArrayHandle = ovr_Message_GetDestinationArray(Message);
-				OnSuccess.Broadcast(DestinationArray);
+				OBP_MessageError("RichPresence::GetDestinations", Message);
+				OnFailure.Broadcast(nullptr);
 			}
 			else
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get destinations."));
-				OnFailure.Broadcast(nullptr);
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_RichPresence_GetDestinations)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got destinations."));
+					auto DestinationArray = NewObject<UOBP_DestinationArray>();
+					DestinationArray->ovrDestinationArrayHandle = ovr_Message_GetDestinationArray(Message);
+					OnSuccess.Broadcast(DestinationArray);
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get destinations."));
+					OnFailure.Broadcast(nullptr);
+				}
 			}
-		}
-	}));
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast(nullptr);
+	}
 #else
 	OBP_PlatformVersionError("RichPresence::GetDestinations", "1.41");
 	OnFailure.Broadcast(nullptr);
@@ -126,35 +146,45 @@ UOBP_GetDestinations* UOBP_GetDestinations::GetDestinations(UObject* WorldContex
 void UOBP_GetNextDestinationArrayPage::Activate()
 {
 #if PLATFORM_MINOR_VERSION >= 41
-	ovrRequest RequestId = ovr_RichPresence_GetNextDestinationArrayPage(DestinationArray->ovrDestinationArrayHandle);
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
 
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
+	if (OculusIdentityInterface.IsValid())
 	{
-		if (bIsError)
-		{
-			OBP_MessageError("RichPresence::GetNextDestinationArray", Message);
-			OnFailure.Broadcast(nullptr);
-		}
-		else
-		{
-			ovrMessageType messageType = ovr_Message_GetType(Message);
+		ovrRequest RequestId = ovr_RichPresence_GetNextDestinationArrayPage(DestinationArray->ovrDestinationArrayHandle);
 
-			if (messageType == ovrMessage_RichPresence_GetNextDestinationArrayPage)
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got destination array page."));
-				auto DestinationArray = NewObject<UOBP_DestinationArray>();
-				DestinationArray->ovrDestinationArrayHandle = ovr_Message_GetDestinationArray(Message);
-				OnSuccess.Broadcast(DestinationArray);
+				OBP_MessageError("RichPresence::GetNextDestinationArray", Message);
+				OnFailure.Broadcast(nullptr);
 			}
 			else
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get destination array page."));
-				OnFailure.Broadcast(nullptr);
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_RichPresence_GetNextDestinationArrayPage)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got destination array page."));
+					auto DestinationArray = NewObject<UOBP_DestinationArray>();
+					DestinationArray->ovrDestinationArrayHandle = ovr_Message_GetDestinationArray(Message);
+					OnSuccess.Broadcast(DestinationArray);
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get destination array page."));
+					OnFailure.Broadcast(nullptr);
+				}
 			}
-		}
-	}));
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast(nullptr);
+	}
 #else
 	OBP_PlatformVersionError("RichPresence::GetNextDestinationArrayPage", "1.41");
 	OnFailure.Broadcast(nullptr);
@@ -172,33 +202,43 @@ UOBP_GetNextDestinationArrayPage* UOBP_GetNextDestinationArrayPage::GetNextDesti
 void UOBP_SetRichPresence::Activate()
 {
 #if PLATFORM_MINOR_VERSION >= 39
-	ovrRequest RequestId = ovr_RichPresence_Set(OvrRichPresenceOptions);
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
 
-	FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
-	OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
-		[this](ovrMessageHandle Message, bool bIsError)
+	if (OculusIdentityInterface.IsValid())
 	{
-		if (bIsError)
-		{
-			OBP_MessageError("RichPresence::SetRichPresence", Message);
-			OnFailure.Broadcast();
-		}
-		else
-		{
-			ovrMessageType messageType = ovr_Message_GetType(Message);
+		ovrRequest RequestId = ovr_RichPresence_Set(OvrRichPresenceOptions);
 
-			if (messageType == ovrMessage_RichPresence_Set)
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully set rich presence."));
-				OnSuccess.Broadcast();
+				OBP_MessageError("RichPresence::SetRichPresence", Message);
+				OnFailure.Broadcast();
 			}
 			else
 			{
-				UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to set rich presence."));
-				OnFailure.Broadcast();
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_RichPresence_Set)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully set rich presence."));
+					OnSuccess.Broadcast();
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to set rich presence."));
+					OnFailure.Broadcast();
+				}
 			}
-		}
-	}));
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast();
+	}
 #else
 	OBP_PlatformVersionError("RichPresence::SetRichPresence", "1.39");
 	OnFailure.Broadcast();
