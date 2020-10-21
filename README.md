@@ -38,9 +38,10 @@ This means you'll find blueprint nodes for the functions included in the [*Oculu
 1) Place the *'OculusPlatformBP'* folder in *'Engine\Plugins\Marketplace'* or your project's *'Plugins'* folder
 2) Regenerate project files
 3) Compile engine
-4) Enable the *OculusVR*, *OnlineSubsystemOculus*, and *OculusPlatformBP* plugins in your project
-5) Check Oculus Entitlement
-6) Use *OculusPlatformBP* to do cool stuff
+4) Configure *DefaultEngine.ini [(instructions)](https://developer.oculus.com/documentation/unreal/ps-setup/)*
+5) Enable the *OculusVR*, *OnlineSubsystemOculus*, and *OculusPlatformBP* plugins in your project
+6) Check Oculus Entitlement
+7) Use *OculusPlatformBP* to do cool stuff
 
 ## Updating the Oculus Platform SDK
 *(This is optional, but highly recommended in order to access all Oculus Platform SDK features and bugfixes)*
