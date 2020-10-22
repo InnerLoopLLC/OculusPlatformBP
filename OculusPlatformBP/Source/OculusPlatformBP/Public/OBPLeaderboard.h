@@ -246,7 +246,7 @@ public:
 };
 
 // --------------------
-// Leaderboard.h
+// Leaderboard.h - This file really seems to be completely useless. It's not referenced anywhere...
 // --------------------
 
 /*
