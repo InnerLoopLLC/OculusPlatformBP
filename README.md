@@ -1,6 +1,6 @@
 # OculusPlatformBP Plugin
 
-A UE4 plugin library of Blueprint nodes for Oculus Platform functions.
+A UE4 plugin featuring a library of Blueprint nodes for Oculus Platform functions.
 
 *If you enjoy this plugin and want to see it improve, please consider helping me buy some caffeine.<br>
 [**Donate via Patreon**](https://www.patreon.com/innerloopllc)*
