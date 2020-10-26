@@ -1,12 +1,14 @@
 # OculusPlatformBP Plugin
 
-A UE4 plugin library of Blueprint nodes for Oculus Platform functions.
+A UE4 plugin featuring a library of Blueprint nodes for Oculus Platform functions.
 
 *If you enjoy this plugin and want to see it improve, please consider helping me buy some caffeine.<br>
 [**Donate via Patreon**](https://www.patreon.com/innerloopllc)*
 
 ## Features
 + [Achievements](https://developer.oculus.com/documentation/unreal/ps-achievements)
++ [Cloud Storage](https://developer.oculus.com/documentation/unreal/ps-cloud-storage/)
++ [In-App Purchases](https://developer.oculus.com/documentation/unreal/ps-iap/)
 + [Leaderboards](https://developer.oculus.com/documentation/unreal/ps-leaderboards/)
 + [Rich Presence/Destinations](https://developer.oculus.com/documentation/unreal/ps-rich-presence/)
 + [User/Identity](https://developer.oculus.com/documentation/unreal/ps-presence/)
@@ -14,7 +16,7 @@ A UE4 plugin library of Blueprint nodes for Oculus Platform functions.
 #### What this is:
 + ...the [*Oculus Platform SDK (v19)*](https://developer.oculus.com/reference/platform/v19/) exposed from C++ to Blueprints as directly as possible.
 + ...or at least some of it. There's a still a lot of work to do.
-+ ...client-side stuff **only**. For now. Server-side will be implemented eventually.
++ ...client-side stuff **only**. For now. Server-side may be implemented eventually.
 
 #### What this isn't:
 + ...an attempt to integrate the Oculus Platform SDK into existing UE4 systems. *(e.g. OnlineSubsystem)*
@@ -24,9 +26,14 @@ A UE4 plugin library of Blueprint nodes for Oculus Platform functions.
 
 This means you'll find blueprint nodes for the functions included in the [*Oculus Platform SDK*](https://developer.oculus.com/reference/platform/v19/), but that's pretty much it. Please refer to the [*Oculus Platform SDK*](https://developer.oculus.com/reference/platform/v19/) and [*Oculus Platform Solutions*](https://developer.oculus.com/documentation/unreal/ps-platform-intro/) pages for documentation and example usage. Please refer to the [*Unreal Engine 4*](https://github.com/EpicGames/UnrealEngine) GitHub for links and resources related to UE4. Usage examples are included in the *Examples* folder.
 
+## Progress
+*10/26/20* - The plugin now compiles properly for all engine versions back to launcher builds of 4.20! It's still best to use a source build (preferably the Oculus fork) and to update the Platform SDK to the latest version. The plugin also now handles OnlineSubsystemOculus not being properly configured. Additionally, In-App Purchases and Cloud Storage have now been implemented. This bring us to the point where the majority of the remaining features focus on multiplayer support (rooms, matchmaking, etc).
+
+So, with most of the major features in place, it's time to take a step back and refactor some things. Specifically, the file structure is going to change to reflect the Oculus Platform SDK structure. Currently, I'm stacking way too many classes in single files. This is going to cause some problems later on, when the SDK is updated again. So, it might be a little while before the next update. Hopefully soon, though. In the meantime, please report any bugs or issues so I can stay on top of them.
+
 ## Requirements
 * **Recommended Unreal Engine Version** - [4.25.3-Oculus](https://github.com/Oculus-VR/UnrealEngine/tree/4.25)
-* **Supported Unreal Engine Versions** - 4.25, 4.24, 4.23, 4.22, 4.21 *(limited support)*
+* **Supported Unreal Engine Versions** - 4.25, 4.24, 4.23, 4.22, 4.21, 4.20 *(limited support)*
 * **Platforms** - Win64, Android *(note: not tested on Android)*
 * **Oculus Platform SDK** - [v19](https://developer.oculus.com/downloads/package/oculus-platform-sdk/19.0.0/)<br>
 * **Plugins** - OculusVR, OnlineSubsystemOculus<br>
