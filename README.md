@@ -3,7 +3,7 @@
 A UE4 plugin featuring a library of **200+ Blueprint nodes** for Oculus Platform functions.
 
 *If you enjoy this plugin and want to see it improve, please consider helping me buy some caffeine.<br>
-[**Donate via Patreon**](https://www.patreon.com/innerloopllc)*
+[**Donate via Patreon**](https://www.patreon.com/innerloopllc) or [**Donate via PayPal**](https://paypal.me/bhicks85)*
 
 ## Features
 + [Achievements](https://developer.oculus.com/documentation/unreal/ps-achievements)
