@@ -25,73 +25,61 @@ void FOculusPlatformBP::ShutdownModule()
 // Enum Conversions
 // --------------------
 
-/* Converts an EOBPAchievementType to an ovrAchievementType for passing to the OculusPlatformSDK */
-ovrAchievementType OBP_AchievementTypeToEnum(EOBPAchievementType OBPAchievementType)
+/* Converts an EOBP_AchievementType to an ovrAchievementType for passing to the OculusPlatformSDK */
+ovrAchievementType OBP_AchievementTypeToEnum(EOBP_AchievementType OBPAchievementType)
 {
 	switch (OBPAchievementType)
 	{
-	case EOBPAchievementType::Unknown:
+	case EOBP_AchievementType::Unknown:
 		return ovrAchievement_TypeUnknown;
-		break;
-	case EOBPAchievementType::Simple:
+	case EOBP_AchievementType::Simple:
 		return ovrAchievement_TypeSimple;
-		break;
-	case EOBPAchievementType::Bitfield:
+	case EOBP_AchievementType::Bitfield:
 		return ovrAchievement_TypeBitfield;
-		break;
-	case EOBPAchievementType::Count:
+	case EOBP_AchievementType::Count:
 		return ovrAchievement_TypeCount;
-		break;
 	default:
 		return ovrAchievement_TypeUnknown;
 	}
 }
 
-/* Converts an EOBPLeaderboardFilterType to an ovrLeaderboardFilterType for passing to the OculusPlatformSDK
+/* Converts an EOBP_LeaderboardFilterType to an ovrLeaderboardFilterType for passing to the OculusPlatformSDK
 	Note: Enum value 'UserIds' Requires OculusPlatfromSDK v15 or later
 		  Otherwise, 'UserIds' returns 'None' */
-ovrLeaderboardFilterType OBP_LeaderboardFilterToEnum(EOBPLeaderboardFilterType OBPLeaderboardFilterType)
+ovrLeaderboardFilterType OBP_LeaderboardFilterToEnum(EOBP_LeaderboardFilterType OBPLeaderboardFilterType)
 {
 	switch (OBPLeaderboardFilterType)
 	{
-	case EOBPLeaderboardFilterType::None:
+	case EOBP_LeaderboardFilterType::None:
 		return ovrLeaderboard_FilterNone;
-		break;
-	case EOBPLeaderboardFilterType::Friends:
+	case EOBP_LeaderboardFilterType::Friends:
 		return ovrLeaderboard_FilterFriends;
-		break;
-	case EOBPLeaderboardFilterType::Unknown:
+	case EOBP_LeaderboardFilterType::Unknown:
 		return ovrLeaderboard_FilterUnknown;
-		break;
-	case EOBPLeaderboardFilterType::UserIds:
+	case EOBP_LeaderboardFilterType::UserIds:
 #if PLATFORM_MINOR_VERSION >= 47
 		return ovrLeaderboard_FilterUserIds;
 #else
 		return ovrLeaderboard_FilterNone;
 #endif
-		break;
 	default:
 		return ovrLeaderboard_FilterNone;
 	}
 }
 
-/* Converts an EOBPLeaderboardStartAt to an ovrLeaderboardStartAt for passing to the OculusPlatformSDK */
-ovrLeaderboardStartAt OBP_LeaderboardStartAtToEnum(EOBPLeaderboardStartAt OBPLeaderboardStartAt)
+/* Converts an EOBP_LeaderboardStartAt to an ovrLeaderboardStartAt for passing to the OculusPlatformSDK */
+ovrLeaderboardStartAt OBP_LeaderboardStartAtToEnum(EOBP_LeaderboardStartAt OBPLeaderboardStartAt)
 {
 	switch (OBPLeaderboardStartAt)
 	{
-	case EOBPLeaderboardStartAt::Top:
+	case EOBP_LeaderboardStartAt::Top:
 		return ovrLeaderboard_StartAtTop;
-		break;
-	case EOBPLeaderboardStartAt::CenteredOnViewer:
+	case EOBP_LeaderboardStartAt::CenteredOnViewer:
 		return ovrLeaderboard_StartAtCenteredOnViewer;
-		break;
-	case EOBPLeaderboardStartAt::CenteredOnViewerOrTop:
+	case EOBP_LeaderboardStartAt::CenteredOnViewerOrTop:
 		return ovrLeaderboard_StartAtCenteredOnViewerOrTop;
-		break;
-	case EOBPLeaderboardStartAt::Unknown:
+	case EOBP_LeaderboardStartAt::Unknown:
 		return ovrLeaderboard_StartAtUnknown;
-		break;
 	default:
 		return ovrLeaderboard_StartAtTop;
 	}
@@ -130,7 +118,7 @@ void OBP_NotImplementedError(FString NodeName)
 // Helper Functions
 // --------------------
 
-/* Converts an TArray of FStrings to an array of const char - This works... except on 4.21. This is safer than the in-use method... but oh well. */
+/* Converts an TArray of FStrings to an array of const char - This works... except on <=4.21. This is safer than the in-use method... but oh well. */
 const char** OBP_FStringArrayToChar(TArray<FString> Names)
 {
 	/*
@@ -148,21 +136,7 @@ const char** OBP_FStringArrayToChar(TArray<FString> Names)
 	return nullptr;
 }
 
-/* Converts an TArray of FStrings to an array of ovrIDs - This is broken. Do not use. */
-ovrID* OBP_FStringArrayToOvrId(TArray<FString> UserIds)
-{
-	/* std::vector<ovrID> ovrIdArray;
-	for (size_t i = 0; i < UserIds.Num(); i++)
-	{
-		ovrIdArray.push_back(FCString::Atoi64(*UserIds[i]));
-	}
-	ovrID* ovrId = ovrIdArray.data();
-	
-	return ovrIdArray.data(); */
-	return nullptr;
-}
-
-/* Converts an FString to an int64 or ovrID - Function exists in case it needs to be modified later*/
+/* Converts an FString to an int64 or ovrID - Function exists in case it needs to be modified later */
 int64 OBP_FStringToInt64(FString InFString)
 {
 	return FCString::Atoi64(*InFString);
