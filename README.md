@@ -34,7 +34,7 @@ THIS IS A BREAKING UPDATE!! Most request nodes have been deprecated. This means 
 
 ## Requirements
 * **Recommended Unreal Engine Version** - [4.25.3-Oculus](https://github.com/Oculus-VR/UnrealEngine/tree/4.25)
-* **Supported Unreal Engine Versions** - 4.25, 4.24, 4.23, 4.22, 4.21, 4.20 *(limited support)*
+* **Supported Unreal Engine Versions** - 4.26, 4.25, 4.24, 4.23, 4.22, 4.21, 4.20 *(limited support)*
 * **Platforms** - Win64, Android *(note: not tested on Android)*
 * **Oculus Platform SDK** - [v19](https://developer.oculus.com/downloads/package/oculus-platform-sdk/19.0.0/)<br>
 * **Plugins** - OculusVR, OnlineSubsystemOculus<br>
