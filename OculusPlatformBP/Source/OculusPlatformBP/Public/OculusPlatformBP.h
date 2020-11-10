@@ -22,7 +22,7 @@
 DECLARE_LOG_CATEGORY_EXTERN(LogOculusPlatformBP, Log, All);
 
 // Used to prevent incomplete functions from being compiled
-#define OBP_IS_IMPLEMENTED 0
+#define OBP_IS_NOT_IMPLEMENTED 1
 
 class IOculusPlatformBP : public IModuleInterface
 {
@@ -45,7 +45,7 @@ public:
 
 /* ovr_AchievementType.h */
 UENUM(BlueprintType)
-enum class EOBPAchievementType : uint8
+enum class EOBP_AchievementType : uint8
 {
 	Unknown,
 	Simple,
@@ -53,9 +53,40 @@ enum class EOBPAchievementType : uint8
 	Count
 };
 
+/* ovr_ChallengeCreationType.h */
+UENUM(BlueprintType)
+enum class EOBP_ChallengeCreationType : uint8
+{
+	Unknown,
+	UserCreated,
+	DeveloperCreated
+};
+
+/* ovr_ChallengeViewerFilter.h */
+UENUM(BlueprintType)
+enum class EOBP_ChallengeViewerFilter : uint8
+{
+	Unknown,
+	AllVisible,
+	Participating,
+	Invited,
+	ParticipatingOrInvited
+};
+
+/* ovr_ChallengeVisibility.h */
+UENUM(BlueprintType)
+enum class EOBP_ChallengeVisibility : uint8
+{
+	Unknown,
+	InviteOnly,
+	Public,
+	Private
+};
+
+
 /* ovr_LeaderboardFilterType.h */
 UENUM(BlueprintType)
-enum class EOBPLeaderboardFilterType : uint8
+enum class EOBP_LeaderboardFilterType : uint8
 {
 	None,
 	Friends,
@@ -65,7 +96,7 @@ enum class EOBPLeaderboardFilterType : uint8
 
 /* ovr_LeaderboardStartAt.h */
 UENUM(BlueprintType)
-enum class EOBPLeaderboardStartAt : uint8
+enum class EOBP_LeaderboardStartAt : uint8
 {
 	Top,
 	CenteredOnViewer,
@@ -85,9 +116,54 @@ enum class EOBP_RichPresenceExtraContext : uint8
 	LookingForMatch
 };
 
+/* ovr_RoomJoinability.h */
+UENUM(BlueprintType)
+enum class EOBP_RoomJoinability : uint8
+{
+	Unknown,
+	AreIn,
+	AreKicked,
+	CanJoin,
+	IsFull,
+	NoViewer,
+	PolicyPrevents
+};
+
+/* ovr_RoomJoinPolicy.h */
+UENUM(BlueprintType)
+enum class EOBP_RoomJoinPolicy : uint8
+{
+	None,
+	Everyone,
+	FriendsOfMembers,
+	FriendsOfOwner,
+	InvitedUsers,
+	Unknown
+};
+
+/* ovr_RoomMembershipLockStatus.h */
+UENUM(BlueprintType)
+enum class EOBP_RoomMembershipLockStatus : uint8
+{
+	Unknown,
+	Lock,
+	Unlock
+};
+
+/* ovr_RoomType.h */
+UENUM(BlueprintType)
+enum class EOBP_RoomType : uint8
+{
+	Unknown,
+	Matchmaking,
+	Moderated,
+	Private,
+	Solo
+};
+
 /* ovr_ServiceProvider.h */
 UENUM(BlueprintType)
-enum class EOBPServiceProvider : uint8
+enum class EOBP_ServiceProvider : uint8
 {
 	Unknown,
 	Dropbox,
@@ -99,7 +175,7 @@ enum class EOBPServiceProvider : uint8
 
 /* ovr_SdkAccountType.h */
 UENUM(BlueprintType)
-enum class EOBPSdkAccountType : uint8
+enum class EOBP_SdkAccountType : uint8
 {
 	Unknown,
 	Oculus,
@@ -108,7 +184,7 @@ enum class EOBPSdkAccountType : uint8
 
 /* ovr_TimeWindow.h */
 UENUM(BlueprintType)
-enum class EOBPTimeWindow : uint8
+enum class EOBP_TimeWindow : uint8
 {
 	Unknown,
 	OneHour,
@@ -131,15 +207,15 @@ enum class EOBP_UserPresenceStatus : uint8
 // Enum Conversions
 // --------------------
 
-/* Converts an EOBPAchievementType to an ovrAchievementType for passing to the OculusPlatformSDK */
-ovrAchievementType OBP_AchievementTypeToEnum(EOBPAchievementType OBPAchievementType);
+/* Converts an EOBP_AchievementType to an ovrAchievementType for passing to the OculusPlatformSDK */
+ovrAchievementType OBP_AchievementTypeToEnum(EOBP_AchievementType OBPAchievementType);
 
-/* Converts an EOBPLeaderboardFilterType to an ovrLeaderboardFilterType for passing to the OculusPlatformSDK
+/* Converts an EOBP_LeaderboardFilterType to an ovrLeaderboardFilterType for passing to the OculusPlatformSDK
 	Note: Enum value 'UserIds' Requires OculusPlatfromSDK v15 or later*/
-ovrLeaderboardFilterType OBP_LeaderboardFilterToEnum(EOBPLeaderboardFilterType OBPLeaderboardFilterType);
+ovrLeaderboardFilterType OBP_LeaderboardFilterToEnum(EOBP_LeaderboardFilterType OBPLeaderboardFilterType);
 
-/* Converts an EOBPLeaderboardStartAt to an ovrLeaderboardStartAt for passing to the OculusPlatformSDK */
-ovrLeaderboardStartAt OBP_LeaderboardStartAtToEnum(EOBPLeaderboardStartAt OBPLeaderboardStartAt);
+/* Converts an EOBP_LeaderboardStartAt to an ovrLeaderboardStartAt for passing to the OculusPlatformSDK */
+ovrLeaderboardStartAt OBP_LeaderboardStartAtToEnum(EOBP_LeaderboardStartAt OBPLeaderboardStartAt);
 
 // --------------------
 // Logging Functions
@@ -160,9 +236,6 @@ void OBP_NotImplementedError(FString NodeName);
 
 /* Converts an TArray of FStrings to an array of const char */
 const char** OBP_FStringArrayToChar(TArray<FString> Names);
-
-/* Converts an TArray of FStrings to an array of ovrIDs */
-ovrID* OBP_FStringArrayToOvrId(TArray<FString> UserIds);
 
 /* Converts an FString to an int64/ovrID */
 int64 OBP_FStringToInt64(FString InFString);
