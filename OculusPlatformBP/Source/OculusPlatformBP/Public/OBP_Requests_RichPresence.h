@@ -95,9 +95,7 @@ class OCULUSPLATFORMBP_API UOBP_RichPresence_SetRichPresence : public UBlueprint
 
 public:
 
-#if PLATFORM_MINOR_VERSION >= 39
-	ovrRichPresenceOptions* ovrRichPresenceOptionsHandle = ovr_RichPresenceOptions_Create();
-#endif
+	UOBP_RichPresenceOptions* RichPresenceObject;
 
 	UPROPERTY(BlueprintAssignable)
 		FRichPresense_SetRichPresence OnSuccess;
