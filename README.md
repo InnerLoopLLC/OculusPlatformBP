@@ -9,6 +9,7 @@ A UE4 plugin featuring a library of **200+ Blueprint nodes** for Oculus Platform
 + [Achievements](https://developer.oculus.com/documentation/unreal/ps-achievements)
 + [Challenges](https://developer.oculus.com/documentation/unreal/ps-challenges/)
 + [Cloud Storage](https://developer.oculus.com/documentation/unreal/ps-cloud-storage/)
++ [Deep Linking](https://developer.oculus.com/documentation/unreal/ps-deep-linking/)
 + [In-App Purchases](https://developer.oculus.com/documentation/unreal/ps-iap/)
 + [Leaderboards](https://developer.oculus.com/documentation/unreal/ps-leaderboards/)
 + [Rich Presence/Destinations](https://developer.oculus.com/documentation/unreal/ps-rich-presence/)
@@ -21,16 +22,21 @@ A UE4 plugin featuring a library of **200+ Blueprint nodes** for Oculus Platform
 
 #### What this isn't:
 + ...an attempt to integrate the Oculus Platform SDK into existing UE4 systems. *(e.g. OnlineSubsystem)*
-+ ...an expansion of the existing SDK.
-+ ...a simplification or explanation of the existing SDK.
++ ...an expansion, simplification, or explanation of the existing SDK.
 + ...completed. Many features have **not** been implemented yet.
 
 This means you'll find blueprint nodes for the functions included in the [*Oculus Platform SDK*](https://developer.oculus.com/reference/platform/v19/), but that's pretty much it. Please refer to the [*Oculus Platform SDK*](https://developer.oculus.com/reference/platform/v19/) and [*Oculus Platform Solutions*](https://developer.oculus.com/documentation/unreal/ps-platform-intro/) pages for documentation and example usage. Please refer to the [*Unreal Engine 4*](https://github.com/EpicGames/UnrealEngine) GitHub for links and resources related to UE4. Usage examples are included in the *Examples* folder.
 
 ## Progress
+[**View Current Progress on Trello**](https://trello.com/b/TNGt3Yer/oculusplatformbp)<br>
+
 *11/9/20* - This update is a complete overhaul! The plugin has been refactored to more accurately reflect the file structure of the SDK, which will make incremental updates significantly easier in the future. Code has been cleaned up for consistency and clarity.
 
 THIS IS A BREAKING UPDATE!! Most request nodes have been deprecated. This means that if you were already using the plugin prior to this version, then you will need to replace request nodes in your project with updated versions. The plugin should warn you of any deprecated functions. Please contact me if you find any bugs.
+
+*11/10/20* - Added 4.26 branch.
+
+*11/11/20* - A quick update adding Application Launch Options and Deeplink support. Also includes a minor fix (some nodes weren't appearing in the proper context).
 
 ## Requirements
 * **Recommended Unreal Engine Version** - [4.25.3-Oculus](https://github.com/Oculus-VR/UnrealEngine/tree/4.25)

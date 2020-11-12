@@ -83,6 +83,16 @@ enum class EOBP_ChallengeVisibility : uint8
 	Private
 };
 
+/* ovr_LaunchType.h */
+UENUM(BlueprintType)
+enum class EOBP_LaunchType : uint8
+{
+	Unknown,
+	Normal,
+	Invite,
+	Coordinated,
+	Deeplink
+};
 
 /* ovr_LeaderboardFilterType.h */
 UENUM(BlueprintType)

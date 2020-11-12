@@ -15,7 +15,7 @@ UOBP_UserOptions::UOBP_UserOptions(const FObjectInitializer& ObjectInitializer)
 // OVR_UserOptions.h
 // --------------------
 
-UOBP_UserOptions* UOBP_UserOptions::CreateUserOptions()
+UOBP_UserOptions* UOBP_UserOptions::CreateUserOptions(UObject* WorldContextObject)
 {
 	auto UserOptions = NewObject<UOBP_UserOptions>();
 	UserOptions->ovrUserOptionsHandle = ovr_UserOptions_Create();
