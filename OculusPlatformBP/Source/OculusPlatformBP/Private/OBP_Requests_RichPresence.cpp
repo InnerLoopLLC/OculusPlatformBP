@@ -200,7 +200,7 @@ void UOBP_RichPresence_SetRichPresence::Activate()
 
 	if (OculusIdentityInterface.IsValid())
 	{
-		ovrRequest RequestId = ovr_RichPresence_Set(ovrRichPresenceOptionsHandle);
+		ovrRequest RequestId = ovr_RichPresence_Set(RichPresenceObject->ovrRichPresenceOptionsHandle);
 
 		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
@@ -242,8 +242,6 @@ void UOBP_RichPresence_SetRichPresence::Activate()
 UOBP_RichPresence_SetRichPresence* UOBP_RichPresence_SetRichPresence::SetRichPresence(UObject* WorldContextObject, UOBP_RichPresenceOptions* RichPresenceObject)
 {
 	auto SetRichPresence = NewObject<UOBP_RichPresence_SetRichPresence>();
-#if PLATFORM_MINOR_VERSION >= 39
-	SetRichPresence->ovrRichPresenceOptionsHandle = RichPresenceObject->ovrRichPresenceOptionsHandle;
-#endif
+	SetRichPresence->RichPresenceObject = RichPresenceObject;
 	return SetRichPresence;
 }
