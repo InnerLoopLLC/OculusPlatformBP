@@ -18,7 +18,7 @@ A UE4 plugin featuring a library of **200+ Blueprint nodes** for Oculus Platform
 #### What this is:
 + ...the [*Oculus Platform SDK (v19)*](https://developer.oculus.com/reference/platform/v19/) exposed from C++ to Blueprints as directly as possible.
 + ...or at least some of it. There's a still a lot of work to do.
-+ ...client-side stuff **only**. For now. Server-side may be implemented eventually. *(for now, check out [VaRest](https://github.com/ufna/VaRest))*
++ ...client-side stuff **only**. For now. Server-side may be implemented eventually.
 
 #### What this isn't:
 + ...an attempt to integrate the Oculus Platform SDK into existing UE4 systems. *(e.g. OnlineSubsystem)*
