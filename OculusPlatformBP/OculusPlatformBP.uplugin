@@ -10,7 +10,7 @@
 	"DocsURL": "https://github.com/InnerLoopLLC/OculusPlatformBP",
 	"MarketplaceURL": "",
 	"SupportURL": "https://discord.gg/AxxpQ8h",
-	"EngineVersion": "4.25",
+	"EngineVersion": "4.24",
 	"CanContainContent": false,
 	"Installed": true,
 	"Modules": [
