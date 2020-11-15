@@ -54,6 +54,9 @@ void UOBP_UserOptions::AddServiceProvider(EOBP_ServiceProvider ServiceProvider)
 	case EOBP_ServiceProvider::RemoteMedia:
 		ovr_UserOptions_AddServiceProvider(ovrUserOptionsHandle, ovrServiceProvider_RemoteMedia);
 		break;
+	default:
+		ovr_UserOptions_AddServiceProvider(ovrUserOptionsHandle, ovrServiceProvider_Unknown);
+		break;
 	}
 }
 
@@ -83,6 +86,9 @@ void UOBP_UserOptions::SetTimeWindow(EOBP_TimeWindow TimeWindow)
 		break;
 	case EOBP_TimeWindow::NinetyDays:
 		ovr_UserOptions_SetTimeWindow(ovrUserOptionsHandle, ovrTimeWindow_NinetyDays);
+		break;
+	default:
+		ovr_UserOptions_SetTimeWindow(ovrUserOptionsHandle, ovrTimeWindow_Unknown);
 		break;
 	}
 }
