@@ -44,7 +44,6 @@ UOBP_User* UOBP_Room::GetOwner()
 	return UserToGet;
 }
 
-/*
 UOBP_TeamArray* UOBP_Room::GetTeams()
 {
 #if PLATFORM_MINOR_VERSION >= 40
@@ -55,7 +54,7 @@ UOBP_TeamArray* UOBP_Room::GetTeams()
 	OBP_PlatformVersionError("Room::GetTeams", "1.40");
 	return nullptr;
 #endif
-}*/
+}
 
 UOBP_UserArray* UOBP_Room::GetUsers()
 {

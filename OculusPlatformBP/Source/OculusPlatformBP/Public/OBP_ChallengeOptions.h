@@ -18,7 +18,7 @@ class OCULUSPLATFORMBP_API UOBP_ChallengeOptions : public UBlueprintFunctionLibr
 public:
 
 #if PLATFORM_MINOR_VERSION >= 51
-	ovrChallengeOptions* ovrChallengeOptionsHandle = ovr_ChallengeOptions_Create();
+	ovrChallengeOptions* ovrChallengeOptionsHandle;
 #endif
 
 	/* Challenges require OculusPlatfromSDK v19 or later */
