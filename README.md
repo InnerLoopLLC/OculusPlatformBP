@@ -1,6 +1,6 @@
 # OculusPlatformBP Plugin
 
-A UE4 plugin featuring a library of **200+ Blueprint nodes** for Oculus Platform functions.
+A UE4 plugin featuring a library of **280+ Blueprint nodes** for Oculus Platform functions.
 
 *If you enjoy this plugin and want to see it improve, please consider helping me buy some caffeine.<br>
 [**Donate via Patreon**](https://www.patreon.com/innerloopllc) or [**Donate via PayPal**](https://paypal.me/bhicks85)*
@@ -12,7 +12,10 @@ A UE4 plugin featuring a library of **200+ Blueprint nodes** for Oculus Platform
 + [Deep Linking](https://developer.oculus.com/documentation/unreal/ps-deep-linking/)
 + [In-App Purchases](https://developer.oculus.com/documentation/unreal/ps-iap/)
 + [Leaderboards](https://developer.oculus.com/documentation/unreal/ps-leaderboards/)
++ [Livestreaming and Content Sharing](https://developer.oculus.com/documentation/unreal/ps-sharing/)
++ [Parties and Party Chat](https://developer.oculus.com/documentation/unreal/ps-parties/)
 + [Rich Presence/Destinations](https://developer.oculus.com/documentation/unreal/ps-rich-presence/)
++ [Rooms](https://developer.oculus.com/documentation/unreal/ps-rooms/) *(partial)*
 + [User/Identity](https://developer.oculus.com/documentation/unreal/ps-presence/)
 
 #### What this is:
