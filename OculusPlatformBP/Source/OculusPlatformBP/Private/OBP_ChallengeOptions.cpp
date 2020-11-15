@@ -18,7 +18,9 @@ UOBP_ChallengeOptions::UOBP_ChallengeOptions(const FObjectInitializer& ObjectIni
 UOBP_ChallengeOptions* UOBP_ChallengeOptions::CreateChallengeOptions(UObject* WorldContextObject)
 {
 #if PLATFORM_MINOR_VERSION >= 51
-	return NewObject<UOBP_ChallengeOptions>();
+	auto ChallengeOptions = NewObject<UOBP_ChallengeOptions>();
+	ChallengeOptions->ovrChallengeOptionsHandle = ovr_ChallengeOptions_Create();
+	return ChallengeOptions;
 #else
 	OBP_PlatformVersionError("ChallengeOptions::CreateChallengeOptions", "v19");
 	return nullptr;

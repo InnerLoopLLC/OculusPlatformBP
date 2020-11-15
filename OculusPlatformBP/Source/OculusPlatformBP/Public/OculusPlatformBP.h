@@ -114,6 +114,15 @@ enum class EOBP_LeaderboardStartAt : uint8
 	Unknown
 };
 
+/* ovr_MediaContentType.h */
+UENUM(BlueprintType)
+enum class EOBP_MediaContentType : uint8
+{
+	Unknown,
+	Photo
+};
+
+
 /* ovr_RichPresenceExtraContext.h */
 UENUM(BlueprintType)
 enum class EOBP_RichPresenceExtraContext : uint8
@@ -192,6 +201,25 @@ enum class EOBP_SdkAccountType : uint8
 	FacebookGameroom
 };
 
+/* ovr_ShareMediaStatus.h */
+UENUM(BlueprintType)
+enum class EOBP_ShareMediaStatus : uint8
+{
+	Unknown,
+	Shared,
+	Canceled
+};
+
+/* ovr_SystemVoipStatus.h */
+UENUM(BlueprintType)
+enum class EOBP_SystemVoipStatus : uint8
+{
+	Unknown,
+	Unavailable,
+	Suppressed,
+	Active
+};
+
 /* ovr_TimeWindow.h */
 UENUM(BlueprintType)
 enum class EOBP_TimeWindow : uint8
@@ -204,6 +232,15 @@ enum class EOBP_TimeWindow : uint8
 	NinetyDays
 };
 
+/* ovr_UserOrdering.h */
+UENUM(BlueprintType)
+enum class EOBP_UserOrdering : uint8
+{
+	Unknown,
+	None,
+	PresenceAlphabetical
+};
+
 /* ovr_UserPresenceStatus.h */
 UENUM(BlueprintType)
 enum class EOBP_UserPresenceStatus : uint8
@@ -211,6 +248,15 @@ enum class EOBP_UserPresenceStatus : uint8
 	Unknown,
 	Online,
 	Offline
+};
+
+/* ovr_VoipMuteState.h */
+UENUM(BlueprintType)
+enum class EOBP_VoipMuteState : uint8
+{
+	Unknown,
+	Muted,
+	Unmuted
 };
 
 // --------------------
