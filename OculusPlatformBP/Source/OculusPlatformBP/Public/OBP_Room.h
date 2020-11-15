@@ -6,6 +6,7 @@
 #include "OBP_DataStore.h"
 #include "OBP_User.h"
 #include "OBP_UserArray.h"
+#include "OBP_TeamArray.h"
 #include "OBP_Room.generated.h"
 
 // --------------------
@@ -35,9 +36,8 @@ public:
 		UOBP_User* GetOwner();
 
 	/* Requires OculusPlatfromSDK 1.40 or later */
-	/* ovrTeamArray.h needed
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Room|Room")
-		UOBP_TeamArray* GetTeams(); */
+		UOBP_TeamArray* GetTeams();
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Room|Room")
 		UOBP_UserArray* GetUsers();

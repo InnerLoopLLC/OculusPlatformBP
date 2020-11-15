@@ -18,7 +18,9 @@ UOBP_RichPresenceOptions::UOBP_RichPresenceOptions(const FObjectInitializer& Obj
 UOBP_RichPresenceOptions* UOBP_RichPresenceOptions::CreateRichPresenceOptions(UObject* WorldContextObject)
 {
 #if PLATFORM_MINOR_VERSION >= 39
-	return NewObject<UOBP_RichPresenceOptions>();
+	auto RichPresenceOptions = NewObject<UOBP_RichPresenceOptions>();
+	RichPresenceOptions->ovrRichPresenceOptionsHandle = ovr_RichPresenceOptions_Create();
+	return RichPresenceOptions;
 #else
 	OBP_PlatformVersionError("RichPresenceOptions::CreateRichPresenceOptions", "1.39");
 	return nullptr;
