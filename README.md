@@ -38,13 +38,15 @@ THIS IS A BREAKING UPDATE!! Most request nodes have been deprecated. This means 
 
 *11/11/20* - A quick update adding Application Launch Options and Deeplink support. Also includes a minor fix (some nodes weren't appearing in the proper context).
 
+*11/15/2020* - Phew! Another big one. This covers pretty much all of the remaining functionality of the SDK, aside from multiplayer stuff. This update adds support for Livestreaming, Media Sharing, Parties, Rooms, Teams, and VoIP. The only remaining things I'm aware of which haven't been handled yet are Asset Files and Language Packs. Some features of Rooms and VoIP are not included here, for various reasons. I'd recommend checking out Mordentral's excellent [*AdvancedSessions plugin*](https://github.com/mordentral/AdvancedSessionsPlugin) to help out with some of that stuff.
+
 ## Requirements
 * **Recommended Unreal Engine Version** - [4.25.3-Oculus](https://github.com/Oculus-VR/UnrealEngine/tree/4.25)
 * **Supported Unreal Engine Versions** - 4.26, 4.25, 4.24, 4.23, 4.22, 4.21, 4.20 *(limited support)*
 * **Platforms** - Win64, Android *(note: not tested on Android)*
 * **Oculus Platform SDK** - [v19](https://developer.oculus.com/downloads/package/oculus-platform-sdk/19.0.0/)<br>
 * **Plugins** - OculusVR, OnlineSubsystemOculus<br>
-*(**It is highly recommended to update to Oculus Platform SDK v19 to access all features and bug fixes.** )*<br>
+*(**It is highly recommended to update to Oculus Platform SDK v19 to access all features and bug fixes.**)*<br>
 *(This plugin attempts to handle whichever Oculus Platform SDK is installed. Though 1.24+ is required.)*<br>
 
 ## Installation

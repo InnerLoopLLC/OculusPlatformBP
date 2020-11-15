@@ -18,7 +18,7 @@ class OCULUSPLATFORMBP_API UOBP_RichPresenceOptions : public UBlueprintFunctionL
 public:
 
 #if PLATFORM_MINOR_VERSION >= 39
-	ovrRichPresenceOptions* ovrRichPresenceOptionsHandle = ovr_RichPresenceOptions_Create();
+	ovrRichPresenceOptions* ovrRichPresenceOptionsHandle;
 #endif
 
 	/* Rich Presence requires OculusPlatfromSDK 1.39 or later */

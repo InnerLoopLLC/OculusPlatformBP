@@ -7,7 +7,7 @@
 #include "OBP_Functions_ApplicationLifecycle.generated.h"
 
 // --------------------
-// OVR_LaunchDetails.h
+// OVR_Functions_ApplicationLifecycle.h
 // --------------------
 
 UCLASS(BlueprintType)
