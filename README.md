@@ -1,16 +1,18 @@
 # OculusPlatformBP Plugin
 
-A UE4 plugin featuring a library of **280+ Blueprint nodes** for Oculus Platform functions.
+An Unreal Engine 4 plugin featuring a library of **300+ Blueprint nodes** for Oculus Platform functions.
 
 *If you enjoy this plugin and want to see it improve, please consider helping me buy some caffeine.<br>
 [**Donate via Patreon**](https://www.patreon.com/innerloopllc) or [**Donate via PayPal**](https://paypal.me/bhicks85)*
 
 ## Features
 + [Achievements](https://developer.oculus.com/documentation/unreal/ps-achievements)
++ [Asset Files](https://developer.oculus.com/documentation/unreal/ps-assets/)
 + [Challenges](https://developer.oculus.com/documentation/unreal/ps-challenges/)
 + [Cloud Storage](https://developer.oculus.com/documentation/unreal/ps-cloud-storage/)
 + [Deep Linking](https://developer.oculus.com/documentation/unreal/ps-deep-linking/)
 + [In-App Purchases](https://developer.oculus.com/documentation/unreal/ps-iap/)
++ [Language Packs](https://developer.oculus.com/documentation/unreal/ps-language-packs/)
 + [Leaderboards](https://developer.oculus.com/documentation/unreal/ps-leaderboards/)
 + [Livestreaming and Content Sharing](https://developer.oculus.com/documentation/unreal/ps-sharing/)
 + [Parties and Party Chat](https://developer.oculus.com/documentation/unreal/ps-parties/)
@@ -20,13 +22,13 @@ A UE4 plugin featuring a library of **280+ Blueprint nodes** for Oculus Platform
 
 #### What this is:
 + ...the [*Oculus Platform SDK (v19)*](https://developer.oculus.com/reference/platform/v19/) exposed from C++ to Blueprints as directly as possible.
-+ ...or at least some of it. There's a still a lot of work to do.
-+ ...client-side stuff **only**. For now. Server-side may be implemented eventually.
++ ...or at least most of it.
++ ...client-side stuff **only**.
 
 #### What this isn't:
-+ ...an attempt to integrate the Oculus Platform SDK into existing UE4 systems. *(e.g. OnlineSubsystem)*
++ ...an attempt to integrate the Oculus Platform SDK into existing UE4 systems. *(e.g. Sessions)*
 + ...an expansion, simplification, or explanation of the existing SDK.
-+ ...completed. Many features have **not** been implemented yet.
++ ...complete. Some features have **not** been implemented.
 
 This means you'll find blueprint nodes for the functions included in the [*Oculus Platform SDK*](https://developer.oculus.com/reference/platform/v19/), but that's pretty much it. Please refer to the [*Oculus Platform SDK*](https://developer.oculus.com/reference/platform/v19/) and [*Oculus Platform Solutions*](https://developer.oculus.com/documentation/unreal/ps-platform-intro/) pages for documentation and example usage. Please refer to the [*Unreal Engine 4*](https://github.com/EpicGames/UnrealEngine) GitHub for links and resources related to UE4. Usage examples are included in the *Examples* folder.
 
@@ -42,6 +44,8 @@ THIS IS A BREAKING UPDATE!! Most request nodes have been deprecated. This means 
 *11/11/20* - A quick update adding Application Launch Options and Deeplink support. Also includes a minor fix (some nodes weren't appearing in the proper context).
 
 *11/15/2020* - Phew! Another big one. This covers pretty much all of the remaining functionality of the SDK, aside from multiplayer stuff. This update adds support for Livestreaming, Media Sharing, Parties, Rooms, Teams, and VoIP. The only remaining things I'm aware of which haven't been handled yet are Asset Files and Language Packs. Some features of Rooms and VoIP are not included here, for various reasons. I'd recommend checking out Mordentral's excellent [*AdvancedSessions plugin*](https://github.com/mordentral/AdvancedSessionsPlugin) to help out with some of that stuff.
+
+*11/17/20* - Added Asset Files and Language Packs. So, we're pretty much feature complete. I think. Now it's back to testing for a while.
 
 ## Requirements
 * **Recommended Unreal Engine Version** - [4.25.3-Oculus](https://github.com/Oculus-VR/UnrealEngine/tree/4.25)
