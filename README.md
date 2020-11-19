@@ -47,6 +47,8 @@ THIS IS A BREAKING UPDATE!! Most request nodes have been deprecated. This means 
 
 *11/17/20* - Added Asset Files and Language Packs. So, we're pretty much feature complete. I think. Now it's back to testing for a while.
 
+*11/19/20* - Published inital release (v1.0.0). All versions have been built for Epic Launcher distributions of UE4, for easy installation of the plugin into content only projects. These builds do not include the deprecated nodes. So, if your project was using a version of the plugin prior to 11/9/20 please continue building from source. Deprecated nodes will soon be removed completely. Please update your projects accordingly to prevent loading errors.
+
 ## Requirements
 * **Recommended Unreal Engine Version** - [4.25.3-Oculus](https://github.com/Oculus-VR/UnrealEngine/tree/4.25)
 * **Supported Unreal Engine Versions** - 4.26, 4.25, 4.24, 4.23, 4.22, 4.21, 4.20 *(limited support)*
