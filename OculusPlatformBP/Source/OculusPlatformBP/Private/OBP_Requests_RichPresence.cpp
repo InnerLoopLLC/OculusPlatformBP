@@ -162,9 +162,9 @@ void UOBP_RichPresence_GetNextDestinationArrayPage::Activate()
 				if (messageType == ovrMessage_RichPresence_GetNextDestinationArrayPage)
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got destination array page."));
-					auto DestinationArray = NewObject<UOBP_DestinationArray>();
-					DestinationArray->ovrDestinationArrayHandle = ovr_Message_GetDestinationArray(Message);
-					OnSuccess.Broadcast(DestinationArray);
+					auto NextDestinationArray = NewObject<UOBP_DestinationArray>();
+					NextDestinationArray->ovrDestinationArrayHandle = ovr_Message_GetDestinationArray(Message);
+					OnSuccess.Broadcast(NextDestinationArray);
 				}
 				else
 				{
