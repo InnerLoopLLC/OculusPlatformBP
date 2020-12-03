@@ -34,9 +34,9 @@ public class OculusPlatformBP : ModuleRules
 			);
 		
 		// OVRPlugin
-		{
+		//{
 			//PublicDelayLoadDLLs.Add("OVRPlugin.dll");
-			RuntimeDependencies.Add("$(EngineDir)/Binaries/ThirdParty/Oculus/OVRPlugin/OVRPlugin/" + Target.Platform.ToString() + "/OVRPlugin.dll");
-		}
+		//	RuntimeDependencies.Add("$(EngineDir)/Binaries/ThirdParty/Oculus/OVRPlugin/OVRPlugin/" + Target.Platform.ToString() + "/OVRPlugin.dll");
+		//}
 	}
 }
