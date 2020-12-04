@@ -49,7 +49,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Challenge Options")
 		void SetIncludePastChallenges(bool bShouldInclude);
 
-	/* Challenges require OculusPlatfromSDK v19 or later */
+	/* Optional: Only find challenges belonging to this leaderboard.
+	Challenges require OculusPlatfromSDK v19 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Challenge Options")
 		void SetLeaderboardName(FString LeaderboardName);
 

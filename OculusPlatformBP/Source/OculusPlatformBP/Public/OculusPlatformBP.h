@@ -94,6 +94,19 @@ enum class EOBP_LaunchType : uint8
 	Deeplink
 };
 
+/* ovr_LaunchResult.h */
+UENUM(BlueprintType)
+enum class EOBP_LaunchResult : uint8
+{
+	Unknown,
+	Success,
+	FailedRoomFull,
+	FailedGameAlreadyStarted,
+	FailedRoomNotFound,
+	FailedUserDeclined,
+	FailedOtherReason
+};
+
 /* ovr_LeaderboardFilterType.h */
 UENUM(BlueprintType)
 enum class EOBP_LeaderboardFilterType : uint8
