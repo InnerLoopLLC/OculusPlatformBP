@@ -40,6 +40,16 @@ FString UOBP_LaunchDetails::GetRoomID()
 	return OBP_Int64ToFString(ovr_LaunchDetails_GetRoomID(ovrLaunchDetailsHandle));
 }
 
+FString UOBP_LaunchDetails::GetTrackingID()
+{
+#if PLATFORM_MINOR_VERSION >= 55
+	return ovr_LaunchDetails_GetTrackingID(ovrLaunchDetailsHandle);
+#else
+	OBP_PlatformVersionError("LaunchDetails::GetTrackingID", "v23");
+	return FString();
+#endif
+}
+
 UOBP_UserArray* UOBP_LaunchDetails::GetUsers()
 {
 	auto UserArrayToGet = NewObject<UOBP_UserArray>();

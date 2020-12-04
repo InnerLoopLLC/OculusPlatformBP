@@ -21,4 +21,9 @@ public:
 	/* Returns information about how the application was started. */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Application|Application Lifecycle", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 		static UOBP_LaunchDetails* GetLaunchDetails(UObject* WorldContextObject);
+
+	/* Logs if the user successfully deeplinked to a destination. 
+	Requires OculusPlatfromSDK v23 or later */
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Application|Application Lifecycle", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+		static void LogDeeplinkResult(UObject* WorldContextObject, FString TrackingID, EOBP_LaunchResult LaunchResult);
 };
