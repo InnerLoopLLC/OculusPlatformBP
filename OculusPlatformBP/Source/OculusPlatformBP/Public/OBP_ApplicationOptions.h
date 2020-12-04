@@ -25,6 +25,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Application|Application Options")
 		void DestroyApplicationOptions();
 
+	/* A message to be passed to a launched app, which can be retrieved with ovr_LaunchDetails_GetDeeplinkMessage() */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Application|Application Options")
 		void SetDeeplinkMessage(FString Value);
 };

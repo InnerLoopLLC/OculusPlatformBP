@@ -37,6 +37,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Application|Launch Details")
 		FString GetRoomID();
 
+	/* A unique identifer to keep track of a user going through the deeplinking flow 
+	Requires OculusPlatfromSDK v23 or later */
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Application|Launch Details")
+		FString GetTrackingID();
+
 	/* If provided, the intended users the user would like to be with This method may return null. This indicates that the value is not present or that the curent app or user is not permitted to access it. */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Application|Launch Details")
 		UOBP_UserArray* GetUsers();
