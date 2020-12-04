@@ -32,11 +32,5 @@ public class OculusPlatformBP : ModuleRules
 				"Projects"
             }
 			);
-		
-		// OVRPlugin
-		//{
-			//PublicDelayLoadDLLs.Add("OVRPlugin.dll");
-		//	RuntimeDependencies.Add("$(EngineDir)/Binaries/ThirdParty/Oculus/OVRPlugin/OVRPlugin/" + Target.Platform.ToString() + "/OVRPlugin.dll");
-		//}
 	}
 }

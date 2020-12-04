@@ -119,6 +119,15 @@ void UOBP_RichPresenceOptions::SetExtraContext(EOBP_RichPresenceExtraContext Ric
 #endif
 }
 
+void UOBP_RichPresenceOptions::SetInstanceId(const FString Value)
+{
+#if PLATFORM_MINOR_VERSION >= 55
+	ovr_RichPresenceOptions_SetInstanceId(ovrRichPresenceOptionsHandle, TCHAR_TO_ANSI(*Value));
+#else
+	OBP_PlatformVersionError("RichPresenceOptions::SetInstanceId", "v23");
+#endif
+}
+
 void UOBP_RichPresenceOptions::SetIsIdle(const bool RichPresenceIsIdle)
 {
 #if PLATFORM_MINOR_VERSION >= 39
