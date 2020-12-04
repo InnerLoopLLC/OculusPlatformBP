@@ -21,7 +21,7 @@ An Unreal Engine 4 plugin featuring a library of **300+ Blueprint nodes** for Oc
 + [User/Identity](https://developer.oculus.com/documentation/unreal/ps-presence/)
 
 #### What this is:
-+ ...the [*Oculus Platform SDK (v19)*](https://developer.oculus.com/reference/platform/v19/) exposed from C++ to Blueprints as directly as possible.
++ ...the [*Oculus Platform SDK (v23)*](https://developer.oculus.com/reference/platform/v19/) exposed from C++ to Blueprints as directly as possible.
 + ...or at least most of it.
 + ...client-side stuff **only**.
 
@@ -49,17 +49,19 @@ THIS IS A BREAKING UPDATE!! Most request nodes have been deprecated. This means 
 
 *11/19/20* - Published inital release (v1.0.0). All versions have been built for Epic Launcher distributions of UE4, for easy installation of the plugin into content only projects. These builds do not include the deprecated nodes. So, if your project was using a version of the plugin prior to 11/9/20 please continue building from source. Deprecated nodes will soon be removed completely. Please update your projects accordingly to prevent loading errors.
 
+*12/4/20* - A couple of minor updates to fix packaging errors and errors while building for Android. Also added support for Oculus Platform SDK v23.
+
 ## Requirements
-* **Recommended Unreal Engine Version** - [4.25.3-Oculus](https://github.com/Oculus-VR/UnrealEngine/tree/4.25)
+* **Recommended Unreal Engine Version** - [4.25.4-Oculus](https://github.com/Oculus-VR/UnrealEngine/tree/4.25)
 * **Supported Unreal Engine Versions** - 4.26, 4.25, 4.24, 4.23, 4.22, 4.21, 4.20 *(limited support)*
 * **Platforms** - Win64, Android *(note: not tested on Android)*
-* **Oculus Platform SDK** - [v19](https://developer.oculus.com/downloads/package/oculus-platform-sdk/19.0.0/)<br>
+* **Oculus Platform SDK** - [v23](https://developer.oculus.com/downloads/package/oculus-platform-sdk/19.0.0/)<br>
 * **Plugins** - OculusVR, OnlineSubsystemOculus<br>
-*(**It is highly recommended to update to Oculus Platform SDK v19 to access all features and bug fixes.**)*<br>
+*(**It is highly recommended to update to Oculus Platform SDK v23 to access all features and bug fixes.**)*<br>
 *(This plugin attempts to handle whichever Oculus Platform SDK is installed. Though 1.24+ is required.)*<br>
 
 ## Installation
-*(Optional)* - Update [*Oculus Platform SDK*](https://developer.oculus.com/downloads/package/oculus-platform-sdk/) to latest version (v19).
+*(Optional)* - Update [*Oculus Platform SDK*](https://developer.oculus.com/downloads/package/oculus-platform-sdk/) to latest version (v23).
 1) Place the *'OculusPlatformBP'* folder in *'Engine\Plugins\Marketplace'* or your project's *'Plugins'* folder
 2) Regenerate project files
 3) Compile engine
@@ -73,7 +75,7 @@ THIS IS A BREAKING UPDATE!! Most request nodes have been deprecated. This means 
 1) Download the latest [*Oculus Platform SDK*](https://developer.oculus.com/downloads/package/oculus-platform-sdk/)
 2) In that zip file, go to the *'Windows'* folder and copy *'LibOVRPlatform32_1.lib'* and *'LibOVRPlatform64_1.lib'* into the following folder within your engine directory: *'Engine\Source\ThirdParty\Oculus\LibOVRPlatform\LibOVRPlatform\lib'* replacing the existing files.
 3) If you're building for Quest, copy the two folders from the *'Android\libs'* directory of the zip file into that same engine directory.
-4) Copy the entire *'Include'* folder from the zip file and overwrite the files within *'Engine\Source\ThirdParty\Oculus\LibOVRPlatform\LibOVRPlatform\include'*.
+4) Copy the entire *'Include'* folder from the zip file and replace the *'Engine\Source\ThirdParty\Oculus\LibOVRPlatform\LibOVRPlatform\include'* folder.
 5) That's it. Regenerate project files to be safe, then compile and you're good to go.
 
 ## Support
