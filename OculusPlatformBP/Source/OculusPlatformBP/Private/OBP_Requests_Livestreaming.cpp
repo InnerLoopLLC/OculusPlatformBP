@@ -11,6 +11,11 @@ UOBP_Livestreaming_GetStatus::UOBP_Livestreaming_GetStatus(const FObjectInitiali
 {
 }
 
+UOBP_Livestreaming_LaunchLivestreamingFlow::UOBP_Livestreaming_LaunchLivestreamingFlow(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+}
+
 UOBP_Livestreaming_PauseStream::UOBP_Livestreaming_PauseStream(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
@@ -72,6 +77,58 @@ void UOBP_Livestreaming_GetStatus::Activate()
 UOBP_Livestreaming_GetStatus* UOBP_Livestreaming_GetStatus::GetStatus(UObject* WorldContextObject)
 {
 	return NewObject<UOBP_Livestreaming_GetStatus>();
+}
+
+//---LaunchLivestreamingFlow---
+void UOBP_Livestreaming_LaunchLivestreamingFlow::Activate()
+{
+#if PLATFORM_MINOR_VERSION >= 55
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
+
+	if (OculusIdentityInterface.IsValid())
+	{
+		ovrRequest RequestId = ovr_Livestreaming_LaunchLivestreamingFlow();
+
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
+			{
+				OBP_MessageError("Livestreaming::LaunchLivestreamingFlow", Message);
+				OnFailure.Broadcast();
+			}
+			else
+			{
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_Livestreaming_LaunchLivestreamingFlow)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully launched livestreaming flow."));	
+					OnSuccess.Broadcast();
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to launch livestreaming flow."));
+					OnFailure.Broadcast();
+				}
+			}
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast();
+	}
+#else
+	OBP_PlatformVersionError("Livestreaming::LaunchLivestreamingFlow", "v23");
+	OnFailure.Broadcast();
+#endif
+}
+
+UOBP_Livestreaming_LaunchLivestreamingFlow* UOBP_Livestreaming_LaunchLivestreamingFlow::LaunchLivestreamingFlow(UObject* WorldContextObject)
+{
+	return NewObject<UOBP_Livestreaming_LaunchLivestreamingFlow>();
 }
 
 //---PauseStream---
