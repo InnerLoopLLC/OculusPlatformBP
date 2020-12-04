@@ -29,27 +29,32 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options")
 		void DestroyRichPresenceOptions();
 
-	/* Rich Presence requires OculusPlatfromSDK 1.39 or later */
+	/* This the unique API Name that refers to an in-app destination
+	Rich Presence requires OculusPlatfromSDK 1.39 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options")
 		void SetApiName(const FString RichPresenceApiName);
 
-	/* Rich Presence requires OculusPlatfromSDK 1.39 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options")
+	/* DEPRECATED: Unused (v23)
+	Rich Presence requires OculusPlatfromSDK 1.39 or later */
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options", meta = (DeprecatedFunction, DeprecationMessage = "DEPRECATED: Unused (v23)"))
 		void SetArgsString(const FString RichPresenceApiKey, const FString RichPresenceApiValue);
 
 	/* Rich Presence requires OculusPlatfromSDK 1.39 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options")
 		void ClearArgs();
 
-	/* Requires OculusPlatfromSDK 1.40 or later */
+	/* The current amount of users that have joined this user's squad/team/game/match etc.
+	Requires OculusPlatfromSDK 1.40 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options")
 		void SetCurrentCapacity(const int32 RichPresenceCurrentCapacity);
 
-	/* Requires OculusPlatfromSDK 1.40 or later */
+	/* Optionally passed in to use a different deeplink message than the one defined in the api_name
+	Requires OculusPlatfromSDK 1.40 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options")
 		void SetDeeplinkMessageOverride(const FString RichPresenceDeeplinkMessage);
 
-	/* Rich Presence requires OculusPlatfromSDK 1.39 or later */
+	/* The time the current match/game/round etc. ends
+	Rich Presence requires OculusPlatfromSDK 1.39 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options")
 		void SetEndTime(const int32 RichPresenceEndTime);
 
@@ -57,23 +62,33 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options")
 		void SetExtraContext(EOBP_RichPresenceExtraContext RichPresenceExtraContext);
 
-	/* Rich Presence requires OculusPlatfromSDK 1.39 or later */
+	/* Users reported with the same instance ID will be considered to be together and could interact with each other 
+	Requires OculusPlatfromSDK v23 or later */
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options")
+		void SetInstanceId(const FString Value);
+
+	/* Set whether or not the person is shown as active or idle
+	Rich Presence requires OculusPlatfromSDK 1.39 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options")
 		void SetIsIdle(const bool RichPresenceIsIdle);
 
-	/* Rich Presence requires OculusPlatfromSDK 1.39 or later */
+	/* Set whether or not the person is shown as joinable or not to others
+	Rich Presence requires OculusPlatfromSDK 1.39 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options")
 		void SetIsJoinable(const bool RichPresenceIsJoinable);
 
-	/* Rich Presence requires OculusPlatfromSDK 1.39 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options")
+	/* DEPRECATED: Unused (v23)
+	Rich Presence requires OculusPlatfromSDK 1.39 or later */
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options", meta = (DeprecatedFunction, DeprecationMessage = "DEPRECATED: Unused (v23)"))
 		void SetJoinableId(const FString RichPresenceJoinableId);
 
-	/* Requires OculusPlatfromSDK 1.40 or later */
+	/* The maximum that can join this user
+	Requires OculusPlatfromSDK 1.40 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options")
 		void SetMaxCapacity(const int32 RichPresenceMaxCapacity);
 
-	/* Requires OculusPlatfromSDK 1.40 or later */
+	/* The time the current match/game/round etc. started
+	Requires OculusPlatfromSDK 1.40 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options")
 		void SetStartTime(const int32 RichPresenceStartTime);
 };
