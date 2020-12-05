@@ -21,7 +21,7 @@ An Unreal Engine 4 plugin featuring a library of **300+ Blueprint nodes** for Oc
 + [User/Identity](https://developer.oculus.com/documentation/unreal/ps-presence/)
 
 #### What this is:
-+ ...the [*Oculus Platform SDK (v23)*](https://developer.oculus.com/reference/platform/v19/) exposed from C++ to Blueprints as directly as possible.
++ ...the [*Oculus Platform SDK (v23)*](https://developer.oculus.com/reference/platform/v23/) exposed from C++ to Blueprints as directly as possible.
 + ...or at least most of it.
 + ...client-side stuff **only**.
 
@@ -30,7 +30,7 @@ An Unreal Engine 4 plugin featuring a library of **300+ Blueprint nodes** for Oc
 + ...an expansion, simplification, or explanation of the existing SDK.
 + ...complete. Some features have **not** been implemented.
 
-This means you'll find blueprint nodes for the functions included in the [*Oculus Platform SDK*](https://developer.oculus.com/reference/platform/v19/), but that's pretty much it. Please refer to the [*Oculus Platform SDK*](https://developer.oculus.com/reference/platform/v19/) and [*Oculus Platform Solutions*](https://developer.oculus.com/documentation/unreal/ps-platform-intro/) pages for documentation and example usage. Please refer to the [*Unreal Engine 4*](https://github.com/EpicGames/UnrealEngine) GitHub for links and resources related to UE4. Usage examples are included in the *Examples* folder.
+This means you'll find blueprint nodes for the functions included in the [*Oculus Platform SDK*](https://developer.oculus.com/reference/platform/v23/), but that's pretty much it. Please refer to the [*Oculus Platform SDK*](https://developer.oculus.com/reference/platform/v23/) and [*Oculus Platform Solutions*](https://developer.oculus.com/documentation/unreal/ps-platform-intro/) pages for documentation and example usage. Please refer to the [*Unreal Engine 4*](https://github.com/EpicGames/UnrealEngine) GitHub for links and resources related to UE4. Usage examples are included in the *Examples* folder.
 
 ## Progress
 [**View Current Progress on Trello**](https://trello.com/b/TNGt3Yer/oculusplatformbp)<br>
@@ -55,7 +55,7 @@ THIS IS A BREAKING UPDATE!! Most request nodes have been deprecated. This means 
 * **Recommended Unreal Engine Version** - [4.25.4-Oculus](https://github.com/Oculus-VR/UnrealEngine/tree/4.25)
 * **Supported Unreal Engine Versions** - 4.26, 4.25, 4.24, 4.23, 4.22, 4.21, 4.20 *(limited support)*
 * **Platforms** - Win64, Android *(note: not tested on Android)*
-* **Oculus Platform SDK** - [v23](https://developer.oculus.com/downloads/package/oculus-platform-sdk/19.0.0/)<br>
+* **Oculus Platform SDK** - [v23](https://developer.oculus.com/downloads/package/oculus-platform-sdk/23.0.0/)<br>
 * **Plugins** - OculusVR, OnlineSubsystemOculus<br>
 *(**It is highly recommended to update to Oculus Platform SDK v23 to access all features and bug fixes.**)*<br>
 *(This plugin attempts to handle whichever Oculus Platform SDK is installed. Though 1.24+ is required.)*<br>
