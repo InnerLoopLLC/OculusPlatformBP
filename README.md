@@ -51,6 +51,8 @@ THIS IS A BREAKING UPDATE!! Most request nodes have been deprecated. This means 
 
 *12/4/20* - A couple of minor updates to fix packaging errors and errors while building for Android. Also added support for Oculus Platform SDK v23.
 
+*2/4/21* - Oculus has launched [App Lab](https://developer.oculus.com/blog/introducing-app-lab-a-new-way-to-distribute-oculus-quest-apps/), which should now allow use of the Oculus Platform for Quest apps that aren't published on the official store. This plugin hasn't been tested for this yet, but I'll provide an update in the next couple of weeks once I've tested the features. In the meantime, please report any issues you run across. Thanks!
+
 ## Requirements
 * **Recommended Unreal Engine Version** - [4.25.4-Oculus](https://github.com/Oculus-VR/UnrealEngine/tree/4.25)
 * **Supported Unreal Engine Versions** - 4.26, 4.25, 4.24, 4.23, 4.22, 4.21, 4.20 *(limited support)*
@@ -76,7 +78,7 @@ THIS IS A BREAKING UPDATE!! Most request nodes have been deprecated. This means 
 2) In that zip file, go to the *'Windows'* folder and copy *'LibOVRPlatform32_1.lib'* and *'LibOVRPlatform64_1.lib'* into the following folder within your engine directory: *'Engine\Source\ThirdParty\Oculus\LibOVRPlatform\LibOVRPlatform\lib'* replacing the existing files.
 3) If you're building for Quest, copy the two folders from the *'Android\libs'* directory of the zip file into that same engine directory.
 4) Copy the entire *'Include'* folder from the zip file and replace the *'Engine\Source\ThirdParty\Oculus\LibOVRPlatform\LibOVRPlatform\include'* folder.
-5) That's it. Regenerate project files to be safe, then compile and you're good to go.
+5) That's it! Regenerate project files. Then compile and you're good to go.
 
 ## Support
 For technical support, questions, comments, etc, please reach out on our [Discord Server](https://discord.gg/k6KxJvq).<br>
