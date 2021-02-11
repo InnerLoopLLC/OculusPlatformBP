@@ -44,7 +44,7 @@ This means you'll find blueprint nodes for the functions included in the [*Oculu
 * **Supported Unreal Engine Versions** - 4.26, 4.25, 4.24, 4.23, 4.22, 4.21, 4.20 *(limited support)*
 * **Platforms** - Win64, Android *(note: Android testing is ongoing)*
 * **Oculus Platform SDK** - [v23](https://developer.oculus.com/downloads/package/oculus-platform-sdk/23.0.0/)<br>
-* **Plugins** - OculusVR, OnlineSubsystemOculus<br><br>
+* **Plugins** - OculusVR, OnlineSubsystemOculus<br>
 *(**It is highly recommended to update to Oculus Platform SDK v23 to access all features and bug fixes.**)*<br>
 *(This plugin attempts to handle whichever Oculus Platform SDK is installed. Though 1.24+ is required.)*<br>
 
@@ -56,7 +56,7 @@ This means you'll find blueprint nodes for the functions included in the [*Oculu
 4) Configure *DefaultEngine.ini [(instructions)](https://developer.oculus.com/documentation/unreal/ps-setup/)*
 5) Enable the *OculusVR*, *OnlineSubsystemOculus*, and *OculusPlatformBP* plugins in your project
 6) Check Oculus Entitlement
-7) Use *OculusPlatformBP* to do cool stuff<br><br>
+7) Use *OculusPlatformBP* to do cool stuff<br>
 *(Note: when configuring DefaultEngine.ini for an App Lab project, it is recommended to set RiftAppID and MobileAppID instead of only OculusAppID. This will allow you to deploy builds for the Rift store and SideQuest without adjusting your config file for each build. Keep in mind that it is currently not possible to share leaderboards etc between App Lab projects and official store releases. Official Quest store apps will be able to do this with App Groupings.)*<br>
 
 ## Updating the Oculus Platform SDK
@@ -65,7 +65,7 @@ This means you'll find blueprint nodes for the functions included in the [*Oculu
 2) In that zip file, go to the *'Windows'* folder and copy *'LibOVRPlatform32_1.lib'* and *'LibOVRPlatform64_1.lib'* into the following folder within your engine directory: *'Engine\Source\ThirdParty\Oculus\LibOVRPlatform\LibOVRPlatform\lib'* replacing the existing files.
 3) If you're building for Quest, copy the two folders from the *'Android\libs'* directory of the zip file into that same engine directory.
 4) Copy the entire *'Include'* folder from the zip file and replace the *'Engine\Source\ThirdParty\Oculus\LibOVRPlatform\LibOVRPlatform\include'* folder.
-5) That's it! Regenerate project files. Then compile and you're good to go.
+5) That's it! Regenerate project files. Then compile and you're good to go.<br>
 *(**It is highly recommended to update to Oculus Platform SDK v23 to access all features and bug fixes.**)*<br>
 ## Support
 For technical support, questions, comments, etc, please reach out on our [Discord Server](https://discord.gg/k6KxJvq).<br>
