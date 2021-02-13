@@ -35,28 +35,14 @@ This means you'll find blueprint nodes for the functions included in the [*Oculu
 ## Progress
 [**View Current Progress on Trello**](https://trello.com/b/TNGt3Yer/oculusplatformbp)<br>
 
-*11/9/20* - This update is a complete overhaul! The plugin has been refactored to more accurately reflect the file structure of the SDK, which will make incremental updates significantly easier in the future. Code has been cleaned up for consistency and clarity.
-
-THIS IS A BREAKING UPDATE!! Most request nodes have been deprecated. This means that if you were already using the plugin prior to this version, then you will need to replace request nodes in your project with updated versions. The plugin should warn you of any deprecated functions. Please contact me if you find any bugs.
-
-*11/10/20* - Added 4.26 branch.
-
-*11/11/20* - A quick update adding Application Launch Options and Deeplink support. Also includes a minor fix (some nodes weren't appearing in the proper context).
-
-*11/15/2020* - Phew! Another big one. This covers pretty much all of the remaining functionality of the SDK, aside from multiplayer stuff. This update adds support for Livestreaming, Media Sharing, Parties, Rooms, Teams, and VoIP. The only remaining things I'm aware of which haven't been handled yet are Asset Files and Language Packs. Some features of Rooms and VoIP are not included here, for various reasons. I'd recommend checking out Mordentral's excellent [*AdvancedSessions plugin*](https://github.com/mordentral/AdvancedSessionsPlugin) to help out with some of that stuff.
-
-*11/17/20* - Added Asset Files and Language Packs. So, we're pretty much feature complete. I think. Now it's back to testing for a while.
-
-*11/19/20* - Published inital release (v1.0.0). All versions have been built for Epic Launcher distributions of UE4, for easy installation of the plugin into content only projects. These builds do not include the deprecated nodes. So, if your project was using a version of the plugin prior to 11/9/20 please continue building from source. Deprecated nodes will soon be removed completely. Please update your projects accordingly to prevent loading errors.
-
-*12/4/20* - A couple of minor updates to fix packaging errors and errors while building for Android. Also added support for Oculus Platform SDK v23.
-
 *2/4/21* - Oculus has launched [App Lab](https://developer.oculus.com/blog/introducing-app-lab-a-new-way-to-distribute-oculus-quest-apps/), which should now allow use of the Oculus Platform for Quest apps that aren't published on the official store. This plugin hasn't been tested for this yet, but I'll provide an update in the next couple of weeks once I've tested the features. In the meantime, please report any issues you run across. Thanks!
+
+*2/11/21* - This plugin is now confirmed to function as expected on Oculus Quest via App Lab! Coming up next, an update will be available soon which should prevent crashes if multiple online subsystems are in use concurrently. If you're experiencing unexplained crashes while using request nodes, this will likely fix those issues for you! Additionally, deprecated nodes will be completely removed in the next update. Please make sure you're no longer using deprecated nodes in your projects. Finally, project templates are in progress which will provide functional examples of various features.
 
 ## Requirements
 * **Recommended Unreal Engine Version** - [4.25.4-Oculus](https://github.com/Oculus-VR/UnrealEngine/tree/4.25)
 * **Supported Unreal Engine Versions** - 4.26, 4.25, 4.24, 4.23, 4.22, 4.21, 4.20 *(limited support)*
-* **Platforms** - Win64, Android *(note: not tested on Android)*
+* **Platforms** - Win64, Android *(note: Android testing is ongoing)*
 * **Oculus Platform SDK** - [v23](https://developer.oculus.com/downloads/package/oculus-platform-sdk/23.0.0/)<br>
 * **Plugins** - OculusVR, OnlineSubsystemOculus<br>
 *(**It is highly recommended to update to Oculus Platform SDK v23 to access all features and bug fixes.**)*<br>
@@ -66,20 +52,21 @@ THIS IS A BREAKING UPDATE!! Most request nodes have been deprecated. This means 
 *(Optional)* - Update [*Oculus Platform SDK*](https://developer.oculus.com/downloads/package/oculus-platform-sdk/) to latest version (v23).
 1) Place the *'OculusPlatformBP'* folder in *'Engine\Plugins\Marketplace'* or your project's *'Plugins'* folder
 2) Regenerate project files
-3) Compile engine
+3) Compile engine *(**4.25.4-Oculus sometimes has compilation errors, these are solved by updating the Oculus Platform SDK to v23.**)*
 4) Configure *DefaultEngine.ini [(instructions)](https://developer.oculus.com/documentation/unreal/ps-setup/)*
 5) Enable the *OculusVR*, *OnlineSubsystemOculus*, and *OculusPlatformBP* plugins in your project
 6) Check Oculus Entitlement
-7) Use *OculusPlatformBP* to do cool stuff
+7) Use *OculusPlatformBP* to do cool stuff<br>
+*(Note: when configuring DefaultEngine.ini for an App Lab project, it is recommended to set RiftAppID and MobileAppID instead of only OculusAppID. This will allow you to deploy builds for the Rift store and SideQuest without adjusting your config file for each build. Keep in mind that it is currently not possible to share leaderboards etc between App Lab projects and official store releases. Official Quest store apps will be able to do this with App Groupings.)*<br>
 
 ## Updating the Oculus Platform SDK
-*(This is optional, but highly recommended in order to access all Oculus Platform SDK features and bugfixes)*
+*(This is optional, but highly recommended in order to access all Oculus Platform SDK features and bugfixes.)*
 1) Download the latest [*Oculus Platform SDK*](https://developer.oculus.com/downloads/package/oculus-platform-sdk/)
 2) In that zip file, go to the *'Windows'* folder and copy *'LibOVRPlatform32_1.lib'* and *'LibOVRPlatform64_1.lib'* into the following folder within your engine directory: *'Engine\Source\ThirdParty\Oculus\LibOVRPlatform\LibOVRPlatform\lib'* replacing the existing files.
 3) If you're building for Quest, copy the two folders from the *'Android\libs'* directory of the zip file into that same engine directory.
 4) Copy the entire *'Include'* folder from the zip file and replace the *'Engine\Source\ThirdParty\Oculus\LibOVRPlatform\LibOVRPlatform\include'* folder.
-5) That's it! Regenerate project files. Then compile and you're good to go.
-
+5) That's it! Regenerate project files. Then compile and you're good to go.<br>
+*(**It is highly recommended to update to Oculus Platform SDK v23 to access all features and bug fixes.**)*<br>
 ## Support
 For technical support, questions, comments, etc, please reach out on our [Discord Server](https://discord.gg/k6KxJvq).<br>
 Find out more about InnerLoop LLC at [https://www.innerloopllc.com](https://www.innerloopllc.com).
