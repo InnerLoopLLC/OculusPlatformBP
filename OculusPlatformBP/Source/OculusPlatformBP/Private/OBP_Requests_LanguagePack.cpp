@@ -30,7 +30,7 @@ void UOBP_LanguagePack_GetCurrent::Activate()
 	{
 		ovrRequest RequestId = ovr_LanguagePack_GetCurrent();
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -60,7 +60,7 @@ void UOBP_LanguagePack_GetCurrent::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast(nullptr);
 	}
 #else
@@ -84,7 +84,7 @@ void UOBP_LanguagePack_SetCurrent::Activate()
 	{
 		ovrRequest RequestId = ovr_LanguagePack_SetCurrent(TCHAR_TO_ANSI(*Tag));
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -115,7 +115,7 @@ void UOBP_LanguagePack_SetCurrent::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast(FString(), FString());
 	}
 #else

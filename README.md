@@ -52,7 +52,7 @@ This means you'll find blueprint nodes for the functions included in the [*Oculu
 *(Optional)* - Update [*Oculus Platform SDK*](https://developer.oculus.com/downloads/package/oculus-platform-sdk/) to latest version (v23).
 1) Place the *'OculusPlatformBP'* folder in *'Engine\Plugins\Marketplace'* or your project's *'Plugins'* folder
 2) Regenerate project files
-3) Compile engine
+3) Compile engine *(**4.25.4-Oculus sometimes has compilation errors, these are solved by updating the Oculus Platform SDK to v23.**)*
 4) Configure *DefaultEngine.ini [(instructions)](https://developer.oculus.com/documentation/unreal/ps-setup/)*
 5) Enable the *OculusVR*, *OnlineSubsystemOculus*, and *OculusPlatformBP* plugins in your project
 6) Check Oculus Entitlement
