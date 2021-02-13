@@ -64,7 +64,7 @@ void UOBP_Achievements_AddCount::Activate()
 	{
 		ovrRequest RequestId = ovr_Achievements_AddCount(TCHAR_TO_ANSI(*AchievementName), Count);
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -94,7 +94,7 @@ void UOBP_Achievements_AddCount::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast("", false);
 	}
 }
@@ -116,7 +116,7 @@ void UOBP_Achievements_AddFields::Activate()
 	{
 		ovrRequest RequestId = ovr_Achievements_AddFields(TCHAR_TO_ANSI(*AchievementName), TCHAR_TO_ANSI(*Fields));
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -146,7 +146,7 @@ void UOBP_Achievements_AddFields::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast("", false);
 	}
 }
@@ -168,7 +168,7 @@ void UOBP_Achievements_GetAllDefinitions::Activate()
 	{
 		ovrRequest RequestId = ovr_Achievements_GetAllDefinitions();
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -198,7 +198,7 @@ void UOBP_Achievements_GetAllDefinitions::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -217,7 +217,7 @@ void UOBP_Achievements_GetAllProgress::Activate()
 	{
 		ovrRequest RequestId = ovr_Achievements_GetAllProgress();
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -247,7 +247,7 @@ void UOBP_Achievements_GetAllProgress::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -281,7 +281,7 @@ void UOBP_Achievements_GetDefinitionsByName::Activate()
 		ovrRequest RequestId = ovr_Achievements_GetDefinitionsByName(NamesArray2, Count);
 		//ovrRequest RequestId = ovr_Achievements_GetDefinitionsByName(OBP_FStringArrayToChar(Names), Count);
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -313,7 +313,7 @@ void UOBP_Achievements_GetDefinitionsByName::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -335,7 +335,7 @@ void UOBP_Achievements_GetNextAchievementDefinitionArrayPage::Activate()
 	{
 		ovrRequest RequestId = ovr_Achievements_GetNextAchievementDefinitionArrayPage(AchievementDefinitionArray->ovrAchievementDefinitionArrayHandle);
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -365,7 +365,7 @@ void UOBP_Achievements_GetNextAchievementDefinitionArrayPage::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -386,7 +386,7 @@ void UOBP_Achievements_GetNextAchievementProgressArrayPage::Activate()
 	{
 		ovrRequest RequestId = ovr_Achievements_GetNextAchievementProgressArrayPage(AchievementProgressArray->ovrAchievementProgressArrayHandle);
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -416,7 +416,7 @@ void UOBP_Achievements_GetNextAchievementProgressArrayPage::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -452,7 +452,7 @@ void UOBP_Achievements_GetProgressByName::Activate()
 		ovrRequest RequestId = ovr_Achievements_GetProgressByName(NamesArray2, Count);
 		//ovrRequest RequestId = ovr_Achievements_GetProgressByName(OBP_FStringArrayToChar(Names), Count);
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -484,7 +484,7 @@ void UOBP_Achievements_GetProgressByName::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -506,7 +506,7 @@ void UOBP_Achievements_Unlock::Activate()
 	{
 		ovrRequest RequestId = ovr_Achievements_Unlock(TCHAR_TO_ANSI(*AchievementName));
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -538,7 +538,7 @@ void UOBP_Achievements_Unlock::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast("", false);
 	}
 }

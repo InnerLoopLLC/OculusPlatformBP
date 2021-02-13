@@ -65,7 +65,7 @@ void UOBP_AssetFile_DeleteByID::Activate()
 	{
 		ovrRequest RequestId = ovr_AssetFile_DeleteById(OBP_FStringToInt64(AssetFileID));
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -97,7 +97,7 @@ void UOBP_AssetFile_DeleteByID::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast(FString(), FString(), false);
 	}
 }
@@ -118,7 +118,7 @@ void UOBP_AssetFile_DeleteByName::Activate()
 	{
 		ovrRequest RequestId = ovr_AssetFile_DeleteByName(TCHAR_TO_ANSI(*AssetFileName));
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -150,7 +150,7 @@ void UOBP_AssetFile_DeleteByName::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast(FString(), FString(), false);
 	}
 }
@@ -171,7 +171,7 @@ void UOBP_AssetFile_DownloadByID::Activate()
 	{
 		ovrRequest RequestId = ovr_AssetFile_DownloadById(OBP_FStringToInt64(AssetFileID));
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -202,7 +202,7 @@ void UOBP_AssetFile_DownloadByID::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast(FString(), FString());
 	}
 }
@@ -223,7 +223,7 @@ void UOBP_AssetFile_DownloadByName::Activate()
 	{
 		ovrRequest RequestId = ovr_AssetFile_DownloadByName(TCHAR_TO_ANSI(*AssetFileName));
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -254,7 +254,7 @@ void UOBP_AssetFile_DownloadByName::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast(FString(), FString());
 	}
 }
@@ -275,7 +275,7 @@ void UOBP_AssetFile_DownloadCancelByID::Activate()
 	{
 		ovrRequest RequestId = ovr_AssetFile_DownloadCancelById(OBP_FStringToInt64(AssetFileID));
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -307,7 +307,7 @@ void UOBP_AssetFile_DownloadCancelByID::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast(FString(), FString(), false);
 	}
 }
@@ -328,7 +328,7 @@ void UOBP_AssetFile_DownloadCancelByName::Activate()
 	{
 		ovrRequest RequestId = ovr_AssetFile_DownloadCancelByName(TCHAR_TO_ANSI(*AssetFileName));
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -360,7 +360,7 @@ void UOBP_AssetFile_DownloadCancelByName::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast(FString(), FString(), false);
 	}
 }
@@ -381,7 +381,7 @@ void UOBP_AssetFile_GetList::Activate()
 	{
 		ovrRequest RequestId = ovr_AssetFile_GetList();
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -411,7 +411,7 @@ void UOBP_AssetFile_GetList::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -430,7 +430,7 @@ void UOBP_AssetFile_StatusByID::Activate()
 	{
 		ovrRequest RequestId = ovr_AssetFile_StatusById(OBP_FStringToInt64(AssetFileID));
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -460,7 +460,7 @@ void UOBP_AssetFile_StatusByID::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -481,7 +481,7 @@ void UOBP_AssetFile_StatusByName::Activate()
 	{
 		ovrRequest RequestId = ovr_AssetFile_StatusByName(TCHAR_TO_ANSI(*AssetFileName));
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -511,7 +511,7 @@ void UOBP_AssetFile_StatusByName::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast(nullptr);
 	}
 }
