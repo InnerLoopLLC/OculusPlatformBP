@@ -54,7 +54,7 @@ void UOBP_IAP_ConsumePurchase::Activate()
 	{
 		ovrRequest RequestId = ovr_IAP_ConsumePurchase(TCHAR_TO_ANSI(*SKU));
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -82,7 +82,7 @@ void UOBP_IAP_ConsumePurchase::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast();
 	}
 }
@@ -103,7 +103,7 @@ void UOBP_IAP_GetNextProductArrayPage::Activate()
 	{
 		ovrRequest RequestId = ovr_IAP_GetNextProductArrayPage(ProductArray->ovrProductArrayHandle);
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -133,7 +133,7 @@ void UOBP_IAP_GetNextProductArrayPage::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -154,7 +154,7 @@ void UOBP_IAP_GetNextPurchaseArrayPage::Activate()
 	{
 		ovrRequest RequestId = ovr_IAP_GetNextPurchaseArrayPage(PurchaseArray->ovrPurchaseArrayHandle);
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -184,7 +184,7 @@ void UOBP_IAP_GetNextPurchaseArrayPage::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -219,7 +219,7 @@ void UOBP_IAP_GetProductsBySKU::Activate()
 		
 		ovrRequest RequestId = ovr_IAP_GetProductsBySKU(SKUsArray2, Count);
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -251,7 +251,7 @@ void UOBP_IAP_GetProductsBySKU::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -273,7 +273,7 @@ void UOBP_IAP_GetViewerPurchases::Activate()
 	{
 		ovrRequest RequestId = ovr_IAP_GetViewerPurchases();
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -303,7 +303,7 @@ void UOBP_IAP_GetViewerPurchases::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -323,7 +323,7 @@ void UOBP_IAP_GetViewerPurchasesDurableCache::Activate()
 	{
 		ovrRequest RequestId = ovr_IAP_GetViewerPurchasesDurableCache();
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -353,7 +353,7 @@ void UOBP_IAP_GetViewerPurchasesDurableCache::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast(nullptr);
 	}
 #else
@@ -376,7 +376,7 @@ void UOBP_IAP_LaunchCheckoutFlow::Activate()
 	{
 		ovrRequest RequestId = ovr_IAP_LaunchCheckoutFlow(TCHAR_TO_ANSI(*SKU));
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -406,7 +406,7 @@ void UOBP_IAP_LaunchCheckoutFlow::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast(nullptr);
 	}
 }

@@ -93,7 +93,7 @@ ovrLeaderboardStartAt OBP_LeaderboardStartAtToEnum(EOBP_LeaderboardStartAt OBPLe
 void OBP_PlatformVersionError(FString NodeName, FString RequiredPlatformVersion)
 {
 	FString ErrorString = FString("Unable to use ") + NodeName + FString(" node. Incorrect OculusPlatformSDK version in use. ") + RequiredPlatformVersion + FString(" or later required.");
-	UE_LOG(LogOculusPlatformBP, Log, TEXT("%s"), *ErrorString);
+	UE_LOG(LogOculusPlatformBP, Warning, TEXT("%s"), *ErrorString);
 }
 
 /* Log ovr message errors.*/
