@@ -34,7 +34,7 @@ void UOBP_Notification_GetNextRoomInviteNotificationArrayPage::Activate()
 	{
 		ovrRequest RequestId = ovr_Notification_GetNextRoomInviteNotificationArrayPage(RoomInviteNotificationArray->ovrRoomInviteNotificationArrayHandle);
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -64,7 +64,7 @@ void UOBP_Notification_GetNextRoomInviteNotificationArrayPage::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -85,7 +85,7 @@ void UOBP_Notification_GetRoomInvites::Activate()
 	{
 		ovrRequest RequestId = ovr_Notification_GetRoomInvites();
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -115,7 +115,7 @@ void UOBP_Notification_GetRoomInvites::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -134,7 +134,7 @@ void UOBP_Notification_MarkAsRead::Activate()
 	{
 		ovrRequest RequestId = ovr_Notification_MarkAsRead(OBP_FStringToInt64(NotificationID));
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -162,7 +162,7 @@ void UOBP_Notification_MarkAsRead::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast();
 	}
 }
