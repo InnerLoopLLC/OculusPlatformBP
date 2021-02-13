@@ -38,7 +38,7 @@ void UOBP_Media_ShareToFacebook::Activate()
 
 		ovrRequest RequestId = ovr_Media_ShareToFacebook(TCHAR_TO_ANSI(*PostTextSuggestion), TCHAR_TO_ANSI(*FilePath), ThisMediaContentType);
 
-		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get());
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
 			[this](ovrMessageHandle Message, bool bIsError)
 		{
@@ -83,7 +83,7 @@ void UOBP_Media_ShareToFacebook::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure DefaultEngine.ini is properly configured."));
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
 		OnFailure.Broadcast(EOBP_ShareMediaStatus::Unknown);
 	}
 }
