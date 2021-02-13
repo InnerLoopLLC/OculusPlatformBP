@@ -39,6 +39,8 @@ This means you'll find blueprint nodes for the functions included in the [*Oculu
 
 *2/11/21* - This plugin is now confirmed to function as expected on Oculus Quest via App Lab! Coming up next, an update will be available soon which should prevent crashes if multiple online subsystems are in use concurrently. If you're experiencing unexplained crashes while using request nodes, this will likely fix those issues for you! Additionally, deprecated nodes will be completely removed in the next update. Please make sure you're no longer using deprecated nodes in your projects. Finally, project templates are in progress which will provide functional examples of various features.
 
+*2/13/21* - Fixed crash when multiple OnlineSubsystems were in use and OSS-Oculus was not the default. Removed deprecated functions.
+
 ## Requirements
 * **Recommended Unreal Engine Version** - [4.25.4-Oculus](https://github.com/Oculus-VR/UnrealEngine/tree/4.25)
 * **Supported Unreal Engine Versions** - 4.26, 4.25, 4.24, 4.23, 4.22, 4.21, 4.20 *(limited support)*
