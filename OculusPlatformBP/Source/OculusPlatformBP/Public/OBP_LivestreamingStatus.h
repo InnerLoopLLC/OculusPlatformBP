@@ -18,18 +18,18 @@ public:
 
 	ovrLivestreamingStatus* ovrLivestreamingStatusHandle;
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Livestreaming|Livestreaming Status")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Livestreaming|Livestreaming Status")
 		bool GetCommentsVisible();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Livestreaming|Livestreaming Status")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Livestreaming|Livestreaming Status")
 		bool GetIsPaused();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Livestreaming|Livestreaming Status")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Livestreaming|Livestreaming Status")
 		bool GetLivestreamingEnabled();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Livestreaming|Livestreaming Status")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Livestreaming|Livestreaming Status")
 		int32 GetLivestreamingType();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Livestreaming|Livestreaming Status")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Livestreaming|Livestreaming Status")
 		bool GetMicEnabled();
 };

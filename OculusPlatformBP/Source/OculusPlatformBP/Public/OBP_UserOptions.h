@@ -19,7 +19,7 @@ public:
 
 	ovrUserOptions* ovrUserOptionsHandle;
 
-	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|User|User Options", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User|User Options", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 		static UOBP_UserOptions* CreateUserOptions(UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User|User Options")

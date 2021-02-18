@@ -22,9 +22,9 @@ public:
 	ovrUserAndRoom* ovrUserAndRoomHandle;
 
 	/* This method may return null. This indicates that the value is not present or that the curent app or user is not permitted to access it. */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User|User And Room")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|User|User And Room")
 		UOBP_Room* GetRoom();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User|User And Room")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|User|User And Room")
 		UOBP_User* GetUser();
 };

@@ -19,15 +19,15 @@ public:
 
 	ovrDataStore* ovrDataStoreHandle;
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Misc|Data Store")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Misc|Data Store")
 		int32 Contains(FString Key);
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Misc|Data Store")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Misc|Data Store")
 		FString GetKey(int32 Index);
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Misc|Data Store")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Misc|Data Store")
 		int32 GetNumKeys();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Misc|Data Store")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Misc|Data Store")
 		FString GetValue(FString Key);
 };
