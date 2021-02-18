@@ -22,7 +22,7 @@ public:
 #endif
 
 	/* Challenges require OculusPlatfromSDK v19 or later */
-	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Challenges|Challenge Options", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Challenge Options", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 		static UOBP_ChallengeOptions* CreateChallengeOptions(UObject* WorldContextObject);
 
 	/* Challenges require OculusPlatfromSDK v19 or later */

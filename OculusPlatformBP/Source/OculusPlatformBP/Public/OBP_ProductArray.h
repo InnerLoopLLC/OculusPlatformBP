@@ -20,15 +20,15 @@ public:
 
 	ovrProductArray* ovrProductArrayHandle;
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|IAP|Product Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|IAP|Product Array")
 		UOBP_Product* GetElement(int32 Index);
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|IAP|Product Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|IAP|Product Array")
 		FString GetNextUrl();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|IAP|Product Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|IAP|Product Array")
 		int32 GetSize();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|IAP|Product Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|IAP|Product Array")
 		bool HasNextPage();
 };

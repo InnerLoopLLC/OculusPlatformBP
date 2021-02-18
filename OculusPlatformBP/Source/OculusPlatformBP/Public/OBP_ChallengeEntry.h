@@ -22,26 +22,26 @@ public:
 #endif
 
 	/* Challenges require OculusPlatfromSDK v19 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Challenge Entry")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Challenges|Challenge Entry")
 		FString GetExtraData();
 
 	/* Challenges require OculusPlatfromSDK v19 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Challenge Entry")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Challenges|Challenge Entry")
 		int32 GetExtraDataLength();
 
 	/* Challenges require OculusPlatfromSDK v19 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Challenge Entry")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Challenges|Challenge Entry")
 		int32 GetRank();
 
 	/* Challenges require OculusPlatfromSDK v19 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Challenge Entry")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Challenges|Challenge Entry")
 		int32 GetScore();
 
 	/* Challenges require OculusPlatfromSDK v19 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Challenge Entry")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Challenges|Challenge Entry")
 		int32 GetTimestamp();
 
 	/* Challenges require OculusPlatfromSDK v19 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Challenge Entry")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Challenges|Challenge Entry")
 		UOBP_User* GetUser();
 };

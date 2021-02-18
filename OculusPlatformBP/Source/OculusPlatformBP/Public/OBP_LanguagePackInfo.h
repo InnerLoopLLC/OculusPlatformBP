@@ -22,14 +22,14 @@ public:
 #endif
 
 	/* Language Pack Info requires OculusPlatfromSDK 1.28 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Language Pack|Language Pack Info")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Language Pack|Language Pack Info")
 		FString GetEnglishName();
 
 	/* Language Pack Info requires OculusPlatfromSDK 1.28 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Language Pack|Language Pack Info")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Language Pack|Language Pack Info")
 		FString GetNativeName();
 
 	/* Language Pack Info requires OculusPlatfromSDK 1.28 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Language Pack|Language Pack Info")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Language Pack|Language Pack Info")
 		FString GetTag();
 };
