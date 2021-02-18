@@ -26,26 +26,26 @@ public:
 		UOBP_ChallengeEntry* GetElement(int32 Index);
 
 	/* Challenges require OculusPlatfromSDK v19 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Challenge Entry Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Challenges|Challenge Entry Array")
 		FString GetNextUrl();
 
 	/* Challenges require OculusPlatfromSDK v19 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Challenge Entry Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Challenges|Challenge Entry Array")
 		FString GetPreviousUrl();
 
 	/* Challenges require OculusPlatfromSDK v19 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Challenge Entry Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Challenges|Challenge Entry Array")
 		int32 GetSize();
 
 	/* Challenges require OculusPlatfromSDK v19 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Challenge Entry Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Challenges|Challenge Entry Array")
 		int32 GetTotalCount();
 
 	/* Challenges require OculusPlatfromSDK v19 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Challenge Entry Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Challenges|Challenge Entry Array")
 		bool HasNextPage();
 
 	/* Challenges require OculusPlatfromSDK v19 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Challenge Entry Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Challenges|Challenge Entry Array")
 		bool HasPreviousPage();
 };
