@@ -19,7 +19,7 @@ class OCULUSPLATFORMBP_API UOBP_Functions_ApplicationLifecycle : public UBluepri
 public:
 
 	/* Returns information about how the application was started. */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Application|Application Lifecycle", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Application|Application Lifecycle", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 		static UOBP_LaunchDetails* GetLaunchDetails(UObject* WorldContextObject);
 
 	/* Logs if the user successfully deeplinked to a destination. 

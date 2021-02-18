@@ -20,24 +20,24 @@ public:
 
 	ovrLeaderboardEntryArray* ovrLeaderboardEntryArrayHandle;
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry Array")
 		UOBP_LeaderboardEntry* GetElement(int32 Index);
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry Array")
 		FString GetNextUrl();
 	
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry Array")
 		FString GetPreviousUrl();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry Array")
 		int32 GetSize();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry Array")
 		int32 GetTotalCount();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry Array")
 		bool HasNextPage();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry Array")
 		bool HasPreviousPage();
 };

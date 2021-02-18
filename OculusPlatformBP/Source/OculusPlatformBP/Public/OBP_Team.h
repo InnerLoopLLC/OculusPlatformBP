@@ -22,18 +22,18 @@ public:
 #endif
 
 	/* Teams require OculusPlatfromSDK 1.39 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Team|Team")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Team|Team")
 		UOBP_UserArray* GetAssignedUsers();
 
 	/* Teams require OculusPlatfromSDK 1.39 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Team|Team")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Team|Team")
 		int32 GetMaxUsers();
 
 	/* Teams require OculusPlatfromSDK 1.39 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Team|Team")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Team|Team")
 		int32 GetMinUsers();
 
 	/* Teams require OculusPlatfromSDK 1.39 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Team|Team")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Team|Team")
 		FString GetName();
 };

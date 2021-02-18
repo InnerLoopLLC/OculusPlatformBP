@@ -22,7 +22,7 @@ public:
 #endif
 
 	/* Rich Presence requires OculusPlatfromSDK 1.39 or later */
-	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 		static UOBP_RichPresenceOptions* CreateRichPresenceOptions(UObject* WorldContextObject);
 
 	/* Rich Presence requires OculusPlatfromSDK 1.39 or later */
