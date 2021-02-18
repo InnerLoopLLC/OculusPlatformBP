@@ -20,9 +20,9 @@ public:
 
 	ovrSdkAccountArray* ovrSdkAccountArrayHandle;
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Misc|SdkAccount")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Misc|SdkAccount")
 		UOBP_SdkAccount* GetElement(int32 Index);
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Misc|SdkAccount")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Misc|SdkAccount")
 		int32 GetSize();
 };

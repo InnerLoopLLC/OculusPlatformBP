@@ -20,27 +20,27 @@ public:
 
 	ovrAssetDetails* ovrAssetDetailsHandle;
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Asset File|Asset Details")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Asset File|Asset Details")
 		FString GetAssetId(int32 Index);
 
 	/* Requires OculusPlatfromSDK 1.28 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Asset File|Asset Details")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Asset File|Asset Details")
 		FString GetAssetType();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Asset File|Asset Details")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Asset File|Asset Details")
 		FString GetDownloadStatus();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Asset File|Asset Details")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Asset File|Asset Details")
 		FString GetFilePath();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Asset File|Asset Details")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Asset File|Asset Details")
 		FString GetIapStatus();
 
 	/* Requires OculusPlatfromSDK 1.28 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Asset File|Asset Details")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Asset File|Asset Details")
 		UOBP_LanguagePackInfo* GetLanguage();
 
 	/* Requires OculusPlatfromSDK 1.40 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Asset File|Asset Details")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Asset File|Asset Details")
 		FString GetMetadata();
 };

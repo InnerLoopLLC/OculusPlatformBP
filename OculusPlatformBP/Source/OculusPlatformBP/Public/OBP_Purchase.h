@@ -19,15 +19,15 @@ public:
 
 	ovrPurchase* ovrPurchaseHandle;
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|IAP|Purchase")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|IAP|Purchase")
 		int32 GetExpirationTime();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|IAP|Purchase")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|IAP|Purchase")
 		int32 GetGrantTime();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|IAP|Purchase")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|IAP|Purchase")
 		FString GetPurchaseID();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|IAP|Purchase")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|IAP|Purchase")
 		FString GetSKU();
 };

@@ -21,11 +21,11 @@ class OCULUSPLATFORMBP_API UOBP_Functions_Voip : public UBlueprintFunctionLibrar
 public:
 
 	/* Returns SystemVoip microphone's mute state. */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Voip|Voip", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Voip|Voip", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 		static EOBP_VoipMuteState GetSystemVoipMicrophoneMuted(UObject* WorldContextObject);
 
 	/* Returns SystemVoip status. */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Voip|Voip", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Voip|Voip", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 		static EOBP_SystemVoipStatus GetSystemVoipStatus(UObject* WorldContextObject);
 
 	/* This function is used to enable or disable the local microphone. When muted, the microphone will not transmit any audio. 

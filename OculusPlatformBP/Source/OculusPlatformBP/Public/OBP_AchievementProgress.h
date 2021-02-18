@@ -18,18 +18,18 @@ public:
 
 	ovrAchievementProgress* ovrAchievementProgressHandle;
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Achievement Progress")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Achievements|Achievement Progress")
 		FString GetBitfield();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Achievement Progress")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Achievements|Achievement Progress")
 		int32 GetCount();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Achievement Progress")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Achievements|Achievement Progress")
 		bool GetIsUnlocked();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Achievement Progress")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Achievements|Achievement Progress")
 		FString GetName();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Achievement Progress")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Achievements|Achievement Progress")
 		int32 GetUnlockTime();
 };

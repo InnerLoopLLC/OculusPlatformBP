@@ -19,7 +19,7 @@ public:
 
 	ovrApplicationOptions* ovrApplicationOptionsHandle;
 
-	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Application|Application Options", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Application|Application Options", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 		static UOBP_ApplicationOptions* CreateApplicationOptions(UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Application|Application Options")
