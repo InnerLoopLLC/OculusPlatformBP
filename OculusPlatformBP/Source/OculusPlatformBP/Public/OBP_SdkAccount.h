@@ -19,9 +19,9 @@ public:
 
 	ovrSdkAccount* ovrSdkAccountHandle;
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Misc|SdkAccount")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Misc|SdkAccount")
 		EOBP_SdkAccountType GetAccountType();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Misc|SdkAccount")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Misc|SdkAccount")
 		FString GetUserId();
 };

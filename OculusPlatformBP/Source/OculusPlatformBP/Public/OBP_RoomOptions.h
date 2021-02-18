@@ -19,7 +19,7 @@ public:
 
 	ovrRoomOptions* ovrRoomOptionsHandle;
 
-	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Room|Room Options", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Room|Room Options", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 		static UOBP_RoomOptions* CreateRoomOptions(UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Room|Room Options")

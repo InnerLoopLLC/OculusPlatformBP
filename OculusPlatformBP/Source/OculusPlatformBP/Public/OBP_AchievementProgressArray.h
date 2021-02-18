@@ -20,15 +20,15 @@ public:
 
 	ovrAchievementProgressArray* ovrAchievementProgressArrayHandle;
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Achievement Progress Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Achievements|Achievement Progress Array")
 		UOBP_AchievementProgress* GetElement(int32 Index);
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Achievement Progress Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Achievements|Achievement Progress Array")
 		FString GetNextUrl();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Achievement Progress Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Achievements|Achievement Progress Array")
 		int32 GetSize();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Achievement Progress Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Achievements|Achievement Progress Array")
 		bool HasNextPage();
 };

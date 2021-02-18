@@ -19,15 +19,15 @@ public:
 
 	ovrRoomInviteNotificationArray* ovrRoomInviteNotificationArrayHandle;
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Room|Room Invite Notification")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Room|Room Invite Notification")
 		UOBP_RoomInviteNotification* GetElement(int32 Index);
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Room|Room Invite Notification")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Room|Room Invite Notification")
 		FString GetNextUrl();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Room|Room Invite Notification")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Room|Room Invite Notification")
 		int32 GetSize();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Room|Room Invite Notification")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Room|Room Invite Notification")
 		bool HasNextPage();
 };

@@ -20,15 +20,15 @@ public:
 
 	ovrUserArray* ovrUserArrayHandle;
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User|User Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|User|User Array")
 		UOBP_User* GetElement(int32 Index);
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User|User Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|User|User Array")
 		FString GetNextUrl();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User|User Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|User|User Array")
 		int32 GetSize();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User|User Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|User|User Array")
 		bool HasNextPage();
 };

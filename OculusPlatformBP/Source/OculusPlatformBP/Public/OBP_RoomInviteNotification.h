@@ -18,15 +18,15 @@ public:
 
 	ovrRoomInviteNotification* ovrRoomInviteNotificationHandle;
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Room|Room Invite Notification")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Room|Room Invite Notification")
 		FString GetID();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Room|Room Invite Notification")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Room|Room Invite Notification")
 		FString GetRoomID();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Room|Room Invite Notification")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Room|Room Invite Notification")
 		FString GetSenderID();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Room|Room Invite Notification")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Room|Room Invite Notification")
 		int32 GetSentTime();
 };

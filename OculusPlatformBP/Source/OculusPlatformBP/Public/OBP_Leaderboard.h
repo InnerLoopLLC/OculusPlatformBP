@@ -21,6 +21,6 @@ public:
 #endif
 
 	/* Requires OculusPlatfromSDK v18 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard|Leaderboard")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard|Leaderboard")
 		FString GetApiName();
 };
