@@ -19,15 +19,15 @@ public:
 
 	ovrApplicationVersion* ovrApplicationVersionHandle;
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Application|Application Version")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Application|Application Version")
 		int32 GetCurrentCode();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Application|Application Version")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Application|Application Version")
 		FString GetCurrentName();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Application|Application Version")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Application|Application Version")
 		int32 GetLatestCode();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Application|Application Version")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Application|Application Version")
 		FString GetLatestName();
 };

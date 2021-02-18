@@ -18,15 +18,15 @@ public:
 
 	ovrAchievementDefinition* ovrAchievementDefinitionHandle;
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Achievement Definition")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Achievements|Achievement Definition")
 		FString GetName();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Achievement Definition")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Achievements|Achievement Definition")
 		int32 GetBitfieldLength();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Achievement Definition")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Achievements|Achievement Definition")
 		int32 GetTarget();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Achievements|Achievement Definition")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Achievements|Achievement Definition")
 		EOBP_AchievementType GetType();
 };

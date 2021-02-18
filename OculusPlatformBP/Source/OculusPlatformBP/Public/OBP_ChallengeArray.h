@@ -23,30 +23,30 @@ public:
 #endif
 
 	/* Challenges require OculusPlatfromSDK v19 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Challenge Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Challenges|Challenge Array")
 		UOBP_Challenge* GetElement(int32 Index);
 
 	/* Challenges require OculusPlatfromSDK v19 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Challenge Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Challenges|Challenge Array")
 		FString GetNextUrl();
 
 	/* Challenges require OculusPlatfromSDK v19 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Challenge Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Challenges|Challenge Array")
 		FString GetPreviousUrl();
 
 	/* Challenges require OculusPlatfromSDK v19 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Challenge Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Challenges|Challenge Array")
 		int32 GetSize();
 
 	/* Challenges require OculusPlatfromSDK v19 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Challenge Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Challenges|Challenge Array")
 		int32 GetTotalCount();
 
 	/* Challenges require OculusPlatfromSDK v19 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Challenge Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Challenges|Challenge Array")
 		bool HasNextPage();
 
 	/* Challenges require OculusPlatfromSDK v19 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Challenge Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Challenges|Challenge Array")
 		bool HasPreviousPage();
 };

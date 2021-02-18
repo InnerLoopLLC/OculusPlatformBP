@@ -23,10 +23,10 @@ public:
 #endif
 
 	/* Teams require OculusPlatfromSDK 1.39 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Team|Team Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Team|Team Array")
 		UOBP_Team* GetElement(int32 Index);
 
 	/* Teams require OculusPlatfromSDK 1.39 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Team|Team Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Team|Team Array")
 		int32 GetSize();
 };

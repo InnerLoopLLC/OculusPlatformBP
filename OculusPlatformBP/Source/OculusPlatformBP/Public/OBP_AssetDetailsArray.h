@@ -20,9 +20,9 @@ public:
 
 	ovrAssetDetailsArray* ovrAssetDetailsArrayHandle;
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Asset File|Asset Details Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Asset File|Asset Details Array")
 		UOBP_AssetDetails* GetElement(int32 Index);
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Asset File|Asset Details Array")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Asset File|Asset Details Array")
 		int32 GetSize();
 };

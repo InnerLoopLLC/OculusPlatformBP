@@ -18,15 +18,15 @@ public:
 
 	ovrProduct* ovrProductHandle;
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|IAP|Product")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|IAP|Product")
 		FString GetDescription();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|IAP|Product")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|IAP|Product")
 		FString GetFormattedPrice();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|IAP|Product")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|IAP|Product")
 		FString GetName();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|IAP|Product")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|IAP|Product")
 		FString GetSKU();
 };

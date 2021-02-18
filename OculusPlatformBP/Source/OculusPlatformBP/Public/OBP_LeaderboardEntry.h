@@ -19,21 +19,21 @@ public:
 
 	ovrLeaderboardEntry* ovrLeaderboardEntryHandle;
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry")
 		FString GetExtraData();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry")
 		int32 GetExtraDataLength();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry")
 		int32 GetRank();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry")
 		int32 GetScore();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry")
 		int32 GetTimestamp();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry")
 		UOBP_User* GetUser();
 };

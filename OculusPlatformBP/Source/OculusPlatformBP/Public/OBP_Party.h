@@ -21,18 +21,18 @@ public:
 
 	ovrParty* ovrPartyHandle;
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Party|Party")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Party|Party")
 		UOBP_UserArray* GetInvitedUsers();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Party|Party")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Party|Party")
 		UOBP_User* GetLeader();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Party|Party")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Party|Party")
 		UOBP_Room* GetRoom();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Party|Party")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Party|Party")
 		UOBP_UserArray* GetUsers();
 
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Party|Party")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Party|Party")
 		FString GetID();
 };
