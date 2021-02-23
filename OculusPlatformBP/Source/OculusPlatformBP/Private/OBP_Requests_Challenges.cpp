@@ -93,7 +93,7 @@ void UOBP_Challenges_Create::Activate()
 
 	if (OculusIdentityInterface.IsValid())
 	{
-		ovrRequest RequestId = ovr_Challenges_Create(TCHAR_TO_ANSI(*LeaderboardName), ChallengeOptions->ovrChallengeOptionsHandle);
+		ovrRequest RequestId = ovr_Challenges_Create(TCHAR_TO_ANSI(*LeaderboardName), ovrChallengeOptionsHandle);
 
 		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
@@ -134,11 +134,65 @@ void UOBP_Challenges_Create::Activate()
 #endif
 }
 
-UOBP_Challenges_Create* UOBP_Challenges_Create::Create(UObject* WorldContextObject, FString LeaderboardName, UOBP_ChallengeOptions* ChallengeOptions)
+UOBP_Challenges_Create* UOBP_Challenges_Create::Create(UObject* WorldContextObject, FString LeaderboardName, FOBP_ChallengeOptionsStruct ChallengeOptions)
 {
 	auto ChallengesCreate = NewObject<UOBP_Challenges_Create>();
 	ChallengesCreate->LeaderboardName = LeaderboardName;
-	ChallengesCreate->ChallengeOptions = ChallengeOptions;
+	
+#if PLATFORM_MINOR_VERSION >= 51
+	ovr_ChallengeOptions_SetDescription(ChallengesCreate->ovrChallengeOptionsHandle, TCHAR_TO_ANSI(*ChallengeOptions.Description));
+	ovr_ChallengeOptions_SetEndDate(ChallengesCreate->ovrChallengeOptionsHandle, ChallengeOptions.EndDate);
+	ovr_ChallengeOptions_SetIncludeActiveChallenges(ChallengesCreate->ovrChallengeOptionsHandle, ChallengeOptions.bIncludeActiveChallenges);
+	ovr_ChallengeOptions_SetIncludeFutureChallenges(ChallengesCreate->ovrChallengeOptionsHandle, ChallengeOptions.bIncludeFutureChallenges);
+	ovr_ChallengeOptions_SetIncludePastChallenges(ChallengesCreate->ovrChallengeOptionsHandle, ChallengeOptions.bIncludePastChallenges);
+	ovr_ChallengeOptions_SetLeaderboardName(ChallengesCreate->ovrChallengeOptionsHandle, TCHAR_TO_ANSI(*ChallengeOptions.LeaderboardName));
+	ovr_ChallengeOptions_SetStartDate(ChallengesCreate->ovrChallengeOptionsHandle, ChallengeOptions.StartDate);
+	ovr_ChallengeOptions_SetTitle(ChallengesCreate->ovrChallengeOptionsHandle, TCHAR_TO_ANSI(*ChallengeOptions.Title));
+
+	switch (ChallengeOptions.ViewerFilter)
+	{
+	case EOBP_ChallengeViewerFilter::Unknown:
+		ovr_ChallengeOptions_SetViewerFilter(ChallengesCreate->ovrChallengeOptionsHandle, ovrChallengeViewerFilter_Unknown);
+		break;
+	case EOBP_ChallengeViewerFilter::AllVisible:
+		ovr_ChallengeOptions_SetViewerFilter(ChallengesCreate->ovrChallengeOptionsHandle, ovrChallengeViewerFilter_AllVisible);
+		break;
+	case EOBP_ChallengeViewerFilter::Participating:
+		ovr_ChallengeOptions_SetViewerFilter(ChallengesCreate->ovrChallengeOptionsHandle, ovrChallengeViewerFilter_Participating);
+		break;
+	case EOBP_ChallengeViewerFilter::Invited:
+		ovr_ChallengeOptions_SetViewerFilter(ChallengesCreate->ovrChallengeOptionsHandle, ovrChallengeViewerFilter_Invited);
+		break;
+	case EOBP_ChallengeViewerFilter::ParticipatingOrInvited:
+		ovr_ChallengeOptions_SetViewerFilter(ChallengesCreate->ovrChallengeOptionsHandle, ovrChallengeViewerFilter_ParticipatingOrInvited);
+		break;
+	default:
+		ovr_ChallengeOptions_SetViewerFilter(ChallengesCreate->ovrChallengeOptionsHandle, ovrChallengeViewerFilter_Unknown);
+		break;
+	}
+
+	switch (ChallengeOptions.Visibility)
+	{
+	case EOBP_ChallengeVisibility::Unknown:
+		ovr_ChallengeOptions_SetVisibility(ChallengesCreate->ovrChallengeOptionsHandle, ovrChallengeVisibility_Unknown);
+		break;
+	case EOBP_ChallengeVisibility::InviteOnly:
+		ovr_ChallengeOptions_SetVisibility(ChallengesCreate->ovrChallengeOptionsHandle, ovrChallengeVisibility_InviteOnly);
+		break;
+	case EOBP_ChallengeVisibility::Public:
+		ovr_ChallengeOptions_SetVisibility(ChallengesCreate->ovrChallengeOptionsHandle, ovrChallengeVisibility_Public);
+		break;
+	case EOBP_ChallengeVisibility::Private:
+		ovr_ChallengeOptions_SetVisibility(ChallengesCreate->ovrChallengeOptionsHandle, ovrChallengeVisibility_Private);
+		break;
+	default:
+		ovr_ChallengeOptions_SetVisibility(ChallengesCreate->ovrChallengeOptionsHandle, ovrChallengeVisibility_Unknown);
+		break;
+	}
+#else
+	OBP_PlatformVersionError("Challenges::Create", "v19");
+#endif
+
 	return ChallengesCreate;
 }
 
@@ -502,7 +556,7 @@ void UOBP_Challenges_GetList::Activate()
 
 	if (OculusIdentityInterface.IsValid())
 	{
-		ovrRequest RequestId = ovr_Challenges_GetList(ChallengeOptions->ovrChallengeOptionsHandle, Limit);
+		ovrRequest RequestId = ovr_Challenges_GetList(ovrChallengeOptionsHandle, Limit);
 
 		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
@@ -543,11 +597,65 @@ void UOBP_Challenges_GetList::Activate()
 #endif
 }
 
-UOBP_Challenges_GetList* UOBP_Challenges_GetList::GetList(UObject* WorldContextObject, UOBP_ChallengeOptions* ChallengeOptions, int32 Limit)
+UOBP_Challenges_GetList* UOBP_Challenges_GetList::GetList(UObject* WorldContextObject, FOBP_ChallengeOptionsStruct ChallengeOptions, int32 Limit)
 {
 	auto GetList = NewObject<UOBP_Challenges_GetList>();
-	GetList->ChallengeOptions = ChallengeOptions;
 	GetList->Limit = Limit;
+
+#if PLATFORM_MINOR_VERSION >= 51
+	ovr_ChallengeOptions_SetDescription(GetList->ovrChallengeOptionsHandle, TCHAR_TO_ANSI(*ChallengeOptions.Description));
+	ovr_ChallengeOptions_SetEndDate(GetList->ovrChallengeOptionsHandle, ChallengeOptions.EndDate);
+	ovr_ChallengeOptions_SetIncludeActiveChallenges(GetList->ovrChallengeOptionsHandle, ChallengeOptions.bIncludeActiveChallenges);
+	ovr_ChallengeOptions_SetIncludeFutureChallenges(GetList->ovrChallengeOptionsHandle, ChallengeOptions.bIncludeFutureChallenges);
+	ovr_ChallengeOptions_SetIncludePastChallenges(GetList->ovrChallengeOptionsHandle, ChallengeOptions.bIncludePastChallenges);
+	ovr_ChallengeOptions_SetLeaderboardName(GetList->ovrChallengeOptionsHandle, TCHAR_TO_ANSI(*ChallengeOptions.LeaderboardName));
+	ovr_ChallengeOptions_SetStartDate(GetList->ovrChallengeOptionsHandle, ChallengeOptions.StartDate);
+	ovr_ChallengeOptions_SetTitle(GetList->ovrChallengeOptionsHandle, TCHAR_TO_ANSI(*ChallengeOptions.Title));
+
+	switch (ChallengeOptions.ViewerFilter)
+	{
+	case EOBP_ChallengeViewerFilter::Unknown:
+		ovr_ChallengeOptions_SetViewerFilter(GetList->ovrChallengeOptionsHandle, ovrChallengeViewerFilter_Unknown);
+		break;
+	case EOBP_ChallengeViewerFilter::AllVisible:
+		ovr_ChallengeOptions_SetViewerFilter(GetList->ovrChallengeOptionsHandle, ovrChallengeViewerFilter_AllVisible);
+		break;
+	case EOBP_ChallengeViewerFilter::Participating:
+		ovr_ChallengeOptions_SetViewerFilter(GetList->ovrChallengeOptionsHandle, ovrChallengeViewerFilter_Participating);
+		break;
+	case EOBP_ChallengeViewerFilter::Invited:
+		ovr_ChallengeOptions_SetViewerFilter(GetList->ovrChallengeOptionsHandle, ovrChallengeViewerFilter_Invited);
+		break;
+	case EOBP_ChallengeViewerFilter::ParticipatingOrInvited:
+		ovr_ChallengeOptions_SetViewerFilter(GetList->ovrChallengeOptionsHandle, ovrChallengeViewerFilter_ParticipatingOrInvited);
+		break;
+	default:
+		ovr_ChallengeOptions_SetViewerFilter(GetList->ovrChallengeOptionsHandle, ovrChallengeViewerFilter_Unknown);
+		break;
+	}
+
+	switch (ChallengeOptions.Visibility)
+	{
+	case EOBP_ChallengeVisibility::Unknown:
+		ovr_ChallengeOptions_SetVisibility(GetList->ovrChallengeOptionsHandle, ovrChallengeVisibility_Unknown);
+		break;
+	case EOBP_ChallengeVisibility::InviteOnly:
+		ovr_ChallengeOptions_SetVisibility(GetList->ovrChallengeOptionsHandle, ovrChallengeVisibility_InviteOnly);
+		break;
+	case EOBP_ChallengeVisibility::Public:
+		ovr_ChallengeOptions_SetVisibility(GetList->ovrChallengeOptionsHandle, ovrChallengeVisibility_Public);
+		break;
+	case EOBP_ChallengeVisibility::Private:
+		ovr_ChallengeOptions_SetVisibility(GetList->ovrChallengeOptionsHandle, ovrChallengeVisibility_Private);
+		break;
+	default:
+		ovr_ChallengeOptions_SetVisibility(GetList->ovrChallengeOptionsHandle, ovrChallengeVisibility_Unknown);
+		break;
+	}
+#else
+	OBP_PlatformVersionError("Challenges::GetList", "v19");
+#endif
+
 	return GetList;
 }
 
@@ -895,7 +1003,7 @@ void UOBP_Challenges_UpdateInfo::Activate()
 
 	if (OculusIdentityInterface.IsValid())
 	{
-		ovrRequest RequestId = ovr_Challenges_UpdateInfo(OBP_FStringToInt64(ChallengeId), ChallengeOptions->ovrChallengeOptionsHandle);
+		ovrRequest RequestId = ovr_Challenges_UpdateInfo(OBP_FStringToInt64(ChallengeId), ovrChallengeOptionsHandle);
 
 		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
@@ -936,10 +1044,64 @@ void UOBP_Challenges_UpdateInfo::Activate()
 #endif
 }
 
-UOBP_Challenges_UpdateInfo* UOBP_Challenges_UpdateInfo::UpdateInfo(UObject* WorldContextObject, FString ChallengeId, UOBP_ChallengeOptions* ChallengeOptions)
+UOBP_Challenges_UpdateInfo* UOBP_Challenges_UpdateInfo::UpdateInfo(UObject* WorldContextObject, FString ChallengeId, FOBP_ChallengeOptionsStruct ChallengeOptions)
 {
 	auto ChallengesUpdateInfo = NewObject<UOBP_Challenges_UpdateInfo>();
 	ChallengesUpdateInfo->ChallengeId = ChallengeId;
-	ChallengesUpdateInfo->ChallengeOptions = ChallengeOptions;
+
+#if PLATFORM_MINOR_VERSION >= 51
+	ovr_ChallengeOptions_SetDescription(ChallengesUpdateInfo->ovrChallengeOptionsHandle, TCHAR_TO_ANSI(*ChallengeOptions.Description));
+	ovr_ChallengeOptions_SetEndDate(ChallengesUpdateInfo->ovrChallengeOptionsHandle, ChallengeOptions.EndDate);
+	ovr_ChallengeOptions_SetIncludeActiveChallenges(ChallengesUpdateInfo->ovrChallengeOptionsHandle, ChallengeOptions.bIncludeActiveChallenges);
+	ovr_ChallengeOptions_SetIncludeFutureChallenges(ChallengesUpdateInfo->ovrChallengeOptionsHandle, ChallengeOptions.bIncludeFutureChallenges);
+	ovr_ChallengeOptions_SetIncludePastChallenges(ChallengesUpdateInfo->ovrChallengeOptionsHandle, ChallengeOptions.bIncludePastChallenges);
+	ovr_ChallengeOptions_SetLeaderboardName(ChallengesUpdateInfo->ovrChallengeOptionsHandle, TCHAR_TO_ANSI(*ChallengeOptions.LeaderboardName));
+	ovr_ChallengeOptions_SetStartDate(ChallengesUpdateInfo->ovrChallengeOptionsHandle, ChallengeOptions.StartDate);
+	ovr_ChallengeOptions_SetTitle(ChallengesUpdateInfo->ovrChallengeOptionsHandle, TCHAR_TO_ANSI(*ChallengeOptions.Title));
+
+	switch (ChallengeOptions.ViewerFilter)
+	{
+	case EOBP_ChallengeViewerFilter::Unknown:
+		ovr_ChallengeOptions_SetViewerFilter(ChallengesUpdateInfo->ovrChallengeOptionsHandle, ovrChallengeViewerFilter_Unknown);
+		break;
+	case EOBP_ChallengeViewerFilter::AllVisible:
+		ovr_ChallengeOptions_SetViewerFilter(ChallengesUpdateInfo->ovrChallengeOptionsHandle, ovrChallengeViewerFilter_AllVisible);
+		break;
+	case EOBP_ChallengeViewerFilter::Participating:
+		ovr_ChallengeOptions_SetViewerFilter(ChallengesUpdateInfo->ovrChallengeOptionsHandle, ovrChallengeViewerFilter_Participating);
+		break;
+	case EOBP_ChallengeViewerFilter::Invited:
+		ovr_ChallengeOptions_SetViewerFilter(ChallengesUpdateInfo->ovrChallengeOptionsHandle, ovrChallengeViewerFilter_Invited);
+		break;
+	case EOBP_ChallengeViewerFilter::ParticipatingOrInvited:
+		ovr_ChallengeOptions_SetViewerFilter(ChallengesUpdateInfo->ovrChallengeOptionsHandle, ovrChallengeViewerFilter_ParticipatingOrInvited);
+		break;
+	default:
+		ovr_ChallengeOptions_SetViewerFilter(ChallengesUpdateInfo->ovrChallengeOptionsHandle, ovrChallengeViewerFilter_Unknown);
+		break;
+	}
+
+	switch (ChallengeOptions.Visibility)
+	{
+	case EOBP_ChallengeVisibility::Unknown:
+		ovr_ChallengeOptions_SetVisibility(ChallengesUpdateInfo->ovrChallengeOptionsHandle, ovrChallengeVisibility_Unknown);
+		break;
+	case EOBP_ChallengeVisibility::InviteOnly:
+		ovr_ChallengeOptions_SetVisibility(ChallengesUpdateInfo->ovrChallengeOptionsHandle, ovrChallengeVisibility_InviteOnly);
+		break;
+	case EOBP_ChallengeVisibility::Public:
+		ovr_ChallengeOptions_SetVisibility(ChallengesUpdateInfo->ovrChallengeOptionsHandle, ovrChallengeVisibility_Public);
+		break;
+	case EOBP_ChallengeVisibility::Private:
+		ovr_ChallengeOptions_SetVisibility(ChallengesUpdateInfo->ovrChallengeOptionsHandle, ovrChallengeVisibility_Private);
+		break;
+	default:
+		ovr_ChallengeOptions_SetVisibility(ChallengesUpdateInfo->ovrChallengeOptionsHandle, ovrChallengeVisibility_Unknown);
+		break;
+	}
+#else
+	OBP_PlatformVersionError("Challenges::UpdateInfo", "v19");
+#endif
+	
 	return ChallengesUpdateInfo;
 }

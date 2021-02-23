@@ -43,7 +43,7 @@ public:
 
 	EOBP_RoomJoinPolicy JoinPolicy;
 	int32 MaxUsers;
-	UOBP_RoomOptions* RoomOptions;
+	ovrRoomOptions* ovrRoomOptionsHandle = ovr_RoomOptions_Create();
 
 	UPROPERTY(BlueprintAssignable)
 		FRoom_CreateAndJoinPrivate2 OnSuccess;
@@ -55,7 +55,7 @@ public:
 	This type of room is good for matches where the user wants to play with friends, as they're primarially discoverable by examining which rooms your friends are in.
 	NOTE: This function probably won't work as expected until OSS-Oculus is directly supported */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Room|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_Room_CreateAndJoinPrivate2* CreateAndJoinPrivate2(UObject* WorldContextObject, EOBP_RoomJoinPolicy JoinPolicy, int32 MaxUsers, UOBP_RoomOptions* RoomOptions);
+		static UOBP_Room_CreateAndJoinPrivate2* CreateAndJoinPrivate2(UObject* WorldContextObject, EOBP_RoomJoinPolicy JoinPolicy, int32 MaxUsers, FOBP_RoomOptionsStruct RoomOptions);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;
@@ -140,7 +140,7 @@ class OCULUSPLATFORMBP_API UOBP_Room_GetInvitableUsers2 : public UBlueprintAsync
 
 public:
 
-	UOBP_RoomOptions* RoomOptions;
+	ovrRoomOptions* ovrRoomOptionsHandle = ovr_RoomOptions_Create();
 
 	UPROPERTY(BlueprintAssignable)
 		FRoom_GetInvitableUsers2 OnSuccess;
@@ -154,7 +154,7 @@ public:
 	If your application grouping was created before then, you can go to edit the setting in the "Rooms and Matchmaking" section of Platform Services at dashboard.oculus.com
 	NOTE: This function probably won't work as expected until OSS-Oculus is directly supported */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Room|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_Room_GetInvitableUsers2* GetInvitableUsers2(UObject* WorldContextObject, UOBP_RoomOptions* RoomOptions);
+		static UOBP_Room_GetInvitableUsers2* GetInvitableUsers2(UObject* WorldContextObject, FOBP_RoomOptionsStruct RoomOptions);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;
@@ -242,7 +242,7 @@ class OCULUSPLATFORMBP_API UOBP_Room_Join2 : public UBlueprintAsyncActionBase
 public:
 
 	FString RoomID;
-	UOBP_RoomOptions* RoomOptions;
+	ovrRoomOptions* ovrRoomOptionsHandle = ovr_RoomOptions_Create();
 
 	UPROPERTY(BlueprintAssignable)
 		FRoom_Join2 OnSuccess;
@@ -252,7 +252,7 @@ public:
 
 	/* Joins the target room (leaving the one you're currently in). */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Room|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_Room_Join2* Join2(UObject* WorldContextObject, FString RoomID, UOBP_RoomOptions* RoomOptions);
+		static UOBP_Room_Join2* Join2(UObject* WorldContextObject, FString RoomID, FOBP_RoomOptionsStruct RoomOptions);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;
