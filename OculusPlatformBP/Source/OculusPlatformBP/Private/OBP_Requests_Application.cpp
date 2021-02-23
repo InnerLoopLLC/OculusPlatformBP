@@ -76,7 +76,7 @@ void UOBP_Application_LaunchOtherApp::Activate()
 
 	if (OculusIdentityInterface.IsValid())
 	{
-		ovrRequest RequestId = ovr_Application_LaunchOtherApp(OBP_FStringToInt64(AppID), DeeplinkOptions->ovrApplicationOptionsHandle);
+		ovrRequest RequestId = ovr_Application_LaunchOtherApp(OBP_FStringToInt64(AppID), ovrApplicationOptionsHandle);
 
 		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
@@ -112,10 +112,10 @@ void UOBP_Application_LaunchOtherApp::Activate()
 	}
 }
 
-UOBP_Application_LaunchOtherApp *UOBP_Application_LaunchOtherApp::LaunchOtherApp(UObject* WorldContextObject, FString AppID, UOBP_ApplicationOptions* DeeplinkOptions)
+UOBP_Application_LaunchOtherApp *UOBP_Application_LaunchOtherApp::LaunchOtherApp(UObject* WorldContextObject, FString AppID, FString DeeplinkMessage)
 {
 	auto LaunchOtherApp = NewObject<UOBP_Application_LaunchOtherApp>();
 	LaunchOtherApp->AppID = AppID;
-	LaunchOtherApp->DeeplinkOptions = DeeplinkOptions;
+	ovr_ApplicationOptions_SetDeeplinkMessage(LaunchOtherApp->ovrApplicationOptionsHandle, TCHAR_TO_ANSI(*DeeplinkMessage));
 	return LaunchOtherApp;
 }
