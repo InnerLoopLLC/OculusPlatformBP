@@ -4,6 +4,7 @@
 
 #include "OculusPlatformBP.h"
 #include "OBP_User.h"
+#include "OBP_SupplementaryMetric.h"
 #include "OBP_LeaderboardEntry.generated.h"
 
 // --------------------
@@ -19,6 +20,10 @@ public:
 
 	ovrLeaderboardEntry* ovrLeaderboardEntryHandle;
 
+	/* Requires OculusPlatformSDK v25 or later */
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry")
+		FString GetDisplayScore();
+
 	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry")
 		FString GetExtraData();
 
@@ -30,6 +35,11 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry")
 		int32 GetScore();
+
+	/* This method may return null. This indicates that the value is not present or that the curent app or user is not permitted to access it.
+	Requires OculusPlatformSDK v25 or later */
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry")
+		UOBP_SupplementaryMetric* GetSupplementaryMetric();
 
 	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard|Leaderboard Entry")
 		int32 GetTimestamp();
