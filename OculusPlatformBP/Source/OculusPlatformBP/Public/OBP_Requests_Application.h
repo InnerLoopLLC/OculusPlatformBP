@@ -45,7 +45,7 @@ class OCULUSPLATFORMBP_API UOBP_Application_LaunchOtherApp : public UBlueprintAs
 public:
 
 	FString AppID;
-	UOBP_ApplicationOptions* DeeplinkOptions;
+	ovrApplicationOptions* ovrApplicationOptionsHandle = ovr_ApplicationOptions_Create();
 
 	UPROPERTY(BlueprintAssignable)
 		FApplication_LaunchOtherApp OnSuccess;
@@ -55,7 +55,7 @@ public:
 
 	/* Launches a different application in the user's library. If the user does not have that application installed, they will be taken to that app's page in the Oculus Store */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Application|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_Application_LaunchOtherApp* LaunchOtherApp(UObject* WorldContextObject, FString AppID, UOBP_ApplicationOptions* DeeplinkOptions);
+		static UOBP_Application_LaunchOtherApp* LaunchOtherApp(UObject* WorldContextObject, FString AppID, FString DeeplinkMessage);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;

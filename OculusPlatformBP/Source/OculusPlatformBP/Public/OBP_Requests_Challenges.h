@@ -38,7 +38,9 @@ class OCULUSPLATFORMBP_API UOBP_Challenges_Create : public UBlueprintAsyncAction
 public:
 
 	FString LeaderboardName;
-	UOBP_ChallengeOptions* ChallengeOptions;
+#if PLATFORM_MINOR_VERSION >= 51
+	ovrChallengeOptions* ovrChallengeOptionsHandle = ovr_ChallengeOptions_Create();
+#endif
 
 	UPROPERTY(BlueprintAssignable)
 		FChallenges_Create OnSuccess;
@@ -49,7 +51,7 @@ public:
 	/* Creates a new user challenge 
 	Challenges require OculusPlatfromSDK v19 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_Challenges_Create* Create(UObject* WorldContextObject, FString LeaderboardName, UOBP_ChallengeOptions* ChallengeOptions);
+		static UOBP_Challenges_Create* Create(UObject* WorldContextObject, FString LeaderboardName, FOBP_ChallengeOptionsStruct ChallengeOptions);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;
@@ -222,8 +224,10 @@ class OCULUSPLATFORMBP_API UOBP_Challenges_GetList : public UBlueprintAsyncActio
 
 public:
 
-	UOBP_ChallengeOptions* ChallengeOptions;
 	int32 Limit;
+#if PLATFORM_MINOR_VERSION >= 51
+	ovrChallengeOptions* ovrChallengeOptionsHandle = ovr_ChallengeOptions_Create();
+#endif
 
 	UPROPERTY(BlueprintAssignable)
 		FChallenges_GetList OnSuccess;
@@ -234,7 +238,7 @@ public:
 	/* Requests for a list of challenge
 	Challenges require OculusPlatfromSDK v19 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_Challenges_GetList* GetList(UObject* WorldContextObject, UOBP_ChallengeOptions* ChallengeOptions, int32 Limit);
+		static UOBP_Challenges_GetList* GetList(UObject* WorldContextObject, FOBP_ChallengeOptionsStruct ChallengeOptions, int32 Limit);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;
@@ -399,7 +403,9 @@ class OCULUSPLATFORMBP_API UOBP_Challenges_UpdateInfo : public UBlueprintAsyncAc
 public:
 
 	FString ChallengeId;
-	UOBP_ChallengeOptions* ChallengeOptions;
+#if PLATFORM_MINOR_VERSION >= 51
+	ovrChallengeOptions* ovrChallengeOptionsHandle = ovr_ChallengeOptions_Create();
+#endif
 
 	UPROPERTY(BlueprintAssignable)
 		FChallenges_UpdateInfo OnSuccess;
@@ -410,7 +416,7 @@ public:
 	/* If the current user has permission, updates a challenge information
 	Challenges require OculusPlatfromSDK v19 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_Challenges_UpdateInfo* UpdateInfo(UObject* WorldContextObject, FString ChallengeId, UOBP_ChallengeOptions* ChallengeOptions);
+		static UOBP_Challenges_UpdateInfo* UpdateInfo(UObject* WorldContextObject, FString ChallengeId, FOBP_ChallengeOptionsStruct ChallengeOptions);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;

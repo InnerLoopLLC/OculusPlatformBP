@@ -151,7 +151,7 @@ class OCULUSPLATFORMBP_API UOBP_User_GetLoggedInUserRecentlyMetUsersAndRooms : p
 
 public:
 
-	UOBP_UserOptions* UserOptions;
+	ovrUserOptions* ovrUserOptionsHandle = ovr_UserOptions_Create();
 
 	UPROPERTY(BlueprintAssignable)
 		FUser_GetLoggedInUserRecentlyMetUsersAndRooms OnSuccess;
@@ -162,7 +162,7 @@ public:
 	/*Returns a list of users that the logged in user was in a room with recently, sorted by relevance, along with any rooms they might be in. 
 	All you need to do to use this method is to use our Rooms API, and we will track the number of times users are together, their most recent encounter, and the amount of time they spend together.*/
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|User|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_User_GetLoggedInUserRecentlyMetUsersAndRooms* GetLoggedInUserRecentlyMetUsersAndRooms(UObject* WorldContextObject, UOBP_UserOptions* UserOptions);
+		static UOBP_User_GetLoggedInUserRecentlyMetUsersAndRooms* GetLoggedInUserRecentlyMetUsersAndRooms(UObject* WorldContextObject, FOBP_UserOptionsStruct UserOptions);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;

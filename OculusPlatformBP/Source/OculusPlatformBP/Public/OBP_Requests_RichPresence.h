@@ -95,7 +95,9 @@ class OCULUSPLATFORMBP_API UOBP_RichPresence_SetRichPresence : public UBlueprint
 
 public:
 
-	UOBP_RichPresenceOptions* RichPresenceObject;
+#if PLATFORM_MINOR_VERSION >= 39
+	ovrRichPresenceOptions* ovrRichPresenceOptionsHandle = ovr_RichPresenceOptions_Create();
+#endif
 
 	UPROPERTY(BlueprintAssignable)
 		FRichPresense_SetRichPresence OnSuccess;
@@ -104,9 +106,11 @@ public:
 		FRichPresense_SetRichPresence OnFailure;
 
 	/*Set rich presence for running app
-	Rich Presence requires OculusPlatfromSDK 1.39 or later */
+	Rich Presence requires OculusPlatfromSDK 1.39 or later
+	NOTE: CurrentCapacity, MaxCapacity, StartTime, DeeplinkMessageOverride, and ExtraContext require OculusPlatformSDK 1.40 or later 
+	NOTE: InstanceId requires OculusPlatformSDK v23 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_RichPresence_SetRichPresence* SetRichPresence(UObject* WorldContextObject, UOBP_RichPresenceOptions* RichPresenceObject);
+		static UOBP_RichPresence_SetRichPresence* SetRichPresence(UObject* WorldContextObject, FOBP_RichPresenceOptionsStruct RichPresence);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;

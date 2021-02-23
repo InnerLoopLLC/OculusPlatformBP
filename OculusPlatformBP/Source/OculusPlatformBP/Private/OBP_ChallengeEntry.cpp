@@ -15,6 +15,16 @@ UOBP_ChallengeEntry::UOBP_ChallengeEntry(const FObjectInitializer& ObjectInitial
 // OVR_ChallengeEntry.h
 // --------------------
 
+FString UOBP_ChallengeEntry::GetDisplayScore()
+{
+#if PLATFORM_MINOR_VERSION >= 57
+	return ovr_ChallengeEntry_GetDisplayScore(ovrChallengeEntryHandle);
+#else
+	OBP_PlatformVersionError("ChallengeEntry::GetDisplayScore", "v25");
+	return FString();
+#endif
+}
+
 FString UOBP_ChallengeEntry::GetExtraData()
 {
 #if PLATFORM_MINOR_VERSION >= 51

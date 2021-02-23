@@ -131,7 +131,7 @@ void UOBP_ChallengeOptions::SetViewerFilter(EOBP_ChallengeViewerFilter Filter)
 	default:
 		ovr_ChallengeOptions_SetViewerFilter(ovrChallengeOptionsHandle, ovrChallengeViewerFilter_Unknown);
 		break;
-}
+	}
 #else
 	OBP_PlatformVersionError("ChallengeOptions::SetViewerFilter", "v19");
 #endif

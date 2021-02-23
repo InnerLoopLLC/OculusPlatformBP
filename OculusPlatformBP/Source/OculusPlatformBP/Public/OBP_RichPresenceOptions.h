@@ -17,78 +17,79 @@ class OCULUSPLATFORMBP_API UOBP_RichPresenceOptions : public UBlueprintFunctionL
 
 public:
 
+	FOBP_RichPresenceOptionsStruct RichPresenceOptions;
 #if PLATFORM_MINOR_VERSION >= 39
 	ovrRichPresenceOptions* ovrRichPresenceOptionsHandle;
 #endif
 
 	/* Rich Presence requires OculusPlatfromSDK 1.39 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject", DeprecatedFunction, DeprecationMessage = "Create an OBP_RichPresenseOptionsStruct instead."))
 		static UOBP_RichPresenceOptions* CreateRichPresenceOptions(UObject* WorldContextObject);
 
 	/* Rich Presence requires OculusPlatfromSDK 1.39 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options")
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options", meta = (DeprecatedFunction, DeprecationMessage = "Create an OBP_RichPresenseOptionsStruct instead."))
 		void DestroyRichPresenceOptions();
 
 	/* This the unique API Name that refers to an in-app destination
 	Rich Presence requires OculusPlatfromSDK 1.39 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options")
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options", meta = (DeprecatedFunction, DeprecationMessage = "Create an OBP_RichPresenseOptionsStruct instead."))
 		void SetApiName(const FString RichPresenceApiName);
 
 	/* DEPRECATED: Unused (v23)
 	Rich Presence requires OculusPlatfromSDK 1.39 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options", meta = (DeprecatedFunction, DeprecationMessage = "DEPRECATED: Unused (v23)"))
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options", meta = (DeprecatedFunction, DeprecationMessage = "Create an OBP_RichPresenseOptionsStruct instead."))
 		void SetArgsString(const FString RichPresenceApiKey, const FString RichPresenceApiValue);
 
 	/* Rich Presence requires OculusPlatfromSDK 1.39 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options")
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options", meta = (DeprecatedFunction, DeprecationMessage = "Create an OBP_RichPresenseOptionsStruct instead."))
 		void ClearArgs();
 
 	/* The current amount of users that have joined this user's squad/team/game/match etc.
 	Requires OculusPlatfromSDK 1.40 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options")
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options", meta = (DeprecatedFunction, DeprecationMessage = "Create an OBP_RichPresenseOptionsStruct instead."))
 		void SetCurrentCapacity(const int32 RichPresenceCurrentCapacity);
 
 	/* Optionally passed in to use a different deeplink message than the one defined in the api_name
 	Requires OculusPlatfromSDK 1.40 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options")
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options", meta = (DeprecatedFunction, DeprecationMessage = "Create an OBP_RichPresenseOptionsStruct instead."))
 		void SetDeeplinkMessageOverride(const FString RichPresenceDeeplinkMessage);
 
 	/* The time the current match/game/round etc. ends
 	Rich Presence requires OculusPlatfromSDK 1.39 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options")
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options", meta = (DeprecatedFunction, DeprecationMessage = "Create an OBP_RichPresenseOptionsStruct instead."))
 		void SetEndTime(const int32 RichPresenceEndTime);
 
 	/* Requires OculusPlatfromSDK 1.40 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options")
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options", meta = (DeprecatedFunction, DeprecationMessage = "Create an OBP_RichPresenseOptionsStruct instead."))
 		void SetExtraContext(EOBP_RichPresenceExtraContext RichPresenceExtraContext);
 
 	/* Users reported with the same instance ID will be considered to be together and could interact with each other 
 	Requires OculusPlatfromSDK v23 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options")
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options", meta = (DeprecatedFunction, DeprecationMessage = "Create an OBP_RichPresenseOptionsStruct instead."))
 		void SetInstanceId(const FString Value);
 
 	/* Set whether or not the person is shown as active or idle
 	Rich Presence requires OculusPlatfromSDK 1.39 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options")
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options", meta = (DeprecatedFunction, DeprecationMessage = "Create an OBP_RichPresenseOptionsStruct instead."))
 		void SetIsIdle(const bool RichPresenceIsIdle);
 
 	/* Set whether or not the person is shown as joinable or not to others
 	Rich Presence requires OculusPlatfromSDK 1.39 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options")
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options", meta = (DeprecatedFunction, DeprecationMessage = "Create an OBP_RichPresenseOptionsStruct instead."))
 		void SetIsJoinable(const bool RichPresenceIsJoinable);
 
 	/* DEPRECATED: Unused (v23)
 	Rich Presence requires OculusPlatfromSDK 1.39 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options", meta = (DeprecatedFunction, DeprecationMessage = "DEPRECATED: Unused (v23)"))
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options", meta = (DeprecatedFunction, DeprecationMessage = "Create an OBP_RichPresenseOptionsStruct instead."))
 		void SetJoinableId(const FString RichPresenceJoinableId);
 
 	/* The maximum that can join this user
 	Requires OculusPlatfromSDK 1.40 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options")
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options", meta = (DeprecatedFunction, DeprecationMessage = "Create an OBP_RichPresenseOptionsStruct instead."))
 		void SetMaxCapacity(const int32 RichPresenceMaxCapacity);
 
 	/* The time the current match/game/round etc. started
 	Requires OculusPlatfromSDK 1.40 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options")
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options", meta = (DeprecatedFunction, DeprecationMessage = "Create an OBP_RichPresenseOptionsStruct instead."))
 		void SetStartTime(const int32 RichPresenceStartTime);
 };
