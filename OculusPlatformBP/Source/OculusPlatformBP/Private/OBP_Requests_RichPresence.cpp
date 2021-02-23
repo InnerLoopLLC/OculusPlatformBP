@@ -200,7 +200,7 @@ void UOBP_RichPresence_SetRichPresence::Activate()
 
 	if (OculusIdentityInterface.IsValid())
 	{
-		ovrRequest RequestId = ovr_RichPresence_Set(RichPresenceObject->ovrRichPresenceOptionsHandle);
+		ovrRequest RequestId = ovr_RichPresence_Set(ovrRichPresenceOptionsHandle);
 
 		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
@@ -239,9 +239,54 @@ void UOBP_RichPresence_SetRichPresence::Activate()
 #endif
 }
 
-UOBP_RichPresence_SetRichPresence* UOBP_RichPresence_SetRichPresence::SetRichPresence(UObject* WorldContextObject, UOBP_RichPresenceOptions* RichPresenceObject)
+UOBP_RichPresence_SetRichPresence* UOBP_RichPresence_SetRichPresence::SetRichPresence(UObject* WorldContextObject, FOBP_RichPresenceOptionsStruct RichPresence)
 {
 	auto SetRichPresence = NewObject<UOBP_RichPresence_SetRichPresence>();
-	SetRichPresence->RichPresenceObject = RichPresenceObject;
+
+#if PLATFORM_MINOR_VERSION >= 39
+	ovr_RichPresenceOptions_SetApiName(SetRichPresence->ovrRichPresenceOptionsHandle, TCHAR_TO_ANSI(*RichPresence.ApiName));
+	ovr_RichPresenceOptions_SetEndTime(SetRichPresence->ovrRichPresenceOptionsHandle, RichPresence.EndTime);
+	ovr_RichPresenceOptions_SetIsIdle(SetRichPresence->ovrRichPresenceOptionsHandle, RichPresence.bIsIdle);
+	ovr_RichPresenceOptions_SetIsJoinable(SetRichPresence->ovrRichPresenceOptionsHandle, RichPresence.bIsJoinable);
+#else
+	OBP_PlatformVersionError("RichPresence::SetRichPresence", "1.39");
+#endif
+
+#if PLATFORM_MINOR_VERSION >= 40
+	ovr_RichPresenceOptions_SetCurrentCapacity(SetRichPresence->ovrRichPresenceOptionsHandle, RichPresence.CurrentCapacity);
+	ovr_RichPresenceOptions_SetMaxCapacity(SetRichPresence->ovrRichPresenceOptionsHandle, RichPresence.MaxCapacity);
+	ovr_RichPresenceOptions_SetStartTime(SetRichPresence->ovrRichPresenceOptionsHandle, RichPresence.StartTime);
+	ovr_RichPresenceOptions_SetDeeplinkMessageOverride(SetRichPresence->ovrRichPresenceOptionsHandle, TCHAR_TO_ANSI(*RichPresence.DeeplinkMessageOverride));
+	switch (RichPresence.ExtraContext)
+	{
+	case EOBP_RichPresenceExtraContext::Unknown:
+		ovr_RichPresenceOptions_SetExtraContext(SetRichPresence->ovrRichPresenceOptionsHandle, ovrRichPresenceExtraContext_Unknown);
+		break;
+	case EOBP_RichPresenceExtraContext::None:
+		ovr_RichPresenceOptions_SetExtraContext(SetRichPresence->ovrRichPresenceOptionsHandle, ovrRichPresenceExtraContext_None);
+		break;
+	case EOBP_RichPresenceExtraContext::CurrentCapacity:
+		ovr_RichPresenceOptions_SetExtraContext(SetRichPresence->ovrRichPresenceOptionsHandle, ovrRichPresenceExtraContext_CurrentCapacity);
+		break;
+	case EOBP_RichPresenceExtraContext::StartedAgo:
+		ovr_RichPresenceOptions_SetExtraContext(SetRichPresence->ovrRichPresenceOptionsHandle, ovrRichPresenceExtraContext_StartedAgo);
+		break;
+	case EOBP_RichPresenceExtraContext::EndingIn:
+		ovr_RichPresenceOptions_SetExtraContext(SetRichPresence->ovrRichPresenceOptionsHandle, ovrRichPresenceExtraContext_EndingIn);
+		break;
+	case EOBP_RichPresenceExtraContext::LookingForMatch:
+		ovr_RichPresenceOptions_SetExtraContext(SetRichPresence->ovrRichPresenceOptionsHandle, ovrRichPresenceExtraContext_LookingForAMatch);
+		break;
+	}
+#else
+	OBP_PlatformVersionError("RichPresence::SetRichPresence", "1.40");
+#endif
+
+#if PLATFORM_MINOR_VERSION >= 55
+	ovr_RichPresenceOptions_SetInstanceId(SetRichPresence->ovrRichPresenceOptionsHandle, TCHAR_TO_ANSI(*RichPresence.InstanceID));
+#else
+	OBP_PlatformVersionError("RichPresenceOptions::SetRichPresence", "v23");
+#endif
+
 	return SetRichPresence;
 }

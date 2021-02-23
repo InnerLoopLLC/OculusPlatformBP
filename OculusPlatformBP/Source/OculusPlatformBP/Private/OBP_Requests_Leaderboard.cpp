@@ -36,6 +36,11 @@ UOBP_Leaderboard_WriteEntry::UOBP_Leaderboard_WriteEntry(const FObjectInitialize
 {
 }
 
+UOBP_Leaderboard_WriteEntryWithSupplementaryMetric::UOBP_Leaderboard_WriteEntryWithSupplementaryMetric(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+}
+
 // --------------------
 // OVR_Requests_Leaderboard.h
 // --------------------
@@ -382,4 +387,71 @@ UOBP_Leaderboard_WriteEntry* UOBP_Leaderboard_WriteEntry::WriteEntry(UObject* Wo
 	WriteEntry->ExtraDataLength = ExtraDataLength;
 	WriteEntry->bForceUpdate = bForceUpdate;
 	return WriteEntry;
+}
+
+//---WriteEntryWithSupplementaryMetric---
+void UOBP_Leaderboard_WriteEntryWithSupplementaryMetric::Activate()
+{
+#if PLATFORM_MINOR_VERSION >= 57
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
+
+	if (OculusIdentityInterface.IsValid())
+	{
+		ovrRequest RequestId = ovr_Leaderboard_WriteEntryWithSupplementaryMetric(TCHAR_TO_ANSI(*LeaderboardName), Score, SupplementaryMetric, TCHAR_TO_ANSI(*ExtraData), ExtraDataLength, bForceUpdate);
+
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
+			{
+				OBP_MessageError("Leaderboard::WriteEntryWithSupplementaryMetric", Message);
+				OnFailure.Broadcast(false, "", 0);
+			}
+			else
+			{
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_Leaderboard_WriteEntryWithSupplementaryMetric)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully wrote leaderboard entry with supplementary metric."));
+					auto bDidUpdate = ovr_LeaderboardUpdateStatus_GetDidUpdate(ovr_Message_GetLeaderboardUpdateStatus(Message));
+#if PLATFORM_MINOR_VERSION >= 51
+					auto UpdatedChallengeId = OBP_Int64ToFString(ovr_LeaderboardUpdateStatus_GetUpdatedChallengeId(ovr_Message_GetLeaderboardUpdateStatus(Message), 0));
+					auto UpdatedChallengeIdSize = ovr_LeaderboardUpdateStatus_GetUpdatedChallengeIdsSize(ovr_Message_GetLeaderboardUpdateStatus(Message));
+#else
+					FString UpdatedChallengeId = "";
+					int32 UpdatedChallengeIdSize = 0;
+#endif
+					OnSuccess.Broadcast(bDidUpdate, UpdatedChallengeId, UpdatedChallengeIdSize);
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to write leaderboard entry with supplementary metric."));
+					OnFailure.Broadcast(false, "", 0);
+				}
+			}
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast(false, "", 0);
+	}
+#else
+	OBP_PlatformVersionError("Leaderboard::WriteEntryWithSupplementaryMetric", "v25");
+	OnFailure.Broadcast(false, "", 0);
+#endif
+}
+
+UOBP_Leaderboard_WriteEntryWithSupplementaryMetric* UOBP_Leaderboard_WriteEntryWithSupplementaryMetric::WriteEntryWithSupplementaryMetric(UObject* WorldContextObject, FString LeaderboardName, int32 Score, int32 SupplementaryMetric, FString ExtraData, int32 ExtraDataLength, bool bForceUpdate)
+{
+	auto WriteEntryWithSupplementaryMetric = NewObject<UOBP_Leaderboard_WriteEntryWithSupplementaryMetric>();
+	WriteEntryWithSupplementaryMetric->LeaderboardName = LeaderboardName;
+	WriteEntryWithSupplementaryMetric->Score = Score;
+	WriteEntryWithSupplementaryMetric->SupplementaryMetric = SupplementaryMetric;
+	WriteEntryWithSupplementaryMetric->ExtraData = ExtraData;
+	WriteEntryWithSupplementaryMetric->ExtraDataLength = ExtraDataLength;
+	WriteEntryWithSupplementaryMetric->bForceUpdate = bForceUpdate;
+	return WriteEntryWithSupplementaryMetric;
 }

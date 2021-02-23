@@ -19,6 +19,8 @@
 
 #include "Modules/ModuleManager.h"
 
+#include "OculusPlatformBP.generated.h"
+
 DECLARE_LOG_CATEGORY_EXTERN(LogOculusPlatformBP, Log, All);
 
 // Used to prevent incomplete functions from being compiled
@@ -270,6 +272,83 @@ enum class EOBP_VoipMuteState : uint8
 	Unknown,
 	Muted,
 	Unmuted
+};
+
+// --------------------
+// Structures
+// --------------------
+
+/* OVR_ApplicationOptions.h */
+/* This structure only has a single variable (as of v23), so we're setting that variable directly for now.
+USTRUCT(BlueprintType)
+struct FOBP_ApplicationOptionsStruct
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Application|Application Options") FString DeeplinkMessage;
+};*/
+
+/* OVR_ChallengeOptions.h */
+USTRUCT(BlueprintType)
+struct FOBP_ChallengeOptionsStruct
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Challenges|Challenge Options") FString Title;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Challenges|Challenge Options") FString Description;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Challenges|Challenge Options") int32 StartDate;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Challenges|Challenge Options") int32 EndDate;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Challenges|Challenge Options") FString LeaderboardName; // optional
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Challenges|Challenge Options") bool bIncludeActiveChallenges;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Challenges|Challenge Options") bool bIncludeFutureChallenges;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Challenges|Challenge Options") bool bIncludePastChallenges;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Challenges|Challenge Options") EOBP_ChallengeViewerFilter ViewerFilter;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Challenges|Challenge Options") EOBP_ChallengeVisibility Visibility;
+};
+
+/* OVR_RichPresenceOptions.h */
+USTRUCT(BlueprintType)
+struct FOBP_RichPresenceOptionsStruct
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options") FString ApiName;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options") int32 CurrentCapacity;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options") int32 MaxCapacity;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options") bool bIsJoinable;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options") bool bIsIdle;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options") FString InstanceID;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options") FString DeeplinkMessageOverride;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options") int32 StartTime;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options") int32 EndTime;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options") EOBP_RichPresenceExtraContext ExtraContext = EOBP_RichPresenceExtraContext::None;
+};
+
+/* OVR_RoomOptions.h */
+USTRUCT(BlueprintType)
+struct FOBP_RoomOptionsStruct
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Room|Room Options") FString RoomId;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Room|Room Options") int32 MaxUserResults;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Room|Room Options") bool bExcludeRecentlyMet;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Room|Room Options") EOBP_UserOrdering Ordering;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Room|Room Options") EOBP_TimeWindow TimeWindow;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Room|Room Options") bool bTurnOffUpdates;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Room|Room Options") FString DataStoreKey;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Room|Room Options") FString DataStoreValue;
+};
+
+/* OVR_UserOptions.h */
+USTRUCT(BlueprintType)
+struct FOBP_UserOptionsStruct
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|User|User Options") int32 MaxUsers;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|User|User Options") TArray<EOBP_ServiceProvider> ServiceProvider;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|User|User Options") EOBP_TimeWindow TimeWindow;
 };
 
 // --------------------
