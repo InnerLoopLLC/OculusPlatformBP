@@ -178,3 +178,34 @@ public:
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;
 };
+
+UCLASS(BlueprintType)
+class OCULUSPLATFORMBP_API UOBP_Leaderboard_WriteEntryWithSupplementaryMetric : public UBlueprintAsyncActionBase
+{
+
+	GENERATED_UCLASS_BODY()
+
+public:
+
+	FString LeaderboardName;
+	int32 Score;
+	int32 SupplementaryMetric;
+	FString ExtraData;
+	int32 ExtraDataLength;
+	bool bForceUpdate;
+
+	UPROPERTY(BlueprintAssignable)
+		FLeaderboard_WriteEntry OnSuccess;
+
+	UPROPERTY(BlueprintAssignable)
+		FLeaderboard_WriteEntry OnFailure;
+
+	/* Writes a single entry to a leaderboard, can include supplementary metrics
+	Note: Responses including UpdatedChallengeId and UpdatedChallengeIdsSize require Oculus Platform SDK v19 or later.
+	Requires OculusPlatformSDK v25 or later. */
+	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Leaderboard|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+		static UOBP_Leaderboard_WriteEntryWithSupplementaryMetric* WriteEntryWithSupplementaryMetric(UObject* WorldContextObject, FString LeaderboardName, int32 Score, int32 SupplementaryMetric, FString ExtraData, int32 ExtraDataLength, bool bForceUpdate);
+
+	// UBlueprintAsyncActionBase interface
+	virtual void Activate() override;
+};
