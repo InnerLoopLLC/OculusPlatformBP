@@ -21,6 +21,11 @@ public:
 	ovrChallengeEntry* ovrChallengeEntryHandle;
 #endif
 
+	/* Challenges require OculusPlatfromSDK v19 or later 
+	GetDisplayScore() requires OculusPlatformSDK v25 or later */
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Challenges|Challenge Entry")
+		FString GetDisplayScore();
+
 	/* Challenges require OculusPlatfromSDK v19 or later */
 	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Challenges|Challenge Entry")
 		FString GetExtraData();
