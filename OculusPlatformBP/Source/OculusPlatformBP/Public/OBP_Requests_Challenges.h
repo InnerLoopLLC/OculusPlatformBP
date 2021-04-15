@@ -6,12 +6,9 @@
 #include "OBP_Challenge.h"
 #include "OBP_ChallengeArray.h"
 #include "OBP_ChallengeEntryArray.h"
-#include "OBP_ChallengeOptions.h"
 #include "OBP_Requests_Challenges.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChallenges_Create, UOBP_Challenge*, Challenge);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChallenges_DeclineInvite, UOBP_Challenge*, Challenge);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FChallenges_Delete);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChallenges_Get, UOBP_Challenge*, Challenges);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChallenges_GetEntries, UOBP_ChallengeEntryArray*, ChallengeEntries);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChallenges_GetEntriesAfterRank, UOBP_ChallengeEntryArray*, ChallengeEntriesAfterRank);
@@ -23,39 +20,10 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChallenges_GetPreviousChallenges, U
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChallenges_GetPreviousEntries, UOBP_ChallengeEntryArray*, PreviousChallengeEntries);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChallenges_Join, UOBP_Challenge*, Challenge);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChallenges_Leave, UOBP_Challenge*, Challenge);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChallenges_UpdateInfo, UOBP_Challenge*, Challenge);
 
 // --------------------
 // OVR_Requests_Challenges.h
 // --------------------
-
-UCLASS(BlueprintType)
-class OCULUSPLATFORMBP_API UOBP_Challenges_Create : public UBlueprintAsyncActionBase
-{
-
-	GENERATED_UCLASS_BODY()
-
-public:
-
-	FString LeaderboardName;
-#if PLATFORM_MINOR_VERSION >= 51
-	ovrChallengeOptions* ovrChallengeOptionsHandle = ovr_ChallengeOptions_Create();
-#endif
-
-	UPROPERTY(BlueprintAssignable)
-		FChallenges_Create OnSuccess;
-
-	UPROPERTY(BlueprintAssignable)
-		FChallenges_Create OnFailure;
-
-	/* Creates a new user challenge 
-	Challenges require OculusPlatfromSDK v19 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_Challenges_Create* Create(UObject* WorldContextObject, FString LeaderboardName, FOBP_ChallengeOptionsStruct ChallengeOptions);
-
-	// UBlueprintAsyncActionBase interface
-	virtual void Activate() override;
-};
 
 UCLASS(BlueprintType)
 class OCULUSPLATFORMBP_API UOBP_Challenges_DeclineInvite : public UBlueprintAsyncActionBase
@@ -77,31 +45,6 @@ public:
 	Challenges require OculusPlatfromSDK v19 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 		static UOBP_Challenges_DeclineInvite* DeclineInvite(UObject* WorldContextObject, FString ChallengeID);
-
-	// UBlueprintAsyncActionBase interface
-	virtual void Activate() override;
-};
-
-UCLASS(BlueprintType)
-class OCULUSPLATFORMBP_API UOBP_Challenges_Delete : public UBlueprintAsyncActionBase
-{
-
-	GENERATED_UCLASS_BODY()
-
-public:
-
-	FString ChallengeID;
-
-	UPROPERTY(BlueprintAssignable)
-		FChallenges_Delete OnSuccess;
-
-	UPROPERTY(BlueprintAssignable)
-		FChallenges_Delete OnFailure;
-
-	/* If the current user has permission, deletes a challenge
-	Challenges require OculusPlatfromSDK v19 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_Challenges_Delete* Delete(UObject* WorldContextObject, FString ChallengeID);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;
@@ -389,34 +332,6 @@ public:
 	Challenges require OculusPlatfromSDK v19 or later */
 	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 		static UOBP_Challenges_Leave* Leave(UObject* WorldContextObject, FString ChallengeId);
-
-	// UBlueprintAsyncActionBase interface
-	virtual void Activate() override;
-};
-
-UCLASS(BlueprintType)
-class OCULUSPLATFORMBP_API UOBP_Challenges_UpdateInfo : public UBlueprintAsyncActionBase
-{
-
-	GENERATED_UCLASS_BODY()
-
-public:
-
-	FString ChallengeId;
-#if PLATFORM_MINOR_VERSION >= 51
-	ovrChallengeOptions* ovrChallengeOptionsHandle = ovr_ChallengeOptions_Create();
-#endif
-
-	UPROPERTY(BlueprintAssignable)
-		FChallenges_UpdateInfo OnSuccess;
-
-	UPROPERTY(BlueprintAssignable)
-		FChallenges_UpdateInfo OnFailure;
-
-	/* If the current user has permission, updates a challenge information
-	Challenges require OculusPlatfromSDK v19 or later */
-	UFUNCTION(BlueprintCallable, Category = "Oculus Platform BP|Challenges|Requests", meta = (BlueprintInternalUseOnly = "true", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-		static UOBP_Challenges_UpdateInfo* UpdateInfo(UObject* WorldContextObject, FString ChallengeId, FOBP_ChallengeOptionsStruct ChallengeOptions);
 
 	// UBlueprintAsyncActionBase interface
 	virtual void Activate() override;

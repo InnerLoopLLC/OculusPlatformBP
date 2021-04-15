@@ -6,7 +6,6 @@
 #include "OBP_User.h"
 #include "OBP_UserArray.h"
 #include "OBP_UserAndRoomArray.h"
-#include "OBP_UserOptions.h"
 #include "OBP_SdkAccountArray.h"
 #include "OBP_Requests_User.generated.h"
 

@@ -5,7 +5,6 @@
 #include "OculusPlatformBP.h"
 #include "OBP_Room.h"
 #include "OBP_RoomArray.h"
-#include "OBP_RoomOptions.h"
 #include "OBP_UserArray.h"
 #include "OBP_Requests_Room.generated.h"
 
