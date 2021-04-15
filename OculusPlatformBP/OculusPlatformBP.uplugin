@@ -1,10 +1,10 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "1.4.0",
+	"VersionName": "v27",
 	"FriendlyName": "OculusPlatformBP",
-	"Description": "The Oculus Platform SDK exposed to Blueprints.",
-	"Category": "Marketplace",
+	"Description": "Oculus Platform SDK features exposed to Blueprints.",
+	"Category": "Online Platform",
 	"CreatedBy": "InnerLoop LLC",
 	"CreatedByURL": "https://www.innerloopllc.com",
 	"DocsURL": "https://www.innerloopllc.com/oculusplatformbp",
@@ -21,6 +21,10 @@
 		}
 	],
 	"Plugins": [
+		{
+			"Name": "OculusVR",
+			"Enabled": true
+		},
 		{
 			"Name": "OnlineSubsystem",
 			"Enabled": true
