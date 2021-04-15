@@ -378,6 +378,9 @@ void OBP_MessageError(FString NodeName, ovrMessageHandle Message);
 /* Log errors caused by a function that hasn't been fully implemented */
 void OBP_NotImplementedError(FString NodeName);
 
+/* Log errors caused by a deprecated function */
+void OBP_DeprecatedError(FString NodeName, FString Reason);
+
 // --------------------
 // Helper Functions
 // --------------------
