@@ -27,6 +27,7 @@ public class OculusPlatformBP : ModuleRules
                 "Core",
                 "CoreUObject",
                 "Engine",
+				"OculusHMD",
 				"OnlineSubsystem",
 				"OnlineSubsystemOculus",
 				"Projects"
