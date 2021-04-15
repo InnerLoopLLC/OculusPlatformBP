@@ -24,3 +24,25 @@ FString UOBP_Leaderboard::GetApiName()
 	return FString();
 #endif
 }
+
+UOBP_Destination* UOBP_Leaderboard::GetDestination()
+{
+#if PLATFORM_MINOR_VERSION >= 59
+	auto Destination = NewObject<UOBP_Destination>();
+	Destination->ovrDestinationHandle = ovr_Leaderboard_GetDestination(ovrLeaderboardHandle);
+	return Destination;
+#else
+	OBP_PlatformVersionError("Leaderboard::GetDestination", "v27");
+	return nullptr;
+#endif
+}
+
+FString UOBP_Leaderboard::GetID()
+{
+#if PLATFORM_MINOR_VERSION >= 59
+	return OBP_Int64ToFString(ovr_Leaderboard_GetID(ovrLeaderboardHandle));
+#else
+	OBP_PlatformVersionError("Leaderboard::GetID", "v27");
+	return FString();
+#endif
+}

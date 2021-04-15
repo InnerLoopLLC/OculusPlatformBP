@@ -114,6 +114,12 @@ void OBP_NotImplementedError(FString NodeName)
 	UE_LOG(LogOculusPlatformBP, Warning, TEXT("%s"), *ErrorString);
 }
 
+void OBP_DeprecatedError(FString NodeName, FString Reason)
+{
+	FString ErrorString = NodeName + FString(" has been deprecated. Please remove this node from your project. ") + Reason;
+	UE_LOG(LogOculusPlatformBP, Warning, TEXT("%s"), *ErrorString);
+}
+
 // --------------------
 // Helper Functions
 // --------------------
