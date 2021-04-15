@@ -15,7 +15,7 @@ UOBP_CloudStorage2_GetUserDirectoryPath::UOBP_CloudStorage2_GetUserDirectoryPath
 // OVR_Requests_CloudStorage2.h
 // --------------------
 
-//---GetUser---
+//---GetUserDirectoryPath---
 void UOBP_CloudStorage2_GetUserDirectoryPath::Activate()
 {
 #if PLATFORM_MINOR_VERSION >= 39
@@ -38,10 +38,12 @@ void UOBP_CloudStorage2_GetUserDirectoryPath::Activate()
 			{
 				ovrMessageType messageType = ovr_Message_GetType(Message);
 
-				if (messageType == ovrMessage_User_Get)
+				if (messageType == ovrMessage_CloudStorage2_GetUserDirectoryPath)
 				{
-					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got user directory path."));
-					OnSuccess.Broadcast(ovr_Message_GetString(Message));
+					auto UserDirectoryPath = ovr_Message_GetString(Message);
+					FString UserDirectoryPathSuccess = FString("Successfully got user directory path. Path: ") + UserDirectoryPath;
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("%s"), *UserDirectoryPathSuccess);
+					OnSuccess.Broadcast(UserDirectoryPath);
 				}
 				else
 				{

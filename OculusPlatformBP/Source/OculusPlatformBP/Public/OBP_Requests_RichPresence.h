@@ -3,7 +3,6 @@
 #pragma once
 
 #include "OculusPlatformBP.h"
-#include "OBP_RichPresenceOptions.h"
 #include "OBP_DestinationArray.h"
 #include "OBP_Requests_RichPresence.generated.h"
 
