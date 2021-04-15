@@ -4,7 +4,6 @@
 
 #include "OculusPlatformBP.h"
 #include "OBP_ApplicationVersion.h"
-#include "OBP_ApplicationOptions.h"
 #include "OBP_Requests_Application.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FApplication_GetVersion, UOBP_ApplicationVersion*, ApplicationVersion);

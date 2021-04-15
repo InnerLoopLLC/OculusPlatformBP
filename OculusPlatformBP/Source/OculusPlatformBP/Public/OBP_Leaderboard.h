@@ -3,6 +3,7 @@
 #pragma once
 
 #include "OculusPlatformBP.h"
+#include "OBP_Destination.h"
 #include "OBP_Leaderboard.generated.h"
 
 // --------------------
@@ -23,4 +24,13 @@ public:
 	/* Requires OculusPlatfromSDK v18 or later */
 	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard|Leaderboard")
 		FString GetApiName();
+
+	/* This method may return null. This indicates that the value is not present or that the curent app or user is not permitted to access it.
+	Requires OculusPlatfromSDK v27 or later */
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard|Leaderboard")
+		UOBP_Destination* GetDestination();
+
+	/* Requires OculusPlatfromSDK v27 or later */
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Leaderboard|Leaderboard")
+		FString GetID();
 };
