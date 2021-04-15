@@ -21,7 +21,7 @@ An Unreal Engine 4 plugin featuring a library of **300+ Blueprint nodes** for Oc
 + [User/Identity](https://developer.oculus.com/documentation/unreal/ps-presence/)
 
 #### What this is:
-+ ...the [*Oculus Platform SDK (v25)*](https://developer.oculus.com/reference/platform/v25/) exposed from C++ to Blueprints as directly as possible.
++ ...the [*Oculus Platform SDK (v27)*](https://developer.oculus.com/reference/platform/v27/) exposed from C++ to Blueprints as directly as possible.
 + ...or at least most of it.
 + ...client-side stuff **only**.
 
@@ -30,40 +30,30 @@ An Unreal Engine 4 plugin featuring a library of **300+ Blueprint nodes** for Oc
 + ...an expansion, simplification, or explanation of the existing SDK.
 + ...complete. Some features have **not** been implemented.
 
-This means you'll find blueprint nodes for the functions included in the [*Oculus Platform SDK*](https://developer.oculus.com/reference/platform/v25/), but that's pretty much it. Please refer to the [*Oculus Platform SDK*](https://developer.oculus.com/reference/platform/v25/) and [*Oculus Platform Solutions*](https://developer.oculus.com/documentation/unreal/ps-platform-intro/) pages for documentation and example usage. Please refer to the [*Unreal Engine 4*](https://github.com/EpicGames/UnrealEngine) GitHub for links and resources related to UE4. Usage examples are included in the *Examples* folder.
+This means you'll find blueprint nodes for the functions included in the [*Oculus Platform SDK*](https://developer.oculus.com/reference/platform/v27/), but that's pretty much it. Please refer to the [*Oculus Platform SDK*](https://developer.oculus.com/reference/platform/v27/) and [*Oculus Platform Solutions*](https://developer.oculus.com/documentation/unreal/ps-platform-intro/) pages for documentation and example usage. Please refer to the [*Unreal Engine 4*](https://github.com/EpicGames/UnrealEngine) GitHub for links and resources related to UE4. Usage examples are included in the *Examples* folder. Oculus App Lab is supported for Oculus Quest.
 
 ## Progress
-[**View Current Progress on Trello**](https://trello.com/b/TNGt3Yer/oculusplatformbp)<br>
-
-*2/23/21* - Updated to support Oculus Platform SDK v25. Replaced Options classes with structures. Ease-of-use improvement, but it'll break your existing Blueprints for things like Rich Presence. The existing methods have been deprecated and will be completely removed in a future version.
-
-*2/17/21* - Changed accessor functions to be pure nodes. (So, 'Get' nodes don't have execution pins.) This should make the plugin easier to use.
-
-*2/13/21* - Fixed crash when multiple OnlineSubsystems were in use and OSS-Oculus was not the default. Removed deprecated functions.
-
-*2/11/21* - This plugin is now confirmed to function as expected on Oculus Quest via App Lab! Coming up next, an update will be available soon which should prevent crashes if multiple online subsystems are in use concurrently. If you're experiencing unexplained crashes while using request nodes, this will likely fix those issues for you! Additionally, deprecated nodes will be completely removed in the next update. Please make sure you're no longer using deprecated nodes in your projects. Finally, project templates are in progress which will provide functional examples of various features.
-
-*2/4/21* - Oculus has launched [App Lab](https://developer.oculus.com/blog/introducing-app-lab-a-new-way-to-distribute-oculus-quest-apps/), which should now allow use of the Oculus Platform for Quest apps that aren't published on the official store. This plugin hasn't been tested for this yet, but I'll provide an update in the next couple of weeks once I've tested the features. In the meantime, please report any issues you run across. Thanks!
+*4/15/21* - Updated to support Oculus Platform SDK v27. Removed deprecated nodes. Deprecated a few more nodes (per SDK v27). Fixed bug where CloudStorage2::GetUserDirectoryPath() would always fail. Switched version numbering to be consistent with the Oculus Platform SDK version numbering.
 
 ## Requirements
 * **Recommended Unreal Engine Version** - [4.26-Oculus](https://github.com/Oculus-VR/UnrealEngine/tree/4.26)
 * **Supported Unreal Engine Versions** - 4.26, 4.25, 4.24, 4.23, 4.22, 4.21, 4.20 *(limited support)*
-* **Platforms** - Win64, Android *(note: Android testing is ongoing)*
-* **Oculus Platform SDK** - [v25](https://developer.oculus.com/downloads/package/oculus-platform-sdk/25.0.0/)<br>
+* **Platforms** - Win64, Android
+* **Oculus Platform SDK** - [v27](https://developer.oculus.com/downloads/package/oculus-platform-sdk/27.0.0/)<br>
 * **Plugins** - OculusVR, OnlineSubsystemOculus<br>
-*(**It is highly recommended to update to Oculus Platform SDK v25 to access all features and bug fixes.**)*<br>
+*(**It is highly recommended to update to Oculus Platform SDK v27 to access all features and bug fixes.**)*<br>
 *(This plugin attempts to handle whichever Oculus Platform SDK is installed. Though 1.24+ is required.)*<br>
 
 ## Installation
-*(Optional)* - Update [*Oculus Platform SDK*](https://developer.oculus.com/downloads/package/oculus-platform-sdk/) to latest version (v25).
+*(Optional)* - Update [*Oculus Platform SDK*](https://developer.oculus.com/downloads/package/oculus-platform-sdk/) to latest version (v27).
 1) Place the *'OculusPlatformBP'* folder in *'Engine\Plugins\Marketplace'* or your project's *'Plugins'* folder
 2) Regenerate project files
-3) Compile engine *(**SEE NOTE BELOW**)*
+3) Compile engine
 4) Configure *DefaultEngine.ini [(instructions)](https://developer.oculus.com/documentation/unreal/ps-setup/)*
 5) Enable the *OculusVR*, *OnlineSubsystemOculus*, and *OculusPlatformBP* plugins in your project
 6) Check Oculus Entitlement
 7) Use *OculusPlatformBP* to do cool stuff<br>
-*(**NOTE: UE4-Oculus fork (4.25/4.26) will fail to compile, please update the Oculus Platform SDK to v25. See [this Pull Request](https://github.com/Oculus-VR/UnrealEngine/pull/109) for more detailed information.**)*<br>
+*(**Note: UE4 may fail to compile. If this happens, please update the Oculus Platform SDK to v27. <br>
 *(Note: when configuring DefaultEngine.ini for an App Lab project, it is recommended to set RiftAppID and MobileAppID instead of only OculusAppID. This will allow you to deploy builds for the Rift store and SideQuest without adjusting your config file for each build. Keep in mind that it is currently not possible to share leaderboards etc between App Lab projects and official store releases. Official Quest store apps will be able to do this with App Groupings.)*<br>
 
 ## Updating the Oculus Platform SDK
@@ -73,13 +63,13 @@ This means you'll find blueprint nodes for the functions included in the [*Oculu
 3) If you're building for Quest, copy the two folders from the *'Android\libs'* directory of the zip file into that same engine directory.
 4) Copy the entire *'Include'* folder from the zip file and replace the *'Engine\Source\ThirdParty\Oculus\LibOVRPlatform\LibOVRPlatform\include'* folder.
 5) That's it! Regenerate project files. Then compile and you're good to go.<br>
-*(**It is highly recommended to update to Oculus Platform SDK v25 to access all features and bug fixes.**)*<br>
+*(**It is highly recommended to update to Oculus Platform SDK v27 to access all features and bug fixes.**)*<br>
 ## Support
 For technical support, questions, comments, etc, please reach out on our [Discord Server](https://discord.gg/k6KxJvq).<br>
 Find out more about InnerLoop LLC at [https://www.innerloopllc.com](https://www.innerloopllc.com).
 
 ## Legal
-*OculusPlatformBP Plugin* by ItsNotMeTrustMe *(Brian Edward Hicks)* of InnerLoop LLC, 2020<br>
+*OculusPlatformBP Plugin* by ItsNotMeTrustMe *(Brian Edward Hicks)* of InnerLoop LLC, 2021<br>
 This plugin was not created by, or in partnership with, Oculus or Epic Games *(which are trademarks of their respective entities)*.<br>
 No guarantees are made about anything. Use at your own risk.<br>
 Please drink responsibly.

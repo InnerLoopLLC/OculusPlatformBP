@@ -6,6 +6,11 @@
 // Initializers
 // --------------------
 
+UOBP_Leaderboard_Get::UOBP_Leaderboard_Get(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+}
+
 UOBP_Leaderboard_GetEntries::UOBP_Leaderboard_GetEntries(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
@@ -22,6 +27,11 @@ UOBP_Leaderboard_GetEntriesByIds::UOBP_Leaderboard_GetEntriesByIds(const FObject
 }
 
 UOBP_Leaderboard_GetNextEntries::UOBP_Leaderboard_GetNextEntries(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+}
+
+UOBP_Leaderboard_GetNextLeaderboardArrayPage::UOBP_Leaderboard_GetNextLeaderboardArrayPage(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 }
@@ -44,6 +54,63 @@ UOBP_Leaderboard_WriteEntryWithSupplementaryMetric::UOBP_Leaderboard_WriteEntryW
 // --------------------
 // OVR_Requests_Leaderboard.h
 // --------------------
+
+//---Get---
+void UOBP_Leaderboard_Get::Activate()
+{
+#if PLATFORM_MINOR_VERSION >= 59
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
+
+	if (OculusIdentityInterface.IsValid())
+	{
+
+		ovrRequest RequestId = ovr_Leaderboard_Get(TCHAR_TO_ANSI(*LeaderboardName));
+
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
+			{
+				OBP_MessageError("Leaderboard::Get", Message);
+				OnFailure.Broadcast(nullptr);
+			}
+			else
+			{
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_Leaderboard_Get)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got leaderboard."));
+					auto ThisLeaderboardArray = NewObject<UOBP_LeaderboardArray>();
+					ThisLeaderboardArray->ovrLeaderboardArrayHandle = ovr_Message_GetLeaderboardArray(Message);
+					OnSuccess.Broadcast(ThisLeaderboardArray);
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get leaderboard."));
+					OnFailure.Broadcast(nullptr);
+				}
+			}
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast(nullptr);
+	}
+#else
+	OBP_PlatformVersionError("Leaderboard::Get", "v27");
+	OnFailure.Broadcast(nullptr);
+#endif
+}
+
+UOBP_Leaderboard_Get* UOBP_Leaderboard_Get::Get(UObject* WorldContextObject, FString LeaderboardName)
+{
+	auto Leaderboard = NewObject<UOBP_Leaderboard_Get>();
+	Leaderboard->LeaderboardName = LeaderboardName;
+	return Leaderboard;
+}
 
 //---GetEntries---
 void UOBP_Leaderboard_GetEntries::Activate()
@@ -275,6 +342,63 @@ UOBP_Leaderboard_GetNextEntries* UOBP_Leaderboard_GetNextEntries::GetNextEntries
 	auto NextEntries = NewObject<UOBP_Leaderboard_GetNextEntries>();
 	NextEntries->LeaderboardEntryArray = LeaderboardEntryArray;
 	return NextEntries;
+}
+
+//---GetNextLeaderboardArrayPage---
+void UOBP_Leaderboard_GetNextLeaderboardArrayPage::Activate()
+{
+#if PLATFORM_MINOR_VERSION >= 59
+	auto OculusIdentityInterface = Online::GetIdentityInterface(OCULUS_SUBSYSTEM);
+
+	if (OculusIdentityInterface.IsValid())
+	{
+
+		ovrRequest RequestId = ovr_Leaderboard_GetNextLeaderboardArrayPage(LeaderboardArray->ovrLeaderboardArrayHandle);
+
+		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
+		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
+			[this](ovrMessageHandle Message, bool bIsError)
+		{
+			if (bIsError)
+			{
+				OBP_MessageError("Leaderboard::GetNextLeaderboardArrayPage", Message);
+				OnFailure.Broadcast(nullptr);
+			}
+			else
+			{
+				ovrMessageType messageType = ovr_Message_GetType(Message);
+
+				if (messageType == ovrMessage_Leaderboard_GetNextLeaderboardArrayPage)
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got next leaderboard array page."));
+					auto ThisLeaderboardArray = NewObject<UOBP_LeaderboardArray>();
+					ThisLeaderboardArray->ovrLeaderboardArrayHandle = ovr_Message_GetLeaderboardArray(Message);
+					OnSuccess.Broadcast(ThisLeaderboardArray);
+				}
+				else
+				{
+					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get next leaderboard array page."));
+					OnFailure.Broadcast(nullptr);
+				}
+			}
+		}));
+	}
+	else
+	{
+		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OnFailure.Broadcast(nullptr);
+	}
+#else
+	OBP_PlatformVersionError("Leaderboard::GetNextLeaderboardArrayPage", "v27");
+	OnFailure.Broadcast(nullptr);
+#endif
+}
+
+UOBP_Leaderboard_GetNextLeaderboardArrayPage* UOBP_Leaderboard_GetNextLeaderboardArrayPage::GetNextLeaderboardArrayPage(UObject* WorldContextObject, UOBP_LeaderboardArray* LeaderboardArray)
+{
+	auto NextLeaderboardArrayPage = NewObject<UOBP_Leaderboard_GetNextLeaderboardArrayPage>();
+	NextLeaderboardArrayPage->LeaderboardArray = LeaderboardArray;
+	return NextLeaderboardArrayPage;
 }
 
 //---GetPreviousEntries---
