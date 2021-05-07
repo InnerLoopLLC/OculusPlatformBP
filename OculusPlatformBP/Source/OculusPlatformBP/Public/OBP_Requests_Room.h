@@ -42,7 +42,7 @@ public:
 
 	EOBP_RoomJoinPolicy JoinPolicy;
 	int32 MaxUsers;
-	ovrRoomOptions* ovrRoomOptionsHandle = ovr_RoomOptions_Create();
+	FOBP_RoomOptionsStruct RoomOptions;
 
 	UPROPERTY(BlueprintAssignable)
 		FRoom_CreateAndJoinPrivate2 OnSuccess;
@@ -139,7 +139,7 @@ class OCULUSPLATFORMBP_API UOBP_Room_GetInvitableUsers2 : public UBlueprintAsync
 
 public:
 
-	ovrRoomOptions* ovrRoomOptionsHandle = ovr_RoomOptions_Create();
+	FOBP_RoomOptionsStruct RoomOptions;
 
 	UPROPERTY(BlueprintAssignable)
 		FRoom_GetInvitableUsers2 OnSuccess;
@@ -241,7 +241,7 @@ class OCULUSPLATFORMBP_API UOBP_Room_Join2 : public UBlueprintAsyncActionBase
 public:
 
 	FString RoomID;
-	ovrRoomOptions* ovrRoomOptionsHandle = ovr_RoomOptions_Create();
+	FOBP_RoomOptionsStruct RoomOptions;
 
 	UPROPERTY(BlueprintAssignable)
 		FRoom_Join2 OnSuccess;
