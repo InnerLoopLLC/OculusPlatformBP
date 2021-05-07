@@ -7,8 +7,8 @@
 #include "OBP_Requests_RichPresence.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FRichPresense_ClearRichPresence);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FRichPresense_GetDestinations, UOBP_DestinationArray*, DestinationArray);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FRichPresense_GetDestinationsArrayPage, UOBP_DestinationArray*, DestinationArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FRichPresense_GetDestinations, const TArray<UOBP_Destination*>&, Destinations, UOBP_DestinationArray*, DestinationArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FRichPresense_GetDestinationsArrayPage, const TArray<UOBP_Destination*>&, Destinations, UOBP_DestinationArray*, DestinationArray);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FRichPresense_SetRichPresence);
 
 // --------------------
@@ -94,9 +94,7 @@ class OCULUSPLATFORMBP_API UOBP_RichPresence_SetRichPresence : public UBlueprint
 
 public:
 
-#if PLATFORM_MINOR_VERSION >= 39
-	ovrRichPresenceOptions* ovrRichPresenceOptionsHandle = ovr_RichPresenceOptions_Create();
-#endif
+	FOBP_RichPresenceOptionsStruct RichPresence;
 
 	UPROPERTY(BlueprintAssignable)
 		FRichPresense_SetRichPresence OnSuccess;

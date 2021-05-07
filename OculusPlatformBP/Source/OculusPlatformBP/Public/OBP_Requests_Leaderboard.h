@@ -8,13 +8,13 @@
 #include "OBP_LeaderboardEntryArray.h"
 #include "OBP_Requests_Leaderboard.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLeaderboard_Get, UOBP_LeaderboardArray*, LeaderboardArray);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLeaderboard_GetEntries, UOBP_LeaderboardEntryArray*, LeaderboardEntryArray);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLeaderboard_GetEntriesAfterRank, UOBP_LeaderboardEntryArray*, LeaderboardEntryArray);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLeaderboard_GetEntriesByIds, UOBP_LeaderboardEntryArray*, LeaderboardEntryArray);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLeaderboard_GetNextEntries, UOBP_LeaderboardEntryArray*, LeaderboardEntryArray);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLeaderboard_GetNextLeaderboardArrayPage, UOBP_LeaderboardArray*, LeaderboardArray);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLeaderboard_GetPreviousEntries, UOBP_LeaderboardEntryArray*, LeaderboardEntryArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FLeaderboard_Get, UOBP_Leaderboard*, Leaderboard, const TArray<UOBP_Leaderboard*>&, Leaderboards, UOBP_LeaderboardArray*, LeaderboardArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FLeaderboard_GetEntries, const TArray<UOBP_LeaderboardEntry*>&, LeaderboardEntries, UOBP_LeaderboardEntryArray*, LeaderboardEntryArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FLeaderboard_GetEntriesAfterRank, const TArray<UOBP_LeaderboardEntry*>&, LeaderboardEntries, UOBP_LeaderboardEntryArray*, LeaderboardEntryArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FLeaderboard_GetEntriesByIds, const TArray<UOBP_LeaderboardEntry*>&, LeaderboardEntries, UOBP_LeaderboardEntryArray*, LeaderboardEntryArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FLeaderboard_GetNextEntries, const TArray<UOBP_LeaderboardEntry*>&, LeaderboardEntries, UOBP_LeaderboardEntryArray*, LeaderboardEntryArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FLeaderboard_GetNextLeaderboardArrayPage, const TArray<UOBP_Leaderboard*>&, Leaderboards, UOBP_LeaderboardArray*, LeaderboardArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FLeaderboard_GetPreviousEntries, const TArray<UOBP_LeaderboardEntry*>&, LeaderboardEntries, UOBP_LeaderboardEntryArray*, LeaderboardEntryArray);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FLeaderboard_WriteEntry, bool, bDidUpdate, FString, UpdatedChallengeId, int32, UpdatedChallengeIdSize);
 
 // --------------------

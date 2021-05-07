@@ -175,7 +175,7 @@ void UOBP_Achievements_GetAllDefinitions::Activate()
 			if (bIsError)
 			{
 				OBP_MessageError("Achievements::GetAllDefinitions", Message);
-				OnFailure.Broadcast(nullptr);
+				OnFailure.Broadcast(TArray<UOBP_AchievementDefinition*>(), nullptr);
 			}
 			else
 			{
@@ -186,12 +186,22 @@ void UOBP_Achievements_GetAllDefinitions::Activate()
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got all definitions."));
 					auto ThisAchievementDefinitionArray = NewObject<UOBP_AchievementDefinitionArray>();
 					ThisAchievementDefinitionArray->ovrAchievementDefinitionArrayHandle = ovr_Message_GetAchievementDefinitionArray(Message);
-					OnSuccess.Broadcast(ThisAchievementDefinitionArray);
+
+					TArray<UOBP_AchievementDefinition*> ArrayOfAchievementDefinitions;
+
+					for (size_t i = 0; i < ovr_AchievementDefinitionArray_GetSize(ThisAchievementDefinitionArray->ovrAchievementDefinitionArrayHandle); i++)
+					{
+						auto ThisElement = NewObject<UOBP_AchievementDefinition>();
+						ThisElement->ovrAchievementDefinitionHandle = ovr_AchievementDefinitionArray_GetElement(ThisAchievementDefinitionArray->ovrAchievementDefinitionArrayHandle, i);
+						ArrayOfAchievementDefinitions.Add(ThisElement);
+					}
+
+					OnSuccess.Broadcast(ArrayOfAchievementDefinitions, ThisAchievementDefinitionArray);
 				}
 				else
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get all definitions."));
-					OnFailure.Broadcast(nullptr);
+					OnFailure.Broadcast(TArray<UOBP_AchievementDefinition*>(), nullptr);
 				}
 			}
 		}));
@@ -199,7 +209,7 @@ void UOBP_Achievements_GetAllDefinitions::Activate()
 	else
 	{
 		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
-		OnFailure.Broadcast(nullptr);
+		OnFailure.Broadcast(TArray<UOBP_AchievementDefinition*>(), nullptr);
 	}
 }
 
@@ -224,7 +234,7 @@ void UOBP_Achievements_GetAllProgress::Activate()
 			if (bIsError)
 			{
 				OBP_MessageError("Achievements::GetAllProgress", Message);
-				OnFailure.Broadcast(nullptr);
+				OnFailure.Broadcast(TArray<UOBP_AchievementProgress*>(), nullptr);
 			}
 			else
 			{
@@ -235,12 +245,22 @@ void UOBP_Achievements_GetAllProgress::Activate()
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got all progress."));
 					auto ThisAchievementProgressArray = NewObject<UOBP_AchievementProgressArray>();
 					ThisAchievementProgressArray->ovrAchievementProgressArrayHandle = ovr_Message_GetAchievementProgressArray(Message);
-					OnSuccess.Broadcast(ThisAchievementProgressArray);
+
+					TArray<UOBP_AchievementProgress*> ArrayOfAchievementProgress;
+
+					for (size_t i = 0; i < ovr_AchievementProgressArray_GetSize(ThisAchievementProgressArray->ovrAchievementProgressArrayHandle); i++)
+					{
+						auto ThisElement = NewObject<UOBP_AchievementProgress>();
+						ThisElement->ovrAchievementProgressHandle = ovr_AchievementProgressArray_GetElement(ThisAchievementProgressArray->ovrAchievementProgressArrayHandle, i);
+						ArrayOfAchievementProgress.Add(ThisElement);
+					}
+
+					OnSuccess.Broadcast(ArrayOfAchievementProgress, ThisAchievementProgressArray);
 				}
 				else
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get all progress."));
-					OnFailure.Broadcast(nullptr);
+					OnFailure.Broadcast(TArray<UOBP_AchievementProgress*>(), nullptr);
 				}
 			}
 		}));
@@ -248,7 +268,7 @@ void UOBP_Achievements_GetAllProgress::Activate()
 	else
 	{
 		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
-		OnFailure.Broadcast(nullptr);
+		OnFailure.Broadcast(TArray<UOBP_AchievementProgress*>(), nullptr);
 	}
 }
 
@@ -288,7 +308,7 @@ void UOBP_Achievements_GetDefinitionsByName::Activate()
 			if (bIsError)
 			{
 				OBP_MessageError("Achievements::GetDefinitionsByName", Message);
-				OnFailure.Broadcast(nullptr);
+				OnFailure.Broadcast(TArray<UOBP_AchievementDefinition*>(), nullptr);
 			}
 			else
 			{
@@ -299,12 +319,22 @@ void UOBP_Achievements_GetDefinitionsByName::Activate()
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got achievement definitions by name."));
 					auto ThisAchievementDefinitionArray = NewObject<UOBP_AchievementDefinitionArray>();
 					ThisAchievementDefinitionArray->ovrAchievementDefinitionArrayHandle = ovr_Message_GetAchievementDefinitionArray(Message);
-					OnSuccess.Broadcast(ThisAchievementDefinitionArray);
+
+					TArray<UOBP_AchievementDefinition*> ArrayOfAchievementDefinitions;
+
+					for (size_t i = 0; i < ovr_AchievementDefinitionArray_GetSize(ThisAchievementDefinitionArray->ovrAchievementDefinitionArrayHandle); i++)
+					{
+						auto ThisElement = NewObject<UOBP_AchievementDefinition>();
+						ThisElement->ovrAchievementDefinitionHandle = ovr_AchievementDefinitionArray_GetElement(ThisAchievementDefinitionArray->ovrAchievementDefinitionArrayHandle, i);
+						ArrayOfAchievementDefinitions.Add(ThisElement);
+					}
+
+					OnSuccess.Broadcast(ArrayOfAchievementDefinitions, ThisAchievementDefinitionArray);
 				}
 				else
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get achievement definitions by name."));
-					OnFailure.Broadcast(nullptr);
+					OnFailure.Broadcast(TArray<UOBP_AchievementDefinition*>(), nullptr);
 				}
 			}
 		}));
@@ -314,7 +344,7 @@ void UOBP_Achievements_GetDefinitionsByName::Activate()
 	else
 	{
 		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
-		OnFailure.Broadcast(nullptr);
+		OnFailure.Broadcast(TArray<UOBP_AchievementDefinition*>(), nullptr);
 	}
 }
 
@@ -342,7 +372,7 @@ void UOBP_Achievements_GetNextAchievementDefinitionArrayPage::Activate()
 			if (bIsError)
 			{
 				OBP_MessageError("Achievements::GetNextAchievementDefinitionArrayPage", Message);
-				OnFailure.Broadcast(nullptr);
+				OnFailure.Broadcast(TArray<UOBP_AchievementDefinition*>(), nullptr);
 			}
 			else
 			{
@@ -353,12 +383,22 @@ void UOBP_Achievements_GetNextAchievementDefinitionArrayPage::Activate()
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got next achievement definition array page."));
 					auto ThisAchievementDefinitionArray = NewObject<UOBP_AchievementDefinitionArray>();
 					ThisAchievementDefinitionArray->ovrAchievementDefinitionArrayHandle = ovr_Message_GetAchievementDefinitionArray(Message);
-					OnSuccess.Broadcast(ThisAchievementDefinitionArray);
+					
+					TArray<UOBP_AchievementDefinition*> ArrayOfAchievementDefinitions;
+
+					for (size_t i = 0; i < ovr_AchievementDefinitionArray_GetSize(ThisAchievementDefinitionArray->ovrAchievementDefinitionArrayHandle); i++)
+					{
+						auto ThisElement = NewObject<UOBP_AchievementDefinition>();
+						ThisElement->ovrAchievementDefinitionHandle = ovr_AchievementDefinitionArray_GetElement(ThisAchievementDefinitionArray->ovrAchievementDefinitionArrayHandle, i);
+						ArrayOfAchievementDefinitions.Add(ThisElement);
+					}
+
+					OnSuccess.Broadcast(ArrayOfAchievementDefinitions, ThisAchievementDefinitionArray);
 				}
 				else
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get next achievement definition array page."));
-					OnFailure.Broadcast(nullptr);
+					OnFailure.Broadcast(TArray<UOBP_AchievementDefinition*>(), nullptr);
 				}
 			}
 		}));
@@ -366,7 +406,7 @@ void UOBP_Achievements_GetNextAchievementDefinitionArrayPage::Activate()
 	else
 	{
 		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
-		OnFailure.Broadcast(nullptr);
+		OnFailure.Broadcast(TArray<UOBP_AchievementDefinition*>(), nullptr);
 	}
 }
 
@@ -393,7 +433,7 @@ void UOBP_Achievements_GetNextAchievementProgressArrayPage::Activate()
 			if (bIsError)
 			{
 				OBP_MessageError("Achievements::GetNextAchievementProgressArrayPage", Message);
-				OnFailure.Broadcast(nullptr);
+				OnFailure.Broadcast(TArray<UOBP_AchievementProgress*>(), nullptr);
 			}
 			else
 			{
@@ -404,12 +444,22 @@ void UOBP_Achievements_GetNextAchievementProgressArrayPage::Activate()
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got next achievement progress array page."));
 					auto ThisAchievementProgressArray = NewObject<UOBP_AchievementProgressArray>();
 					ThisAchievementProgressArray->ovrAchievementProgressArrayHandle = ovr_Message_GetAchievementProgressArray(Message);
-					OnSuccess.Broadcast(ThisAchievementProgressArray);
+					
+					TArray<UOBP_AchievementProgress*> ArrayOfAchievementProgress;
+
+					for (size_t i = 0; i < ovr_AchievementProgressArray_GetSize(ThisAchievementProgressArray->ovrAchievementProgressArrayHandle); i++)
+					{
+						auto ThisElement = NewObject<UOBP_AchievementProgress>();
+						ThisElement->ovrAchievementProgressHandle = ovr_AchievementProgressArray_GetElement(ThisAchievementProgressArray->ovrAchievementProgressArrayHandle, i);
+						ArrayOfAchievementProgress.Add(ThisElement);
+					}
+
+					OnSuccess.Broadcast(ArrayOfAchievementProgress, ThisAchievementProgressArray);
 				}
 				else
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get next achievement progress array page."));
-					OnFailure.Broadcast(nullptr);
+					OnFailure.Broadcast(TArray<UOBP_AchievementProgress*>(), nullptr);
 				}
 			}
 		}));
@@ -417,7 +467,7 @@ void UOBP_Achievements_GetNextAchievementProgressArrayPage::Activate()
 	else
 	{
 		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
-		OnFailure.Broadcast(nullptr);
+		OnFailure.Broadcast(TArray<UOBP_AchievementProgress*>(), nullptr);
 	}
 }
 
@@ -459,7 +509,7 @@ void UOBP_Achievements_GetProgressByName::Activate()
 			if (bIsError)
 			{
 				OBP_MessageError("Achievements::GetProgressByName", Message);
-				OnFailure.Broadcast(nullptr);
+				OnFailure.Broadcast(TArray<UOBP_AchievementProgress*>(), nullptr);
 			}
 			else
 			{
@@ -470,12 +520,22 @@ void UOBP_Achievements_GetProgressByName::Activate()
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got achievement progress by name."));
 					auto ThisAchievementProgressArray = NewObject<UOBP_AchievementProgressArray>();
 					ThisAchievementProgressArray->ovrAchievementProgressArrayHandle = ovr_Message_GetAchievementProgressArray(Message);
-					OnSuccess.Broadcast(ThisAchievementProgressArray);
+					
+					TArray<UOBP_AchievementProgress*> ArrayOfAchievementProgress;
+
+					for (size_t i = 0; i < ovr_AchievementProgressArray_GetSize(ThisAchievementProgressArray->ovrAchievementProgressArrayHandle); i++)
+					{
+						auto ThisElement = NewObject<UOBP_AchievementProgress>();
+						ThisElement->ovrAchievementProgressHandle = ovr_AchievementProgressArray_GetElement(ThisAchievementProgressArray->ovrAchievementProgressArrayHandle, i);
+						ArrayOfAchievementProgress.Add(ThisElement);
+					}
+
+					OnSuccess.Broadcast(ArrayOfAchievementProgress, ThisAchievementProgressArray);
 				}
 				else
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get achievement progress by name."));
-					OnFailure.Broadcast(nullptr);
+					OnFailure.Broadcast(TArray<UOBP_AchievementProgress*>(), nullptr);
 				}
 			}
 		}));
@@ -485,7 +545,7 @@ void UOBP_Achievements_GetProgressByName::Activate()
 	else
 	{
 		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
-		OnFailure.Broadcast(nullptr);
+		OnFailure.Broadcast(TArray<UOBP_AchievementProgress*>(), nullptr);
 	}
 }
 
