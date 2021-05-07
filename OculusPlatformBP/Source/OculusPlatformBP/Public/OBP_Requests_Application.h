@@ -44,7 +44,7 @@ class OCULUSPLATFORMBP_API UOBP_Application_LaunchOtherApp : public UBlueprintAs
 public:
 
 	FString AppID;
-	ovrApplicationOptions* ovrApplicationOptionsHandle = ovr_ApplicationOptions_Create();
+	FString DeeplinkMessage;
 
 	UPROPERTY(BlueprintAssignable)
 		FApplication_LaunchOtherApp OnSuccess;

@@ -352,20 +352,6 @@ struct FOBP_UserOptionsStruct
 };
 
 // --------------------
-// Enum Conversions
-// --------------------
-
-/* Converts an EOBP_AchievementType to an ovrAchievementType for passing to the OculusPlatformSDK */
-ovrAchievementType OBP_AchievementTypeToEnum(EOBP_AchievementType OBPAchievementType);
-
-/* Converts an EOBP_LeaderboardFilterType to an ovrLeaderboardFilterType for passing to the OculusPlatformSDK
-	Note: Enum value 'UserIds' Requires OculusPlatfromSDK v15 or later*/
-ovrLeaderboardFilterType OBP_LeaderboardFilterToEnum(EOBP_LeaderboardFilterType OBPLeaderboardFilterType);
-
-/* Converts an EOBP_LeaderboardStartAt to an ovrLeaderboardStartAt for passing to the OculusPlatformSDK */
-ovrLeaderboardStartAt OBP_LeaderboardStartAtToEnum(EOBP_LeaderboardStartAt OBPLeaderboardStartAt);
-
-// --------------------
 // Logging Functions
 // --------------------
 

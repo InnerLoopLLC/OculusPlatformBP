@@ -150,7 +150,7 @@ class OCULUSPLATFORMBP_API UOBP_User_GetLoggedInUserRecentlyMetUsersAndRooms : p
 
 public:
 
-	ovrUserOptions* ovrUserOptionsHandle = ovr_UserOptions_Create();
+	FOBP_UserOptionsStruct UserOptions;
 
 	UPROPERTY(BlueprintAssignable)
 		FUser_GetLoggedInUserRecentlyMetUsersAndRooms OnSuccess;
