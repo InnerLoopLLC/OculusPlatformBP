@@ -329,6 +329,63 @@ void UOBP_User_GetLoggedInUserRecentlyMetUsersAndRooms::Activate()
 
 	if (OculusIdentityInterface.IsValid())
 	{
+		ovrUserOptions* ovrUserOptionsHandle = ovr_UserOptions_Create();
+		
+		ovr_UserOptions_SetMaxUsers(ovrUserOptionsHandle, UserOptions.MaxUsers);
+
+		switch (UserOptions.TimeWindow)
+		{
+		case EOBP_TimeWindow::Unknown:
+			ovr_UserOptions_SetTimeWindow(ovrUserOptionsHandle, ovrTimeWindow_Unknown);
+			break;
+		case EOBP_TimeWindow::OneHour:
+			ovr_UserOptions_SetTimeWindow(ovrUserOptionsHandle, ovrTimeWindow_OneHour);
+			break;
+		case EOBP_TimeWindow::OneDay:
+			ovr_UserOptions_SetTimeWindow(ovrUserOptionsHandle, ovrTimeWindow_OneDay);
+			break;
+		case EOBP_TimeWindow::OneWeek:
+			ovr_UserOptions_SetTimeWindow(ovrUserOptionsHandle, ovrTimeWindow_OneWeek);
+			break;
+		case EOBP_TimeWindow::ThirtyDays:
+			ovr_UserOptions_SetTimeWindow(ovrUserOptionsHandle, ovrTimeWindow_ThirtyDays);
+			break;
+		case EOBP_TimeWindow::NinetyDays:
+			ovr_UserOptions_SetTimeWindow(ovrUserOptionsHandle, ovrTimeWindow_NinetyDays);
+			break;
+		default:
+			ovr_UserOptions_SetTimeWindow(ovrUserOptionsHandle, ovrTimeWindow_Unknown);
+			break;
+		}
+
+		for (size_t i = 0; i < UserOptions.ServiceProvider.Num(); i++)
+		{
+			switch (UserOptions.ServiceProvider[i])
+			{
+			case EOBP_ServiceProvider::Unknown:
+				ovr_UserOptions_AddServiceProvider(ovrUserOptionsHandle, ovrServiceProvider_Unknown);
+				break;
+			case EOBP_ServiceProvider::Dropbox:
+				ovr_UserOptions_AddServiceProvider(ovrUserOptionsHandle, ovrServiceProvider_Dropbox);
+				break;
+			case EOBP_ServiceProvider::Facebook:
+				ovr_UserOptions_AddServiceProvider(ovrUserOptionsHandle, ovrServiceProvider_Facebook);
+				break;
+			case EOBP_ServiceProvider::Google:
+				ovr_UserOptions_AddServiceProvider(ovrUserOptionsHandle, ovrServiceProvider_Google);
+				break;
+			case EOBP_ServiceProvider::Instagram:
+				ovr_UserOptions_AddServiceProvider(ovrUserOptionsHandle, ovrServiceProvider_Instagram);
+				break;
+			case EOBP_ServiceProvider::RemoteMedia:
+				ovr_UserOptions_AddServiceProvider(ovrUserOptionsHandle, ovrServiceProvider_RemoteMedia);
+				break;
+			default:
+				ovr_UserOptions_AddServiceProvider(ovrUserOptionsHandle, ovrServiceProvider_Unknown);
+				break;
+			}
+		}
+		
 		ovrRequest RequestId = ovr_User_GetLoggedInUserRecentlyMetUsersAndRooms(ovrUserOptionsHandle);
 
 		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
@@ -369,62 +426,7 @@ void UOBP_User_GetLoggedInUserRecentlyMetUsersAndRooms::Activate()
 UOBP_User_GetLoggedInUserRecentlyMetUsersAndRooms* UOBP_User_GetLoggedInUserRecentlyMetUsersAndRooms::GetLoggedInUserRecentlyMetUsersAndRooms(UObject* WorldContextObject, FOBP_UserOptionsStruct UserOptions)
 {
 	auto LoggedInUserRecentlyMetUsersAndRooms = NewObject<UOBP_User_GetLoggedInUserRecentlyMetUsersAndRooms>();
-	
-	ovr_UserOptions_SetMaxUsers(LoggedInUserRecentlyMetUsersAndRooms->ovrUserOptionsHandle, UserOptions.MaxUsers);
-
-	switch (UserOptions.TimeWindow)
-	{
-	case EOBP_TimeWindow::Unknown:
-		ovr_UserOptions_SetTimeWindow(LoggedInUserRecentlyMetUsersAndRooms->ovrUserOptionsHandle, ovrTimeWindow_Unknown);
-		break;
-	case EOBP_TimeWindow::OneHour:
-		ovr_UserOptions_SetTimeWindow(LoggedInUserRecentlyMetUsersAndRooms->ovrUserOptionsHandle, ovrTimeWindow_OneHour);
-		break;
-	case EOBP_TimeWindow::OneDay:
-		ovr_UserOptions_SetTimeWindow(LoggedInUserRecentlyMetUsersAndRooms->ovrUserOptionsHandle, ovrTimeWindow_OneDay);
-		break;
-	case EOBP_TimeWindow::OneWeek:
-		ovr_UserOptions_SetTimeWindow(LoggedInUserRecentlyMetUsersAndRooms->ovrUserOptionsHandle, ovrTimeWindow_OneWeek);
-		break;
-	case EOBP_TimeWindow::ThirtyDays:
-		ovr_UserOptions_SetTimeWindow(LoggedInUserRecentlyMetUsersAndRooms->ovrUserOptionsHandle, ovrTimeWindow_ThirtyDays);
-		break;
-	case EOBP_TimeWindow::NinetyDays:
-		ovr_UserOptions_SetTimeWindow(LoggedInUserRecentlyMetUsersAndRooms->ovrUserOptionsHandle, ovrTimeWindow_NinetyDays);
-		break;
-	default:
-		ovr_UserOptions_SetTimeWindow(LoggedInUserRecentlyMetUsersAndRooms->ovrUserOptionsHandle, ovrTimeWindow_Unknown);
-		break;
-	}
-
-	for (size_t i = 0; i < UserOptions.ServiceProvider.Num(); i++)
-	{
-		switch (UserOptions.ServiceProvider[i])
-		{
-		case EOBP_ServiceProvider::Unknown:
-			ovr_UserOptions_AddServiceProvider(LoggedInUserRecentlyMetUsersAndRooms->ovrUserOptionsHandle, ovrServiceProvider_Unknown);
-			break;
-		case EOBP_ServiceProvider::Dropbox:
-			ovr_UserOptions_AddServiceProvider(LoggedInUserRecentlyMetUsersAndRooms->ovrUserOptionsHandle, ovrServiceProvider_Dropbox);
-			break;
-		case EOBP_ServiceProvider::Facebook:
-			ovr_UserOptions_AddServiceProvider(LoggedInUserRecentlyMetUsersAndRooms->ovrUserOptionsHandle, ovrServiceProvider_Facebook);
-			break;
-		case EOBP_ServiceProvider::Google:
-			ovr_UserOptions_AddServiceProvider(LoggedInUserRecentlyMetUsersAndRooms->ovrUserOptionsHandle, ovrServiceProvider_Google);
-			break;
-		case EOBP_ServiceProvider::Instagram:
-			ovr_UserOptions_AddServiceProvider(LoggedInUserRecentlyMetUsersAndRooms->ovrUserOptionsHandle, ovrServiceProvider_Instagram);
-			break;
-		case EOBP_ServiceProvider::RemoteMedia:
-			ovr_UserOptions_AddServiceProvider(LoggedInUserRecentlyMetUsersAndRooms->ovrUserOptionsHandle, ovrServiceProvider_RemoteMedia);
-			break;
-		default:
-			ovr_UserOptions_AddServiceProvider(LoggedInUserRecentlyMetUsersAndRooms->ovrUserOptionsHandle, ovrServiceProvider_Unknown);
-			break;
-		}
-	}
-
+	LoggedInUserRecentlyMetUsersAndRooms->UserOptions = UserOptions;
 	return LoggedInUserRecentlyMetUsersAndRooms;
 }
 
