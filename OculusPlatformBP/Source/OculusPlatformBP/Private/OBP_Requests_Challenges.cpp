@@ -190,7 +190,41 @@ void UOBP_Challenges_GetEntries::Activate()
 
 	if (OculusIdentityInterface.IsValid())
 	{
-		ovrRequest RequestId = ovr_Challenges_GetEntries(OBP_FStringToInt64(ChallengeID), Limit, OBP_LeaderboardFilterToEnum(Filter), OBP_LeaderboardStartAtToEnum(StartAt));
+		auto ovrFilter = ovrLeaderboard_FilterNone;
+		switch (Filter)
+		{
+		case EOBP_LeaderboardFilterType::None:
+			ovrFilter = ovrLeaderboard_FilterNone;
+		case EOBP_LeaderboardFilterType::Friends:
+			ovrFilter = ovrLeaderboard_FilterFriends;
+		case EOBP_LeaderboardFilterType::Unknown:
+			ovrFilter = ovrLeaderboard_FilterUnknown;
+		case EOBP_LeaderboardFilterType::UserIds:
+#if PLATFORM_MINOR_VERSION >= 47
+			ovrFilter = ovrLeaderboard_FilterUserIds;
+#else
+			ovrFilter = ovrLeaderboard_FilterNone;
+#endif
+		default:
+			ovrFilter = ovrLeaderboard_FilterNone;
+		}
+		
+		auto ovrStartAt = ovrLeaderboard_StartAtTop;
+		switch (StartAt)
+		{
+		case EOBP_LeaderboardStartAt::Top:
+			ovrStartAt = ovrLeaderboard_StartAtTop;
+		case EOBP_LeaderboardStartAt::CenteredOnViewer:
+			ovrStartAt = ovrLeaderboard_StartAtCenteredOnViewer;
+		case EOBP_LeaderboardStartAt::CenteredOnViewerOrTop:
+			ovrStartAt = ovrLeaderboard_StartAtCenteredOnViewerOrTop;
+		case EOBP_LeaderboardStartAt::Unknown:
+			ovrStartAt = ovrLeaderboard_StartAtUnknown;
+		default:
+			ovrStartAt = ovrLeaderboard_StartAtTop;
+		}
+
+		ovrRequest RequestId = ovr_Challenges_GetEntries(OBP_FStringToInt64(ChallengeID), Limit, ovrFilter, ovrStartAt);
 
 		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
@@ -315,7 +349,22 @@ void UOBP_Challenges_GetEntriesByIds::Activate()
 			ovrIds[i] = FCString::Atoi64(*UserIds[i]); // copy data to the new array
 		}
 		
-		ovrRequest RequestId = ovr_Challenges_GetEntriesByIds(OBP_FStringToInt64(ChallengeID), Limit, OBP_LeaderboardStartAtToEnum(StartAt), ovrIds, UserIdLength);
+		auto ovrStartAt = ovrLeaderboard_StartAtTop;
+		switch (StartAt)
+		{
+		case EOBP_LeaderboardStartAt::Top:
+			ovrStartAt = ovrLeaderboard_StartAtTop;
+		case EOBP_LeaderboardStartAt::CenteredOnViewer:
+			ovrStartAt = ovrLeaderboard_StartAtCenteredOnViewer;
+		case EOBP_LeaderboardStartAt::CenteredOnViewerOrTop:
+			ovrStartAt = ovrLeaderboard_StartAtCenteredOnViewerOrTop;
+		case EOBP_LeaderboardStartAt::Unknown:
+			ovrStartAt = ovrLeaderboard_StartAtUnknown;
+		default:
+			ovrStartAt = ovrLeaderboard_StartAtTop;
+		}
+
+		ovrRequest RequestId = ovr_Challenges_GetEntriesByIds(OBP_FStringToInt64(ChallengeID), Limit, ovrStartAt, ovrIds, UserIdLength);
 
 		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
 		OSS->AddRequestDelegate(RequestId, FOculusMessageOnCompleteDelegate::CreateLambda(
