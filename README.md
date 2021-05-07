@@ -33,6 +33,7 @@ An Unreal Engine 4 plugin featuring a library of **300+ Blueprint nodes** for Oc
 This means you'll find blueprint nodes for the functions included in the [*Oculus Platform SDK*](https://developer.oculus.com/reference/platform/v27/), but that's pretty much it. Please refer to the [*Oculus Platform SDK*](https://developer.oculus.com/reference/platform/v27/) and [*Oculus Platform Solutions*](https://developer.oculus.com/documentation/unreal/ps-platform-intro/) pages for documentation and example usage. Please refer to the [*Unreal Engine 4*](https://github.com/EpicGames/UnrealEngine) GitHub for links and resources related to UE4. Usage examples are included in the *Examples* folder. Oculus App Lab is supported for Oculus Quest.
 
 ## Progress
+*5/7/21* - Fixed a rather nasty crash which would occur when the Oculus App was not present. Also added an experimental workflow improvement to request nodes which return arrays *(e.g. Leaderboard::GetEntries())*. Array items will now be returned as a blueprint array, which should make the workflow more intuitive. v28 support is on the way, but I wanted to rush out this crash fix. An example project is also in progress.
 *4/15/21* - Updated to support Oculus Platform SDK v27. Removed deprecated nodes. Deprecated a few more nodes (per SDK v27). Fixed bug where CloudStorage2::GetUserDirectoryPath() would always fail. Switched version numbering to be consistent with the Oculus Platform SDK version numbering.
 
 ## Requirements
