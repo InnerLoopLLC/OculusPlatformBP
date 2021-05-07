@@ -128,6 +128,55 @@ void UOBP_Room_CreateAndJoinPrivate2::Activate()
 			break;
 		}
 
+		ovrRoomOptions* ovrRoomOptionsHandle = ovr_RoomOptions_Create();
+
+		ovr_RoomOptions_SetDataStoreString(ovrRoomOptionsHandle, TCHAR_TO_ANSI(*RoomOptions.DataStoreKey), TCHAR_TO_ANSI(*RoomOptions.DataStoreValue));
+		ovr_RoomOptions_SetExcludeRecentlyMet(ovrRoomOptionsHandle, RoomOptions.bExcludeRecentlyMet);
+		ovr_RoomOptions_SetMaxUserResults(ovrRoomOptionsHandle, RoomOptions.MaxUserResults);
+		ovr_RoomOptions_SetRoomId(ovrRoomOptionsHandle, OBP_FStringToInt64(RoomOptions.RoomId));
+		ovr_RoomOptions_SetTurnOffUpdates(ovrRoomOptionsHandle, RoomOptions.bTurnOffUpdates);
+
+		switch (RoomOptions.Ordering)
+		{
+		case EOBP_UserOrdering::Unknown:
+			ovr_RoomOptions_SetOrdering(ovrRoomOptionsHandle, ovrUserOrdering_Unknown);
+			break;
+		case EOBP_UserOrdering::None:
+			ovr_RoomOptions_SetOrdering(ovrRoomOptionsHandle, ovrUserOrdering_None);
+			break;
+		case EOBP_UserOrdering::PresenceAlphabetical:
+			ovr_RoomOptions_SetOrdering(ovrRoomOptionsHandle, ovrUserOrdering_PresenceAlphabetical);
+			break;
+		default:
+			ovr_RoomOptions_SetOrdering(ovrRoomOptionsHandle, ovrUserOrdering_Unknown);
+			break;
+		}
+
+		switch (RoomOptions.TimeWindow)
+		{
+		case EOBP_TimeWindow::Unknown:
+			ovr_RoomOptions_SetRecentlyMetTimeWindow(ovrRoomOptionsHandle, ovrTimeWindow_Unknown);
+			break;
+		case EOBP_TimeWindow::OneHour:
+			ovr_RoomOptions_SetRecentlyMetTimeWindow(ovrRoomOptionsHandle, ovrTimeWindow_OneHour);
+			break;
+		case EOBP_TimeWindow::OneDay:
+			ovr_RoomOptions_SetRecentlyMetTimeWindow(ovrRoomOptionsHandle, ovrTimeWindow_OneDay);
+			break;
+		case EOBP_TimeWindow::OneWeek:
+			ovr_RoomOptions_SetRecentlyMetTimeWindow(ovrRoomOptionsHandle, ovrTimeWindow_OneWeek);
+			break;
+		case EOBP_TimeWindow::ThirtyDays:
+			ovr_RoomOptions_SetRecentlyMetTimeWindow(ovrRoomOptionsHandle, ovrTimeWindow_ThirtyDays);
+			break;
+		case EOBP_TimeWindow::NinetyDays:
+			ovr_RoomOptions_SetRecentlyMetTimeWindow(ovrRoomOptionsHandle, ovrTimeWindow_NinetyDays);
+			break;
+		default:
+			ovr_RoomOptions_SetRecentlyMetTimeWindow(ovrRoomOptionsHandle, ovrTimeWindow_Unknown);
+			break;
+		}
+
 		ovrRequest RequestId = ovr_Room_CreateAndJoinPrivate2(ovrRoomJoinPolicyHandle, MaxUsers, ovrRoomOptionsHandle);
 
 		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
@@ -170,54 +219,7 @@ UOBP_Room_CreateAndJoinPrivate2* UOBP_Room_CreateAndJoinPrivate2::CreateAndJoinP
 	auto CreateAndJoinPrivate2 = NewObject<UOBP_Room_CreateAndJoinPrivate2>();
 	CreateAndJoinPrivate2->JoinPolicy = JoinPolicy;
 	CreateAndJoinPrivate2->MaxUsers = MaxUsers;
-	
-	ovr_RoomOptions_SetDataStoreString(CreateAndJoinPrivate2->ovrRoomOptionsHandle, TCHAR_TO_ANSI(*RoomOptions.DataStoreKey), TCHAR_TO_ANSI(*RoomOptions.DataStoreValue));
-	ovr_RoomOptions_SetExcludeRecentlyMet(CreateAndJoinPrivate2->ovrRoomOptionsHandle, RoomOptions.bExcludeRecentlyMet);
-	ovr_RoomOptions_SetMaxUserResults(CreateAndJoinPrivate2->ovrRoomOptionsHandle, RoomOptions.MaxUserResults);
-	ovr_RoomOptions_SetRoomId(CreateAndJoinPrivate2->ovrRoomOptionsHandle, OBP_FStringToInt64(RoomOptions.RoomId));
-	ovr_RoomOptions_SetTurnOffUpdates(CreateAndJoinPrivate2->ovrRoomOptionsHandle, RoomOptions.bTurnOffUpdates);
-
-	switch (RoomOptions.Ordering)
-	{
-	case EOBP_UserOrdering::Unknown:
-		ovr_RoomOptions_SetOrdering(CreateAndJoinPrivate2->ovrRoomOptionsHandle, ovrUserOrdering_Unknown);
-		break;
-	case EOBP_UserOrdering::None:
-		ovr_RoomOptions_SetOrdering(CreateAndJoinPrivate2->ovrRoomOptionsHandle, ovrUserOrdering_None);
-		break;
-	case EOBP_UserOrdering::PresenceAlphabetical:
-		ovr_RoomOptions_SetOrdering(CreateAndJoinPrivate2->ovrRoomOptionsHandle, ovrUserOrdering_PresenceAlphabetical);
-		break;
-	default:
-		ovr_RoomOptions_SetOrdering(CreateAndJoinPrivate2->ovrRoomOptionsHandle, ovrUserOrdering_Unknown);
-		break;
-	}
-
-	switch (RoomOptions.TimeWindow)
-	{
-	case EOBP_TimeWindow::Unknown:
-		ovr_RoomOptions_SetRecentlyMetTimeWindow(CreateAndJoinPrivate2->ovrRoomOptionsHandle, ovrTimeWindow_Unknown);
-		break;
-	case EOBP_TimeWindow::OneHour:
-		ovr_RoomOptions_SetRecentlyMetTimeWindow(CreateAndJoinPrivate2->ovrRoomOptionsHandle, ovrTimeWindow_OneHour);
-		break;
-	case EOBP_TimeWindow::OneDay:
-		ovr_RoomOptions_SetRecentlyMetTimeWindow(CreateAndJoinPrivate2->ovrRoomOptionsHandle, ovrTimeWindow_OneDay);
-		break;
-	case EOBP_TimeWindow::OneWeek:
-		ovr_RoomOptions_SetRecentlyMetTimeWindow(CreateAndJoinPrivate2->ovrRoomOptionsHandle, ovrTimeWindow_OneWeek);
-		break;
-	case EOBP_TimeWindow::ThirtyDays:
-		ovr_RoomOptions_SetRecentlyMetTimeWindow(CreateAndJoinPrivate2->ovrRoomOptionsHandle, ovrTimeWindow_ThirtyDays);
-		break;
-	case EOBP_TimeWindow::NinetyDays:
-		ovr_RoomOptions_SetRecentlyMetTimeWindow(CreateAndJoinPrivate2->ovrRoomOptionsHandle, ovrTimeWindow_NinetyDays);
-		break;
-	default:
-		ovr_RoomOptions_SetRecentlyMetTimeWindow(CreateAndJoinPrivate2->ovrRoomOptionsHandle, ovrTimeWindow_Unknown);
-		break;
-	}
-
+	CreateAndJoinPrivate2->RoomOptions = RoomOptions;
 	return CreateAndJoinPrivate2;
 }
 
@@ -379,6 +381,55 @@ void UOBP_Room_GetInvitableUsers2::Activate()
 
 	if (OculusIdentityInterface.IsValid())
 	{
+		ovrRoomOptions* ovrRoomOptionsHandle = ovr_RoomOptions_Create();
+
+		ovr_RoomOptions_SetDataStoreString(ovrRoomOptionsHandle, TCHAR_TO_ANSI(*RoomOptions.DataStoreKey), TCHAR_TO_ANSI(*RoomOptions.DataStoreValue));
+		ovr_RoomOptions_SetExcludeRecentlyMet(ovrRoomOptionsHandle, RoomOptions.bExcludeRecentlyMet);
+		ovr_RoomOptions_SetMaxUserResults(ovrRoomOptionsHandle, RoomOptions.MaxUserResults);
+		ovr_RoomOptions_SetRoomId(ovrRoomOptionsHandle, OBP_FStringToInt64(RoomOptions.RoomId));
+		ovr_RoomOptions_SetTurnOffUpdates(ovrRoomOptionsHandle, RoomOptions.bTurnOffUpdates);
+
+		switch (RoomOptions.Ordering)
+		{
+		case EOBP_UserOrdering::Unknown:
+			ovr_RoomOptions_SetOrdering(ovrRoomOptionsHandle, ovrUserOrdering_Unknown);
+			break;
+		case EOBP_UserOrdering::None:
+			ovr_RoomOptions_SetOrdering(ovrRoomOptionsHandle, ovrUserOrdering_None);
+			break;
+		case EOBP_UserOrdering::PresenceAlphabetical:
+			ovr_RoomOptions_SetOrdering(ovrRoomOptionsHandle, ovrUserOrdering_PresenceAlphabetical);
+			break;
+		default:
+			ovr_RoomOptions_SetOrdering(ovrRoomOptionsHandle, ovrUserOrdering_Unknown);
+			break;
+		}
+
+		switch (RoomOptions.TimeWindow)
+		{
+		case EOBP_TimeWindow::Unknown:
+			ovr_RoomOptions_SetRecentlyMetTimeWindow(ovrRoomOptionsHandle, ovrTimeWindow_Unknown);
+			break;
+		case EOBP_TimeWindow::OneHour:
+			ovr_RoomOptions_SetRecentlyMetTimeWindow(ovrRoomOptionsHandle, ovrTimeWindow_OneHour);
+			break;
+		case EOBP_TimeWindow::OneDay:
+			ovr_RoomOptions_SetRecentlyMetTimeWindow(ovrRoomOptionsHandle, ovrTimeWindow_OneDay);
+			break;
+		case EOBP_TimeWindow::OneWeek:
+			ovr_RoomOptions_SetRecentlyMetTimeWindow(ovrRoomOptionsHandle, ovrTimeWindow_OneWeek);
+			break;
+		case EOBP_TimeWindow::ThirtyDays:
+			ovr_RoomOptions_SetRecentlyMetTimeWindow(ovrRoomOptionsHandle, ovrTimeWindow_ThirtyDays);
+			break;
+		case EOBP_TimeWindow::NinetyDays:
+			ovr_RoomOptions_SetRecentlyMetTimeWindow(ovrRoomOptionsHandle, ovrTimeWindow_NinetyDays);
+			break;
+		default:
+			ovr_RoomOptions_SetRecentlyMetTimeWindow(ovrRoomOptionsHandle, ovrTimeWindow_Unknown);
+			break;
+		}
+
 		ovrRequest RequestId = ovr_Room_GetInvitableUsers2(ovrRoomOptionsHandle);
 
 		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
@@ -419,54 +470,7 @@ void UOBP_Room_GetInvitableUsers2::Activate()
 UOBP_Room_GetInvitableUsers2* UOBP_Room_GetInvitableUsers2::GetInvitableUsers2(UObject* WorldContextObject, FOBP_RoomOptionsStruct RoomOptions)
 {
 	auto GetInvitableUsers2 = NewObject<UOBP_Room_GetInvitableUsers2>();
-	
-	ovr_RoomOptions_SetDataStoreString(GetInvitableUsers2->ovrRoomOptionsHandle, TCHAR_TO_ANSI(*RoomOptions.DataStoreKey), TCHAR_TO_ANSI(*RoomOptions.DataStoreValue));
-	ovr_RoomOptions_SetExcludeRecentlyMet(GetInvitableUsers2->ovrRoomOptionsHandle, RoomOptions.bExcludeRecentlyMet);
-	ovr_RoomOptions_SetMaxUserResults(GetInvitableUsers2->ovrRoomOptionsHandle, RoomOptions.MaxUserResults);
-	ovr_RoomOptions_SetRoomId(GetInvitableUsers2->ovrRoomOptionsHandle, OBP_FStringToInt64(RoomOptions.RoomId));
-	ovr_RoomOptions_SetTurnOffUpdates(GetInvitableUsers2->ovrRoomOptionsHandle, RoomOptions.bTurnOffUpdates);
-
-	switch (RoomOptions.Ordering)
-	{
-	case EOBP_UserOrdering::Unknown:
-		ovr_RoomOptions_SetOrdering(GetInvitableUsers2->ovrRoomOptionsHandle, ovrUserOrdering_Unknown);
-		break;
-	case EOBP_UserOrdering::None:
-		ovr_RoomOptions_SetOrdering(GetInvitableUsers2->ovrRoomOptionsHandle, ovrUserOrdering_None);
-		break;
-	case EOBP_UserOrdering::PresenceAlphabetical:
-		ovr_RoomOptions_SetOrdering(GetInvitableUsers2->ovrRoomOptionsHandle, ovrUserOrdering_PresenceAlphabetical);
-		break;
-	default:
-		ovr_RoomOptions_SetOrdering(GetInvitableUsers2->ovrRoomOptionsHandle, ovrUserOrdering_Unknown);
-		break;
-	}
-
-	switch (RoomOptions.TimeWindow)
-	{
-	case EOBP_TimeWindow::Unknown:
-		ovr_RoomOptions_SetRecentlyMetTimeWindow(GetInvitableUsers2->ovrRoomOptionsHandle, ovrTimeWindow_Unknown);
-		break;
-	case EOBP_TimeWindow::OneHour:
-		ovr_RoomOptions_SetRecentlyMetTimeWindow(GetInvitableUsers2->ovrRoomOptionsHandle, ovrTimeWindow_OneHour);
-		break;
-	case EOBP_TimeWindow::OneDay:
-		ovr_RoomOptions_SetRecentlyMetTimeWindow(GetInvitableUsers2->ovrRoomOptionsHandle, ovrTimeWindow_OneDay);
-		break;
-	case EOBP_TimeWindow::OneWeek:
-		ovr_RoomOptions_SetRecentlyMetTimeWindow(GetInvitableUsers2->ovrRoomOptionsHandle, ovrTimeWindow_OneWeek);
-		break;
-	case EOBP_TimeWindow::ThirtyDays:
-		ovr_RoomOptions_SetRecentlyMetTimeWindow(GetInvitableUsers2->ovrRoomOptionsHandle, ovrTimeWindow_ThirtyDays);
-		break;
-	case EOBP_TimeWindow::NinetyDays:
-		ovr_RoomOptions_SetRecentlyMetTimeWindow(GetInvitableUsers2->ovrRoomOptionsHandle, ovrTimeWindow_NinetyDays);
-		break;
-	default:
-		ovr_RoomOptions_SetRecentlyMetTimeWindow(GetInvitableUsers2->ovrRoomOptionsHandle, ovrTimeWindow_Unknown);
-		break;
-	}
-
+	GetInvitableUsers2->RoomOptions = RoomOptions;
 	return GetInvitableUsers2;
 }
 
@@ -630,6 +634,55 @@ void UOBP_Room_Join2::Activate()
 
 	if (OculusIdentityInterface.IsValid())
 	{
+		ovrRoomOptions* ovrRoomOptionsHandle = ovr_RoomOptions_Create();
+
+		ovr_RoomOptions_SetDataStoreString(ovrRoomOptionsHandle, TCHAR_TO_ANSI(*RoomOptions.DataStoreKey), TCHAR_TO_ANSI(*RoomOptions.DataStoreValue));
+		ovr_RoomOptions_SetExcludeRecentlyMet(ovrRoomOptionsHandle, RoomOptions.bExcludeRecentlyMet);
+		ovr_RoomOptions_SetMaxUserResults(ovrRoomOptionsHandle, RoomOptions.MaxUserResults);
+		ovr_RoomOptions_SetRoomId(ovrRoomOptionsHandle, OBP_FStringToInt64(RoomOptions.RoomId));
+		ovr_RoomOptions_SetTurnOffUpdates(ovrRoomOptionsHandle, RoomOptions.bTurnOffUpdates);
+
+		switch (RoomOptions.Ordering)
+		{
+		case EOBP_UserOrdering::Unknown:
+			ovr_RoomOptions_SetOrdering(ovrRoomOptionsHandle, ovrUserOrdering_Unknown);
+			break;
+		case EOBP_UserOrdering::None:
+			ovr_RoomOptions_SetOrdering(ovrRoomOptionsHandle, ovrUserOrdering_None);
+			break;
+		case EOBP_UserOrdering::PresenceAlphabetical:
+			ovr_RoomOptions_SetOrdering(ovrRoomOptionsHandle, ovrUserOrdering_PresenceAlphabetical);
+			break;
+		default:
+			ovr_RoomOptions_SetOrdering(ovrRoomOptionsHandle, ovrUserOrdering_Unknown);
+			break;
+		}
+
+		switch (RoomOptions.TimeWindow)
+		{
+		case EOBP_TimeWindow::Unknown:
+			ovr_RoomOptions_SetRecentlyMetTimeWindow(ovrRoomOptionsHandle, ovrTimeWindow_Unknown);
+			break;
+		case EOBP_TimeWindow::OneHour:
+			ovr_RoomOptions_SetRecentlyMetTimeWindow(ovrRoomOptionsHandle, ovrTimeWindow_OneHour);
+			break;
+		case EOBP_TimeWindow::OneDay:
+			ovr_RoomOptions_SetRecentlyMetTimeWindow(ovrRoomOptionsHandle, ovrTimeWindow_OneDay);
+			break;
+		case EOBP_TimeWindow::OneWeek:
+			ovr_RoomOptions_SetRecentlyMetTimeWindow(ovrRoomOptionsHandle, ovrTimeWindow_OneWeek);
+			break;
+		case EOBP_TimeWindow::ThirtyDays:
+			ovr_RoomOptions_SetRecentlyMetTimeWindow(ovrRoomOptionsHandle, ovrTimeWindow_ThirtyDays);
+			break;
+		case EOBP_TimeWindow::NinetyDays:
+			ovr_RoomOptions_SetRecentlyMetTimeWindow(ovrRoomOptionsHandle, ovrTimeWindow_NinetyDays);
+			break;
+		default:
+			ovr_RoomOptions_SetRecentlyMetTimeWindow(ovrRoomOptionsHandle, ovrTimeWindow_Unknown);
+			break;
+		}
+
 		ovrRequest RequestId = ovr_Room_Join2(OBP_FStringToInt64(RoomID), ovrRoomOptionsHandle);
 
 		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
@@ -671,54 +724,7 @@ UOBP_Room_Join2* UOBP_Room_Join2::Join2(UObject* WorldContextObject, FString Roo
 {
 	auto Join2 = NewObject<UOBP_Room_Join2>();
 	Join2->RoomID = RoomID;
-	
-	ovr_RoomOptions_SetDataStoreString(Join2->ovrRoomOptionsHandle, TCHAR_TO_ANSI(*RoomOptions.DataStoreKey), TCHAR_TO_ANSI(*RoomOptions.DataStoreValue));
-	ovr_RoomOptions_SetExcludeRecentlyMet(Join2->ovrRoomOptionsHandle, RoomOptions.bExcludeRecentlyMet);
-	ovr_RoomOptions_SetMaxUserResults(Join2->ovrRoomOptionsHandle, RoomOptions.MaxUserResults);
-	ovr_RoomOptions_SetRoomId(Join2->ovrRoomOptionsHandle, OBP_FStringToInt64(RoomOptions.RoomId));
-	ovr_RoomOptions_SetTurnOffUpdates(Join2->ovrRoomOptionsHandle, RoomOptions.bTurnOffUpdates);
-
-	switch (RoomOptions.Ordering)
-	{
-	case EOBP_UserOrdering::Unknown:
-		ovr_RoomOptions_SetOrdering(Join2->ovrRoomOptionsHandle, ovrUserOrdering_Unknown);
-		break;
-	case EOBP_UserOrdering::None:
-		ovr_RoomOptions_SetOrdering(Join2->ovrRoomOptionsHandle, ovrUserOrdering_None);
-		break;
-	case EOBP_UserOrdering::PresenceAlphabetical:
-		ovr_RoomOptions_SetOrdering(Join2->ovrRoomOptionsHandle, ovrUserOrdering_PresenceAlphabetical);
-		break;
-	default:
-		ovr_RoomOptions_SetOrdering(Join2->ovrRoomOptionsHandle, ovrUserOrdering_Unknown);
-		break;
-	}
-
-	switch (RoomOptions.TimeWindow)
-	{
-	case EOBP_TimeWindow::Unknown:
-		ovr_RoomOptions_SetRecentlyMetTimeWindow(Join2->ovrRoomOptionsHandle, ovrTimeWindow_Unknown);
-		break;
-	case EOBP_TimeWindow::OneHour:
-		ovr_RoomOptions_SetRecentlyMetTimeWindow(Join2->ovrRoomOptionsHandle, ovrTimeWindow_OneHour);
-		break;
-	case EOBP_TimeWindow::OneDay:
-		ovr_RoomOptions_SetRecentlyMetTimeWindow(Join2->ovrRoomOptionsHandle, ovrTimeWindow_OneDay);
-		break;
-	case EOBP_TimeWindow::OneWeek:
-		ovr_RoomOptions_SetRecentlyMetTimeWindow(Join2->ovrRoomOptionsHandle, ovrTimeWindow_OneWeek);
-		break;
-	case EOBP_TimeWindow::ThirtyDays:
-		ovr_RoomOptions_SetRecentlyMetTimeWindow(Join2->ovrRoomOptionsHandle, ovrTimeWindow_ThirtyDays);
-		break;
-	case EOBP_TimeWindow::NinetyDays:
-		ovr_RoomOptions_SetRecentlyMetTimeWindow(Join2->ovrRoomOptionsHandle, ovrTimeWindow_NinetyDays);
-		break;
-	default:
-		ovr_RoomOptions_SetRecentlyMetTimeWindow(Join2->ovrRoomOptionsHandle, ovrTimeWindow_Unknown);
-		break;
-	}
-
+	Join2->RoomOptions = RoomOptions;
 	return Join2;
 }
 
