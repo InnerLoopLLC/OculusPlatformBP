@@ -168,9 +168,7 @@ class OCULUSPLATFORMBP_API UOBP_Challenges_GetList : public UBlueprintAsyncActio
 public:
 
 	int32 Limit;
-#if PLATFORM_MINOR_VERSION >= 51
-	ovrChallengeOptions* ovrChallengeOptionsHandle = ovr_ChallengeOptions_Create();
-#endif
+	FOBP_ChallengeOptionsStruct ChallengeOptions;
 
 	UPROPERTY(BlueprintAssignable)
 		FChallenges_GetList OnSuccess;
