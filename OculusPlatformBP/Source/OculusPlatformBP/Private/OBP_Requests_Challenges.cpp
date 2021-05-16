@@ -425,6 +425,58 @@ void UOBP_Challenges_GetList::Activate()
 
 	if (OculusIdentityInterface.IsValid())
 	{
+		auto ovrChallengeOptionsHandle = ovr_ChallengeOptions_Create();
+
+		ovr_ChallengeOptions_SetDescription(ovrChallengeOptionsHandle, TCHAR_TO_ANSI(*ChallengeOptions.Description));
+		ovr_ChallengeOptions_SetEndDate(ovrChallengeOptionsHandle, ChallengeOptions.EndDate);
+		ovr_ChallengeOptions_SetIncludeActiveChallenges(ovrChallengeOptionsHandle, ChallengeOptions.bIncludeActiveChallenges);
+		ovr_ChallengeOptions_SetIncludeFutureChallenges(ovrChallengeOptionsHandle, ChallengeOptions.bIncludeFutureChallenges);
+		ovr_ChallengeOptions_SetIncludePastChallenges(ovrChallengeOptionsHandle, ChallengeOptions.bIncludePastChallenges);
+		ovr_ChallengeOptions_SetLeaderboardName(ovrChallengeOptionsHandle, TCHAR_TO_ANSI(*ChallengeOptions.LeaderboardName));
+		ovr_ChallengeOptions_SetStartDate(ovrChallengeOptionsHandle, ChallengeOptions.StartDate);
+		ovr_ChallengeOptions_SetTitle(ovrChallengeOptionsHandle, TCHAR_TO_ANSI(*ChallengeOptions.Title));
+
+		switch (ChallengeOptions.ViewerFilter)
+		{
+		case EOBP_ChallengeViewerFilter::Unknown:
+			ovr_ChallengeOptions_SetViewerFilter(ovrChallengeOptionsHandle, ovrChallengeViewerFilter_Unknown);
+			break;
+		case EOBP_ChallengeViewerFilter::AllVisible:
+			ovr_ChallengeOptions_SetViewerFilter(ovrChallengeOptionsHandle, ovrChallengeViewerFilter_AllVisible);
+			break;
+		case EOBP_ChallengeViewerFilter::Participating:
+			ovr_ChallengeOptions_SetViewerFilter(ovrChallengeOptionsHandle, ovrChallengeViewerFilter_Participating);
+			break;
+		case EOBP_ChallengeViewerFilter::Invited:
+			ovr_ChallengeOptions_SetViewerFilter(ovrChallengeOptionsHandle, ovrChallengeViewerFilter_Invited);
+			break;
+		case EOBP_ChallengeViewerFilter::ParticipatingOrInvited:
+			ovr_ChallengeOptions_SetViewerFilter(ovrChallengeOptionsHandle, ovrChallengeViewerFilter_ParticipatingOrInvited);
+			break;
+		default:
+			ovr_ChallengeOptions_SetViewerFilter(ovrChallengeOptionsHandle, ovrChallengeViewerFilter_Unknown);
+			break;
+		}
+
+		switch (ChallengeOptions.Visibility)
+		{
+		case EOBP_ChallengeVisibility::Unknown:
+			ovr_ChallengeOptions_SetVisibility(ovrChallengeOptionsHandle, ovrChallengeVisibility_Unknown);
+			break;
+		case EOBP_ChallengeVisibility::InviteOnly:
+			ovr_ChallengeOptions_SetVisibility(ovrChallengeOptionsHandle, ovrChallengeVisibility_InviteOnly);
+			break;
+		case EOBP_ChallengeVisibility::Public:
+			ovr_ChallengeOptions_SetVisibility(ovrChallengeOptionsHandle, ovrChallengeVisibility_Public);
+			break;
+		case EOBP_ChallengeVisibility::Private:
+			ovr_ChallengeOptions_SetVisibility(ovrChallengeOptionsHandle, ovrChallengeVisibility_Private);
+			break;
+		default:
+			ovr_ChallengeOptions_SetVisibility(ovrChallengeOptionsHandle, ovrChallengeVisibility_Unknown);
+			break;
+		}
+
 		ovrRequest RequestId = ovr_Challenges_GetList(ovrChallengeOptionsHandle, Limit);
 
 		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
@@ -470,61 +522,7 @@ UOBP_Challenges_GetList* UOBP_Challenges_GetList::GetList(UObject* WorldContextO
 {
 	auto GetList = NewObject<UOBP_Challenges_GetList>();
 	GetList->Limit = Limit;
-
-#if PLATFORM_MINOR_VERSION >= 51
-	ovr_ChallengeOptions_SetDescription(GetList->ovrChallengeOptionsHandle, TCHAR_TO_ANSI(*ChallengeOptions.Description));
-	ovr_ChallengeOptions_SetEndDate(GetList->ovrChallengeOptionsHandle, ChallengeOptions.EndDate);
-	ovr_ChallengeOptions_SetIncludeActiveChallenges(GetList->ovrChallengeOptionsHandle, ChallengeOptions.bIncludeActiveChallenges);
-	ovr_ChallengeOptions_SetIncludeFutureChallenges(GetList->ovrChallengeOptionsHandle, ChallengeOptions.bIncludeFutureChallenges);
-	ovr_ChallengeOptions_SetIncludePastChallenges(GetList->ovrChallengeOptionsHandle, ChallengeOptions.bIncludePastChallenges);
-	ovr_ChallengeOptions_SetLeaderboardName(GetList->ovrChallengeOptionsHandle, TCHAR_TO_ANSI(*ChallengeOptions.LeaderboardName));
-	ovr_ChallengeOptions_SetStartDate(GetList->ovrChallengeOptionsHandle, ChallengeOptions.StartDate);
-	ovr_ChallengeOptions_SetTitle(GetList->ovrChallengeOptionsHandle, TCHAR_TO_ANSI(*ChallengeOptions.Title));
-
-	switch (ChallengeOptions.ViewerFilter)
-	{
-	case EOBP_ChallengeViewerFilter::Unknown:
-		ovr_ChallengeOptions_SetViewerFilter(GetList->ovrChallengeOptionsHandle, ovrChallengeViewerFilter_Unknown);
-		break;
-	case EOBP_ChallengeViewerFilter::AllVisible:
-		ovr_ChallengeOptions_SetViewerFilter(GetList->ovrChallengeOptionsHandle, ovrChallengeViewerFilter_AllVisible);
-		break;
-	case EOBP_ChallengeViewerFilter::Participating:
-		ovr_ChallengeOptions_SetViewerFilter(GetList->ovrChallengeOptionsHandle, ovrChallengeViewerFilter_Participating);
-		break;
-	case EOBP_ChallengeViewerFilter::Invited:
-		ovr_ChallengeOptions_SetViewerFilter(GetList->ovrChallengeOptionsHandle, ovrChallengeViewerFilter_Invited);
-		break;
-	case EOBP_ChallengeViewerFilter::ParticipatingOrInvited:
-		ovr_ChallengeOptions_SetViewerFilter(GetList->ovrChallengeOptionsHandle, ovrChallengeViewerFilter_ParticipatingOrInvited);
-		break;
-	default:
-		ovr_ChallengeOptions_SetViewerFilter(GetList->ovrChallengeOptionsHandle, ovrChallengeViewerFilter_Unknown);
-		break;
-	}
-
-	switch (ChallengeOptions.Visibility)
-	{
-	case EOBP_ChallengeVisibility::Unknown:
-		ovr_ChallengeOptions_SetVisibility(GetList->ovrChallengeOptionsHandle, ovrChallengeVisibility_Unknown);
-		break;
-	case EOBP_ChallengeVisibility::InviteOnly:
-		ovr_ChallengeOptions_SetVisibility(GetList->ovrChallengeOptionsHandle, ovrChallengeVisibility_InviteOnly);
-		break;
-	case EOBP_ChallengeVisibility::Public:
-		ovr_ChallengeOptions_SetVisibility(GetList->ovrChallengeOptionsHandle, ovrChallengeVisibility_Public);
-		break;
-	case EOBP_ChallengeVisibility::Private:
-		ovr_ChallengeOptions_SetVisibility(GetList->ovrChallengeOptionsHandle, ovrChallengeVisibility_Private);
-		break;
-	default:
-		ovr_ChallengeOptions_SetVisibility(GetList->ovrChallengeOptionsHandle, ovrChallengeVisibility_Unknown);
-		break;
-	}
-#else
-	OBP_PlatformVersionError("Challenges::GetList", "v19");
-#endif
-
+	GetList->ChallengeOptions = ChallengeOptions;
 	return GetList;
 }
 
