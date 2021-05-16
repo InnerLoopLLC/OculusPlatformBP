@@ -222,14 +222,10 @@ void UOBP_RichPresence_SetRichPresence::Activate()
 	{
 		ovrRichPresenceOptions* ovrRichPresenceOptionsHandle = ovr_RichPresenceOptions_Create();
 
-#if PLATFORM_MINOR_VERSION >= 39
 		ovr_RichPresenceOptions_SetApiName(ovrRichPresenceOptionsHandle, TCHAR_TO_ANSI(*RichPresence.ApiName));
 		ovr_RichPresenceOptions_SetEndTime(ovrRichPresenceOptionsHandle, RichPresence.EndTime);
 		ovr_RichPresenceOptions_SetIsIdle(ovrRichPresenceOptionsHandle, RichPresence.bIsIdle);
 		ovr_RichPresenceOptions_SetIsJoinable(ovrRichPresenceOptionsHandle, RichPresence.bIsJoinable);
-#else
-		OBP_PlatformVersionError("RichPresence::SetRichPresence", "1.39");
-#endif
 
 #if PLATFORM_MINOR_VERSION >= 40
 		ovr_RichPresenceOptions_SetCurrentCapacity(ovrRichPresenceOptionsHandle, RichPresence.CurrentCapacity);
