@@ -68,7 +68,7 @@ void UOBP_RichPresence_ClearRichPresence::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("RichPresence::ClearRichPresense");
 		OnFailure.Broadcast();
 	}
 #else
@@ -132,7 +132,7 @@ void UOBP_RichPresence_GetDestinations::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("RichPresence::GetDestinations");
 		OnFailure.Broadcast(TArray<UOBP_Destination*>(), nullptr);
 	}
 #else
@@ -196,7 +196,7 @@ void UOBP_RichPresence_GetNextDestinationArrayPage::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("RichPresence::GetNextDestinationArray");
 		OnFailure.Broadcast(TArray<UOBP_Destination*>(), nullptr);
 	}
 #else
@@ -263,6 +263,13 @@ void UOBP_RichPresence_SetRichPresence::Activate()
 		OBP_PlatformVersionError("RichPresenceOptions::SetRichPresence", "v23");
 #endif
 
+#if PLATFORM_MINOR_VERSION >= 60
+		ovr_RichPresenceOptions_SetLobbySessionId(ovrRichPresenceOptionsHandle, TCHAR_TO_ANSI(*RichPresence.LobbySessionID));
+		ovr_RichPresenceOptions_SetMatchSessionId(ovrRichPresenceOptionsHandle, TCHAR_TO_ANSI(*RichPresence.MatchSessionID));
+#else
+		OBP_PlatformVersionError("RichPresenceOptions::SetRichPresence", "v28");
+#endif
+
 		ovrRequest RequestId = ovr_RichPresence_Set(ovrRichPresenceOptionsHandle);
 
 		FOnlineSubsystemOculus* OSS = static_cast<FOnlineSubsystemOculus*>(IOnlineSubsystem::Get(OCULUS_SUBSYSTEM));
@@ -293,7 +300,7 @@ void UOBP_RichPresence_SetRichPresence::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("RichPresence::SetRichPresence");
 		OnFailure.Broadcast();
 	}
 #else

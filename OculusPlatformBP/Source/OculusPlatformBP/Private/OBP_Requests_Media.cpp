@@ -83,7 +83,7 @@ void UOBP_Media_ShareToFacebook::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Media::ShareToFacebook");
 		OnFailure.Broadcast(EOBP_ShareMediaStatus::Unknown);
 	}
 }
