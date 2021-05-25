@@ -94,7 +94,7 @@ void UOBP_Achievements_AddCount::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Achievements::AddCount");
 		OnFailure.Broadcast("", false);
 	}
 }
@@ -146,7 +146,7 @@ void UOBP_Achievements_AddFields::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Achievements::AddFields");
 		OnFailure.Broadcast("", false);
 	}
 }
@@ -208,7 +208,7 @@ void UOBP_Achievements_GetAllDefinitions::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Achievements::GetAllDefinitions");
 		OnFailure.Broadcast(TArray<UOBP_AchievementDefinition*>(), nullptr);
 	}
 }
@@ -267,7 +267,7 @@ void UOBP_Achievements_GetAllProgress::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Achievements::GetAllProgress");
 		OnFailure.Broadcast(TArray<UOBP_AchievementProgress*>(), nullptr);
 	}
 }
@@ -343,7 +343,7 @@ void UOBP_Achievements_GetDefinitionsByName::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Achievements::GetDefinitionsByName");
 		OnFailure.Broadcast(TArray<UOBP_AchievementDefinition*>(), nullptr);
 	}
 }
@@ -405,7 +405,7 @@ void UOBP_Achievements_GetNextAchievementDefinitionArrayPage::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Achievements::GetNextAchievementDefinitionArrayPage");
 		OnFailure.Broadcast(TArray<UOBP_AchievementDefinition*>(), nullptr);
 	}
 }
@@ -466,7 +466,7 @@ void UOBP_Achievements_GetNextAchievementProgressArrayPage::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Achievements::GetNextAchievementProgressArrayPage");
 		OnFailure.Broadcast(TArray<UOBP_AchievementProgress*>(), nullptr);
 	}
 }
@@ -544,7 +544,7 @@ void UOBP_Achievements_GetProgressByName::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Achievements::GetProgressByName");
 		OnFailure.Broadcast(TArray<UOBP_AchievementProgress*>(), nullptr);
 	}
 }
@@ -598,7 +598,7 @@ void UOBP_Achievements_Unlock::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Achievements::Unlock");
 		OnFailure.Broadcast("", false);
 	}
 }

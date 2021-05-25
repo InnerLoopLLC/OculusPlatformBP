@@ -73,7 +73,7 @@ void UOBP_Leaderboard_Get::Activate()
 			if (bIsError)
 			{
 				OBP_MessageError("Leaderboard::Get", Message);
-				OnFailure.Broadcast(nullptr, TArray<UOBP_Leaderboard*>(), nullptr);
+				OnFailure.Broadcast(nullptr);
 			}
 			else
 			{
@@ -83,39 +83,28 @@ void UOBP_Leaderboard_Get::Activate()
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got leaderboard."));
 
-					auto ThisLeaderboardArray = NewObject<UOBP_LeaderboardArray>();
-					ThisLeaderboardArray->ovrLeaderboardArrayHandle = ovr_Message_GetLeaderboardArray(Message);
-
+					// The message response will return a LeaderboardArray, but the array will always contain a single entry. So, we're just returning that entry directly.
 					auto ThisLeaderboard = NewObject<UOBP_Leaderboard>();
-					ThisLeaderboard->ovrLeaderboardHandle = ovr_LeaderboardArray_GetElement(ThisLeaderboardArray->ovrLeaderboardArrayHandle, 0);
+					ThisLeaderboard->ovrLeaderboardHandle = ovr_LeaderboardArray_GetElement(ovr_Message_GetLeaderboardArray(Message), 0);
 
-					TArray<UOBP_Leaderboard*> ArrayOfLeaderboards;
-
-					for (size_t i = 0; i < ovr_LeaderboardArray_GetSize(ThisLeaderboardArray->ovrLeaderboardArrayHandle); i++)
-					{
-						auto ThisElement = NewObject<UOBP_Leaderboard>();
-						ThisElement->ovrLeaderboardHandle = ovr_LeaderboardArray_GetElement(ThisLeaderboardArray->ovrLeaderboardArrayHandle, i);
-						ArrayOfLeaderboards.Add(ThisElement);
-					}
-
-					OnSuccess.Broadcast(ThisLeaderboard, ArrayOfLeaderboards, ThisLeaderboardArray);
+					OnSuccess.Broadcast(ThisLeaderboard);
 				}
 				else
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get leaderboard."));
-					OnFailure.Broadcast(nullptr, TArray<UOBP_Leaderboard*>(), nullptr);
+					OnFailure.Broadcast(nullptr);
 				}
 			}
 		}));
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
-		OnFailure.Broadcast(nullptr, TArray<UOBP_Leaderboard*>(), nullptr);
+		OBP_SubsystemError("Leaderboard::Get");
+		OnFailure.Broadcast(nullptr);
 	}
 #else
 	OBP_PlatformVersionError("Leaderboard::Get", "v27");
-	OnFailure.Broadcast(nullptr, TArray<UOBP_Leaderboard*>(), nullptr);
+	OnFailure.Broadcast(nullptr);
 #endif
 }
 
@@ -210,7 +199,7 @@ void UOBP_Leaderboard_GetEntries::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Leaderboard::GetEntries");
 		OnFailure.Broadcast(TArray<UOBP_LeaderboardEntry*>(), nullptr);
 	}
 }
@@ -274,7 +263,7 @@ void UOBP_Leaderboard_GetEntriesAfterRank::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Leaderboard::GetEntriesAfterRank");
 		OnFailure.Broadcast(TArray<UOBP_LeaderboardEntry*>(), nullptr);
 	}
 }
@@ -362,7 +351,7 @@ void UOBP_Leaderboard_GetEntriesByIds::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Leaderboard::GetEntriesByIds");
 		OnFailure.Broadcast(TArray<UOBP_LeaderboardEntry*>(), nullptr);
 	}
 #else
@@ -431,7 +420,7 @@ void UOBP_Leaderboard_GetNextEntries::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Leaderboard::GetNextEntries");
 		OnFailure.Broadcast(TArray<UOBP_LeaderboardEntry*>(), nullptr);
 	}
 }
@@ -494,7 +483,7 @@ void UOBP_Leaderboard_GetNextLeaderboardArrayPage::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Leaderboard::GetNextLeaderboardArrayPage");
 		OnFailure.Broadcast(TArray<UOBP_Leaderboard*>(), nullptr);
 	}
 #else
@@ -559,7 +548,7 @@ void UOBP_Leaderboard_GetPreviousEntries::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Leaderboard::GetPreviousEntries");
 		OnFailure.Broadcast(TArray<UOBP_LeaderboardEntry*>(), nullptr);
 	}
 }
@@ -616,7 +605,7 @@ void UOBP_Leaderboard_WriteEntry::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Leaderboard::WriteEntry");
 		OnFailure.Broadcast(false, "", 0);
 	}
 }
@@ -678,7 +667,7 @@ void UOBP_Leaderboard_WriteEntryWithSupplementaryMetric::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Leaderboard::WriteEntryWithSupplementaryMetric");
 		OnFailure.Broadcast(false, "", 0);
 	}
 #else

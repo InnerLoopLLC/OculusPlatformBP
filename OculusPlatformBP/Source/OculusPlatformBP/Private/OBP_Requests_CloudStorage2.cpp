@@ -55,7 +55,7 @@ void UOBP_CloudStorage2_GetUserDirectoryPath::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("CloudStorage2::GetUserDirectoryPath");
 		OnFailure.Broadcast("");
 	}
 #else

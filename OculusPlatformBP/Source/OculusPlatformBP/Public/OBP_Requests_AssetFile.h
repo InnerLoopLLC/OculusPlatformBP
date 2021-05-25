@@ -13,7 +13,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAssetFile_DownloadByID, FString, A
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAssetFile_DownloadByName, FString, AssetID, FString, FilePath);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FAssetFile_DownloadCancelByID, FString, AssetID, FString, FilePath, bool, WasSuccessful);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FAssetFile_DownloadCancelByName, FString, AssetID, FString, FilePath, bool, WasSuccessful);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAssetFile_GetList, UOBP_AssetDetailsArray*, AssetDetailsArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAssetFile_GetList, const TArray<UOBP_AssetDetails*>&, AssetDetails, UOBP_AssetDetailsArray*, AssetDetailsArray);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAssetFile_StatusByID, UOBP_AssetDetails*, AssetDetails);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAssetFile_StatusByName, UOBP_AssetDetails*, AssetDetails);
 
