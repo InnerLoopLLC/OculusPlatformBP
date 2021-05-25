@@ -6,8 +6,8 @@
 #include "OBP_RoomInviteNotificationArray.h"
 #include "OBP_Requests_Notification.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FNotification_GetNextRoomInviteNotificationArrayPage, UOBP_RoomInviteNotificationArray*, NextRoomInviteNotificationArrayPage);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FNotification_GetRoomInvites, UOBP_RoomInviteNotificationArray*, RoomInvites);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FNotification_GetNextRoomInviteNotificationArrayPage, const TArray<UOBP_RoomInviteNotification*>&, RoomInvites, UOBP_RoomInviteNotificationArray*, NextRoomInviteNotificationArrayPage);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FNotification_GetRoomInvites, const TArray<UOBP_RoomInviteNotification*>&, RoomInvites, UOBP_RoomInviteNotificationArray*, RoomInviteArray);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FNotification_MarkAsRead);
 
 // --------------------

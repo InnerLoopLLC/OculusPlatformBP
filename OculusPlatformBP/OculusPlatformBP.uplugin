@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "v27.2",
+	"VersionName": "v28",
 	"FriendlyName": "OculusPlatformBP",
 	"Description": "Oculus Platform SDK features exposed to Blueprints.",
 	"Category": "Online Platform",
