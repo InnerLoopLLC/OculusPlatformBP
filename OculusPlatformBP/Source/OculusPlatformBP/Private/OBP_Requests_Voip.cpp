@@ -89,7 +89,7 @@ void UOBP_Voip_SetSystemVoipSuppressed::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Voip::SetSystemVoipSuppressed");
 		OnFailure.Broadcast(EOBP_VoipMuteState::Unknown, EOBP_SystemVoipStatus::Unknown);
 	}
 }

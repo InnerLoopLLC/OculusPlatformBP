@@ -29,6 +29,16 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Application|Launch Details")
 		FString GetDestinationApiName();
 
+	/* If provided, the intended lobby the user would like to be in. 
+	Requires OculusPlatformSDK v28 or later */
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Application|Launch Details")
+		FString GetLobbySessionID();
+
+	/* If provided, the intended session the user would like to be in.
+	Requires OculusPlatformSDK v28 or later */
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Application|Launch Details")
+		FString GetMatchSessionID();
+
 	/* A string typically used to distinguish where the deeplink came from. For instance, a DEEPLINK launch type could be coming from events or rich presence. */
 	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|Application|Launch Details")
 		FString GetLaunchSource();

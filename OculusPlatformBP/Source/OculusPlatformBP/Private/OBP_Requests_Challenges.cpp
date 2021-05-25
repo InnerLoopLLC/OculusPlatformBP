@@ -110,7 +110,7 @@ void UOBP_Challenges_DeclineInvite::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Challenges::DeclineInvite");
 		OnFailure.Broadcast(nullptr);
 	}
 #else
@@ -166,7 +166,7 @@ void UOBP_Challenges_Get::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Challenges::Get");
 		OnFailure.Broadcast(nullptr);
 	}
 #else
@@ -233,7 +233,7 @@ void UOBP_Challenges_GetEntries::Activate()
 			if (bIsError)
 			{
 				OBP_MessageError("Challenges::GetEntries", Message);
-				OnFailure.Broadcast(nullptr);
+				OnFailure.Broadcast(TArray<UOBP_ChallengeEntry*>(), nullptr);
 			}
 			else
 			{
@@ -244,24 +244,34 @@ void UOBP_Challenges_GetEntries::Activate()
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got challenge entries."));
 					auto ThisChallengeEntryArray = NewObject<UOBP_ChallengeEntryArray>();
 					ThisChallengeEntryArray->ovrChallengeEntryArrayHandle = ovr_Message_GetChallengeEntryArray(Message);
-					OnSuccess.Broadcast(ThisChallengeEntryArray);
+
+					TArray<UOBP_ChallengeEntry*> ChallengeEntries;
+
+					for (size_t i = 0; i < ovr_ChallengeEntryArray_GetSize(ThisChallengeEntryArray->ovrChallengeEntryArrayHandle); i++)
+					{
+						auto ThisElement = NewObject<UOBP_ChallengeEntry>();
+						ThisElement->ovrChallengeEntryHandle = ovr_ChallengeEntryArray_GetElement(ThisChallengeEntryArray->ovrChallengeEntryArrayHandle, i);
+						ChallengeEntries.Add(ThisElement);
+					}
+
+					OnSuccess.Broadcast(ChallengeEntries, ThisChallengeEntryArray);
 				}
 				else
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get challenge entries."));
-					OnFailure.Broadcast(nullptr);
+					OnFailure.Broadcast(TArray<UOBP_ChallengeEntry*>(), nullptr);
 				}
 			}
 		}));
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
-		OnFailure.Broadcast(nullptr);
+		OBP_SubsystemError("Challenges::GetEntries");
+		OnFailure.Broadcast(TArray<UOBP_ChallengeEntry*>(), nullptr);
 	}
 #else
 	OBP_PlatformVersionError("Challenges::GetEntries", "v19");
-	OnFailure.Broadcast(nullptr);
+	OnFailure.Broadcast(TArray<UOBP_ChallengeEntry*>(), nullptr);
 #endif
 }
 
@@ -292,7 +302,7 @@ void UOBP_Challenges_GetEntriesAfterRank::Activate()
 			if (bIsError)
 			{
 				OBP_MessageError("Challenges::GetEntriesAfterRank", Message);
-				OnFailure.Broadcast(nullptr);
+				OnFailure.Broadcast(TArray<UOBP_ChallengeEntry*>(), nullptr);
 			}
 			else
 			{
@@ -303,24 +313,34 @@ void UOBP_Challenges_GetEntriesAfterRank::Activate()
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got challenge entries after rank."));
 					auto ThisChallengeEntryArray = NewObject<UOBP_ChallengeEntryArray>();
 					ThisChallengeEntryArray->ovrChallengeEntryArrayHandle = ovr_Message_GetChallengeEntryArray(Message);
-					OnSuccess.Broadcast(ThisChallengeEntryArray);
+					
+					TArray<UOBP_ChallengeEntry*> ChallengeEntries;
+
+					for (size_t i = 0; i < ovr_ChallengeEntryArray_GetSize(ThisChallengeEntryArray->ovrChallengeEntryArrayHandle); i++)
+					{
+						auto ThisElement = NewObject<UOBP_ChallengeEntry>();
+						ThisElement->ovrChallengeEntryHandle = ovr_ChallengeEntryArray_GetElement(ThisChallengeEntryArray->ovrChallengeEntryArrayHandle, i);
+						ChallengeEntries.Add(ThisElement);
+					}
+
+					OnSuccess.Broadcast(ChallengeEntries, ThisChallengeEntryArray);
 				}
 				else
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get challenge entries after rank."));
-					OnFailure.Broadcast(nullptr);
+					OnFailure.Broadcast(TArray<UOBP_ChallengeEntry*>(), nullptr);
 				}
 			}
 		}));
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
-		OnFailure.Broadcast(nullptr);
+		OBP_SubsystemError("Challenges::GetEntriesAfterRank");
+		OnFailure.Broadcast(TArray<UOBP_ChallengeEntry*>(), nullptr);
 	}
 #else
 	OBP_PlatformVersionError("Challenges::GetEntriesAfterRank", "v19");
-	OnFailure.Broadcast(nullptr);
+	OnFailure.Broadcast(TArray<UOBP_ChallengeEntry*>(), nullptr);
 #endif
 }
 
@@ -373,7 +393,7 @@ void UOBP_Challenges_GetEntriesByIds::Activate()
 			if (bIsError)
 			{
 				OBP_MessageError("Challenges::GetEntriesByIds", Message);
-				OnFailure.Broadcast(nullptr);
+				OnFailure.Broadcast(TArray<UOBP_ChallengeEntry*>(), nullptr);
 			}
 			else
 			{
@@ -384,12 +404,22 @@ void UOBP_Challenges_GetEntriesByIds::Activate()
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got challenge entries by IDs."));
 					auto ThisChallengeEntryArray = NewObject<UOBP_ChallengeEntryArray>();
 					ThisChallengeEntryArray->ovrChallengeEntryArrayHandle = ovr_Message_GetChallengeEntryArray(Message);
-					OnSuccess.Broadcast(ThisChallengeEntryArray);
+					
+					TArray<UOBP_ChallengeEntry*> ChallengeEntries;
+
+					for (size_t i = 0; i < ovr_ChallengeEntryArray_GetSize(ThisChallengeEntryArray->ovrChallengeEntryArrayHandle); i++)
+					{
+						auto ThisElement = NewObject<UOBP_ChallengeEntry>();
+						ThisElement->ovrChallengeEntryHandle = ovr_ChallengeEntryArray_GetElement(ThisChallengeEntryArray->ovrChallengeEntryArrayHandle, i);
+						ChallengeEntries.Add(ThisElement);
+					}
+
+					OnSuccess.Broadcast(ChallengeEntries, ThisChallengeEntryArray);
 				}
 				else
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get challenge entries by IDs."));
-					OnFailure.Broadcast(nullptr);
+					OnFailure.Broadcast(TArray<UOBP_ChallengeEntry*>(), nullptr);
 				}
 			}
 		}));
@@ -397,12 +427,12 @@ void UOBP_Challenges_GetEntriesByIds::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
-		OnFailure.Broadcast(nullptr);
+		OBP_SubsystemError("Challenges::GetEntriesByIds");
+		OnFailure.Broadcast(TArray<UOBP_ChallengeEntry*>(), nullptr);
 	}
 #else
 	OBP_PlatformVersionError("Challenges::GetEntriesByIds", "v19");
-	OnFailure.Broadcast(nullptr);
+	OnFailure.Broadcast(TArray<UOBP_ChallengeEntry*>(), nullptr);
 #endif
 }
 
@@ -486,7 +516,7 @@ void UOBP_Challenges_GetList::Activate()
 			if (bIsError)
 			{
 				OBP_MessageError("Challenges::GetList", Message);
-				OnFailure.Broadcast(nullptr);
+				OnFailure.Broadcast(TArray<UOBP_Challenge*>(), nullptr);
 			}
 			else
 			{
@@ -497,24 +527,34 @@ void UOBP_Challenges_GetList::Activate()
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got list of challenges."));
 					auto ThisChallengeArray = NewObject<UOBP_ChallengeArray>();
 					ThisChallengeArray->ovrChallengeArrayHandle = ovr_Message_GetChallengeArray(Message);
-					OnSuccess.Broadcast(ThisChallengeArray);
+					
+					TArray<UOBP_Challenge*> Challenges;
+
+					for (size_t i = 0; i < ovr_ChallengeArray_GetSize(ThisChallengeArray->ovrChallengeArrayHandle); i++)
+					{
+						auto ThisElement = NewObject<UOBP_Challenge>();
+						ThisElement->ovrChallengeHandle = ovr_ChallengeArray_GetElement(ThisChallengeArray->ovrChallengeArrayHandle, i);
+						Challenges.Add(ThisElement);
+					}
+
+					OnSuccess.Broadcast(Challenges, ThisChallengeArray);
 				}
 				else
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get list of challenges."));
-					OnFailure.Broadcast(nullptr);
+					OnFailure.Broadcast(TArray<UOBP_Challenge*>(), nullptr);
 				}
 			}
 		}));
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
-		OnFailure.Broadcast(nullptr);
+		OBP_SubsystemError("Challenges::GetList");
+		OnFailure.Broadcast(TArray<UOBP_Challenge*>(), nullptr);
 	}
 #else
 	OBP_PlatformVersionError("Challenges::GetList", "v19");
-	OnFailure.Broadcast(nullptr);
+	OnFailure.Broadcast(TArray<UOBP_Challenge*>(), nullptr);
 #endif
 }
 
@@ -543,7 +583,7 @@ void UOBP_Challenges_GetNextChallenges::Activate()
 			if (bIsError)
 			{
 				OBP_MessageError("Challenges::GetNextChallenges", Message);
-				OnFailure.Broadcast(nullptr);
+				OnFailure.Broadcast(TArray<UOBP_Challenge*>(), nullptr);
 			}
 			else
 			{
@@ -554,24 +594,34 @@ void UOBP_Challenges_GetNextChallenges::Activate()
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got next challenges."));
 					auto ThisChallengeArray = NewObject<UOBP_ChallengeArray>();
 					ThisChallengeArray->ovrChallengeArrayHandle = ovr_Message_GetChallengeArray(Message);
-					OnSuccess.Broadcast(ThisChallengeArray);
+					
+					TArray<UOBP_Challenge*> Challenges;
+
+					for (size_t i = 0; i < ovr_ChallengeArray_GetSize(ThisChallengeArray->ovrChallengeArrayHandle); i++)
+					{
+						auto ThisElement = NewObject<UOBP_Challenge>();
+						ThisElement->ovrChallengeHandle = ovr_ChallengeArray_GetElement(ThisChallengeArray->ovrChallengeArrayHandle, i);
+						Challenges.Add(ThisElement);
+					}
+
+					OnSuccess.Broadcast(Challenges, ThisChallengeArray);
 				}
 				else
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get next challenges."));
-					OnFailure.Broadcast(nullptr);
+					OnFailure.Broadcast(TArray<UOBP_Challenge*>(), nullptr);
 				}
 			}
 		}));
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
-		OnFailure.Broadcast(nullptr);
+		OBP_SubsystemError("Challenges::GetNextChallenges");
+		OnFailure.Broadcast(TArray<UOBP_Challenge*>(), nullptr);
 	}
 #else
 	OBP_PlatformVersionError("Challenges::GetNextChallenges", "v19");
-	OnFailure.Broadcast(nullptr);
+	OnFailure.Broadcast(TArray<UOBP_Challenge*>(), nullptr);
 #endif
 }
 
@@ -599,7 +649,7 @@ void UOBP_Challenges_GetNextEntries::Activate()
 			if (bIsError)
 			{
 				OBP_MessageError("Challenges::GetNextEntries", Message);
-				OnFailure.Broadcast(nullptr);
+				OnFailure.Broadcast(TArray<UOBP_ChallengeEntry*>(), nullptr);
 			}
 			else
 			{
@@ -610,24 +660,34 @@ void UOBP_Challenges_GetNextEntries::Activate()
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got next challenge entries."));
 					auto ThisChallengeEntryArray = NewObject<UOBP_ChallengeEntryArray>();
 					ThisChallengeEntryArray->ovrChallengeEntryArrayHandle = ovr_Message_GetChallengeEntryArray(Message);
-					OnSuccess.Broadcast(ThisChallengeEntryArray);
+					
+					TArray<UOBP_ChallengeEntry*> ChallengeEntries;
+
+					for (size_t i = 0; i < ovr_ChallengeEntryArray_GetSize(ThisChallengeEntryArray->ovrChallengeEntryArrayHandle); i++)
+					{
+						auto ThisElement = NewObject<UOBP_ChallengeEntry>();
+						ThisElement->ovrChallengeEntryHandle = ovr_ChallengeEntryArray_GetElement(ThisChallengeEntryArray->ovrChallengeEntryArrayHandle, i);
+						ChallengeEntries.Add(ThisElement);
+					}
+
+					OnSuccess.Broadcast(ChallengeEntries, ThisChallengeEntryArray);
 				}
 				else
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get next challenge entries."));
-					OnFailure.Broadcast(nullptr);
+					OnFailure.Broadcast(TArray<UOBP_ChallengeEntry*>(), nullptr);
 				}
 			}
 		}));
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
-		OnFailure.Broadcast(nullptr);
+		OBP_SubsystemError("Challenges::GetNextEntries");
+		OnFailure.Broadcast(TArray<UOBP_ChallengeEntry*>(), nullptr);
 	}
 #else
 	OBP_PlatformVersionError("Challenges::GetNextEntries", "v19");
-	OnFailure.Broadcast(nullptr);
+	OnFailure.Broadcast(TArray<UOBP_ChallengeEntry*>(), nullptr);
 #endif
 }
 
@@ -655,7 +715,7 @@ void UOBP_Challenges_GetPreviousChallenges::Activate()
 			if (bIsError)
 			{
 				OBP_MessageError("Challenges::GetPreviousChallenges", Message);
-				OnFailure.Broadcast(nullptr);
+				OnFailure.Broadcast(TArray<UOBP_Challenge*>(), nullptr);
 			}
 			else
 			{
@@ -666,24 +726,34 @@ void UOBP_Challenges_GetPreviousChallenges::Activate()
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got previous challenges."));
 					auto ThisChallengeArray = NewObject<UOBP_ChallengeArray>();
 					ThisChallengeArray->ovrChallengeArrayHandle = ovr_Message_GetChallengeArray(Message);
-					OnSuccess.Broadcast(ThisChallengeArray);
+					
+					TArray<UOBP_Challenge*> Challenges;
+
+					for (size_t i = 0; i < ovr_ChallengeArray_GetSize(ThisChallengeArray->ovrChallengeArrayHandle); i++)
+					{
+						auto ThisElement = NewObject<UOBP_Challenge>();
+						ThisElement->ovrChallengeHandle = ovr_ChallengeArray_GetElement(ThisChallengeArray->ovrChallengeArrayHandle, i);
+						Challenges.Add(ThisElement);
+					}
+
+					OnSuccess.Broadcast(Challenges, ThisChallengeArray);
 				}
 				else
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get previous challenges."));
-					OnFailure.Broadcast(nullptr);
+					OnFailure.Broadcast(TArray<UOBP_Challenge*>(), nullptr);
 				}
 			}
 		}));
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
-		OnFailure.Broadcast(nullptr);
+		OBP_SubsystemError("Challenges::GetPreviousChallenges");
+		OnFailure.Broadcast(TArray<UOBP_Challenge*>(), nullptr);
 	}
 #else
 	OBP_PlatformVersionError("Challenges::GetPreviousChallenges", "v19");
-	OnFailure.Broadcast(nullptr);
+	OnFailure.Broadcast(TArray<UOBP_Challenge*>(), nullptr);
 #endif
 }
 
@@ -711,7 +781,7 @@ void UOBP_Challenges_GetPreviousEntries::Activate()
 			if (bIsError)
 			{
 				OBP_MessageError("Challenges::GetPreviousEntries", Message);
-				OnFailure.Broadcast(nullptr);
+				OnFailure.Broadcast(TArray<UOBP_ChallengeEntry*>(), nullptr);
 			}
 			else
 			{
@@ -722,24 +792,34 @@ void UOBP_Challenges_GetPreviousEntries::Activate()
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got previous challenge entries."));
 					auto ThisChallengeEntryArray = NewObject<UOBP_ChallengeEntryArray>();
 					ThisChallengeEntryArray->ovrChallengeEntryArrayHandle = ovr_Message_GetChallengeEntryArray(Message);
-					OnSuccess.Broadcast(ThisChallengeEntryArray);
+					
+					TArray<UOBP_ChallengeEntry*> ChallengeEntries;
+
+					for (size_t i = 0; i < ovr_ChallengeEntryArray_GetSize(ThisChallengeEntryArray->ovrChallengeEntryArrayHandle); i++)
+					{
+						auto ThisElement = NewObject<UOBP_ChallengeEntry>();
+						ThisElement->ovrChallengeEntryHandle = ovr_ChallengeEntryArray_GetElement(ThisChallengeEntryArray->ovrChallengeEntryArrayHandle, i);
+						ChallengeEntries.Add(ThisElement);
+					}
+
+					OnSuccess.Broadcast(ChallengeEntries, ThisChallengeEntryArray);
 				}
 				else
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get previous challenge entries."));
-					OnFailure.Broadcast(nullptr);
+					OnFailure.Broadcast(TArray<UOBP_ChallengeEntry*>(), nullptr);
 				}
 			}
 		}));
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
-		OnFailure.Broadcast(nullptr);
+		OBP_SubsystemError("Challenges::GetPreviousEntries");
+		OnFailure.Broadcast(TArray<UOBP_ChallengeEntry*>(), nullptr);
 	}
 #else
 	OBP_PlatformVersionError("Challenges::GetPreviousEntries", "v19");
-	OnFailure.Broadcast(nullptr);
+	OnFailure.Broadcast(TArray<UOBP_ChallengeEntry*>(), nullptr);
 #endif
 }
 
@@ -790,7 +870,7 @@ void UOBP_Challenges_Join::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Challenges::Join");
 		OnFailure.Broadcast(nullptr);
 	}
 #else
@@ -846,7 +926,7 @@ void UOBP_Challenges_Leave::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Challenges::Leave");
 		OnFailure.Broadcast(nullptr);
 	}
 #else

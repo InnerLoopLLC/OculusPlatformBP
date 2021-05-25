@@ -321,6 +321,8 @@ struct FOBP_RichPresenceOptionsStruct
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options") FString DeeplinkMessageOverride;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options") int32 StartTime;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options") int32 EndTime;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options") FString LobbySessionID;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options") FString MatchSessionID;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Oculus Platform BP|Rich Presence|Rich Presence Options") EOBP_RichPresenceExtraContext ExtraContext = EOBP_RichPresenceExtraContext::None;
 };
 
@@ -357,6 +359,9 @@ struct FOBP_UserOptionsStruct
 
 /* Log errors caused by incorrect OculusPlatformSDK */
 void OBP_PlatformVersionError(FString NodeName, FString RequiredPlatformVersion);
+
+/* Log errors caused by OnlineSubsystemOculus not being active */
+void OBP_SubsystemError(FString NodeName);
 
 /* Log errors receiving ovr messages */
 void OBP_MessageError(FString NodeName, ovrMessageHandle Message);

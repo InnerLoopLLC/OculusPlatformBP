@@ -69,7 +69,7 @@ void UOBP_Livestreaming_GetStatus::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Livestreaming::GetStatus");
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -117,7 +117,7 @@ void UOBP_Livestreaming_LaunchLivestreamingFlow::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Livestreaming::LaunchLivestreamingFlow");
 		OnFailure.Broadcast();
 	}
 #else
@@ -170,7 +170,7 @@ void UOBP_Livestreaming_PauseStream::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("PauseStream");
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -219,7 +219,7 @@ void UOBP_Livestreaming_ResumeStream::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Livestreaming::ResumeStream");
 		OnFailure.Broadcast(nullptr);
 	}
 }

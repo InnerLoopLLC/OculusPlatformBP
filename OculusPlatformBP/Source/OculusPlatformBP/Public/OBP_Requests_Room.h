@@ -14,9 +14,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FRoom_CreateAndJoinPrivate2, UOBP_Ro
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FRoom_Get, UOBP_Room*, Room);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FRoom_GetCurrent, UOBP_Room*, Room);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FRoom_GetCurrentForUser, UOBP_Room*, Room);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FRoom_GetInvitableUsers2, UOBP_UserArray*, UserArray);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FRoom_GetModeratedRooms, UOBP_RoomArray*, RoomArray);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FRoom_GetNextRoomArrayPage, UOBP_RoomArray*, RoomArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FRoom_GetInvitableUsers2, const TArray<UOBP_User*>&, Users, UOBP_UserArray*, UserArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FRoom_GetModeratedRooms, const TArray<UOBP_Room*>&, Rooms, UOBP_RoomArray*, RoomArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FRoom_GetNextRoomArrayPage, const TArray<UOBP_Room*>&, Rooms, UOBP_RoomArray*, RoomArray);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FRoom_InviteUser, UOBP_Room*, Room);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FRoom_Join2, UOBP_Room*, Room);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FRoom_KickUser, UOBP_Room*, Room);

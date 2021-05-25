@@ -27,7 +27,19 @@ int32 UOBP_Purchase::GetGrantTime()
 
 FString UOBP_Purchase::GetPurchaseID()
 {
-	return OBP_Int64ToFString(ovr_Purchase_GetPurchaseID(ovrPurchaseHandle));
+	OBP_DeprecatedError("Purchase::GetPurchaseID", "Use Purchase::GetPurchaseStrID node instead");
+	return FString();
+}
+
+// requires OculusPlatfromSDK v28 or later
+FString UOBP_Purchase::GetPurchaseStrID()
+{
+#if PLATFORM_MINOR_VERSION >= 60
+	return ovr_Purchase_GetPurchaseStrID(ovrPurchaseHandle);
+#else
+	OBP_PlatformVersionError("Purchase::GetPurchaseStrID", "v28");
+	return FString();
+#endif
 }
 
 FString UOBP_Purchase::GetSKU()
