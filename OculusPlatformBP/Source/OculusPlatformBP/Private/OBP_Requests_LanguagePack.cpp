@@ -60,7 +60,7 @@ void UOBP_LanguagePack_GetCurrent::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("LanguagePack::GetCurrent");
 		OnFailure.Broadcast(nullptr);
 	}
 #else
@@ -115,7 +115,7 @@ void UOBP_LanguagePack_SetCurrent::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("LanguagePack::SetCurrent");
 		OnFailure.Broadcast(FString(), FString());
 	}
 #else

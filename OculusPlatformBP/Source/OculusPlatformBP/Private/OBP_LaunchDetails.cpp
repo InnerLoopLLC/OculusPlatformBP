@@ -30,6 +30,26 @@ FString UOBP_LaunchDetails::GetDestinationApiName()
 #endif
 }
 
+FString UOBP_LaunchDetails::GetLobbySessionID()
+{
+#if PLATFORM_MINOR_VERSION >= 60
+	return ovr_LaunchDetails_GetLobbySessionID(ovrLaunchDetailsHandle);
+#else
+	OBP_PlatformVersionError("LaunchDetails::GetLobbySessionID", "v28");
+	return FString();
+#endif
+}
+
+FString UOBP_LaunchDetails::GetMatchSessionID()
+{
+#if PLATFORM_MINOR_VERSION >= 60
+	return ovr_LaunchDetails_GetMatchSessionID(ovrLaunchDetailsHandle);
+#else
+	OBP_PlatformVersionError("LaunchDetails::GetMatchSessionID", "v28");
+	return FString();
+#endif
+}
+
 FString UOBP_LaunchDetails::GetLaunchSource()
 {
 	return ovr_LaunchDetails_GetLaunchSource(ovrLaunchDetailsHandle);

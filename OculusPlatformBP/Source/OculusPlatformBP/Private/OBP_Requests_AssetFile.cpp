@@ -97,7 +97,7 @@ void UOBP_AssetFile_DeleteByID::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("AssetFile::DeleteByID");
 		OnFailure.Broadcast(FString(), FString(), false);
 	}
 }
@@ -150,7 +150,7 @@ void UOBP_AssetFile_DeleteByName::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("AssetFile::DeleteByName");
 		OnFailure.Broadcast(FString(), FString(), false);
 	}
 }
@@ -202,7 +202,7 @@ void UOBP_AssetFile_DownloadByID::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("AssetFile::DownloadByID");
 		OnFailure.Broadcast(FString(), FString());
 	}
 }
@@ -229,7 +229,7 @@ void UOBP_AssetFile_DownloadByName::Activate()
 		{
 			if (bIsError)
 			{
-				OBP_MessageError("AssetFile::DownloadByID", Message);
+				OBP_MessageError("AssetFile::DownloadByName", Message);
 				OnFailure.Broadcast(FString(), FString());
 			}
 			else
@@ -254,7 +254,7 @@ void UOBP_AssetFile_DownloadByName::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("AssetFile::DownloadByName");
 		OnFailure.Broadcast(FString(), FString());
 	}
 }
@@ -307,7 +307,7 @@ void UOBP_AssetFile_DownloadCancelByID::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("AssetFile::DownloadCancelByID");
 		OnFailure.Broadcast(FString(), FString(), false);
 	}
 }
@@ -360,7 +360,7 @@ void UOBP_AssetFile_DownloadCancelByName::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("AssetFile::DownloadCancelByName");
 		OnFailure.Broadcast(FString(), FString(), false);
 	}
 }
@@ -388,7 +388,7 @@ void UOBP_AssetFile_GetList::Activate()
 			if (bIsError)
 			{
 				OBP_MessageError("AssetFile::GetList", Message);
-				OnFailure.Broadcast(nullptr);
+				OnFailure.Broadcast(TArray<UOBP_AssetDetails*>(), nullptr);
 			}
 			else
 			{
@@ -399,20 +399,30 @@ void UOBP_AssetFile_GetList::Activate()
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got list of asset files."));
 					auto AssetDetailsArray = NewObject<UOBP_AssetDetailsArray>();
 					AssetDetailsArray->ovrAssetDetailsArrayHandle = ovr_Message_GetAssetDetailsArray(Message);
-					OnSuccess.Broadcast(AssetDetailsArray);
+
+					TArray<UOBP_AssetDetails*> AssetDetails;
+
+					for (size_t i = 0; i < ovr_AssetDetailsArray_GetSize(AssetDetailsArray->ovrAssetDetailsArrayHandle); i++)
+					{
+						auto ThisElement = NewObject<UOBP_AssetDetails>();
+						ThisElement->ovrAssetDetailsHandle = ovr_AssetDetailsArray_GetElement(AssetDetailsArray->ovrAssetDetailsArrayHandle, i);
+						AssetDetails.Add(ThisElement);
+					}
+
+					OnSuccess.Broadcast(AssetDetails, AssetDetailsArray);
 				}
 				else
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get list of asset files."));
-					OnFailure.Broadcast(nullptr);
+					OnFailure.Broadcast(TArray<UOBP_AssetDetails*>(), nullptr);
 				}
 			}
 		}));
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
-		OnFailure.Broadcast(nullptr);
+		OBP_SubsystemError("AssetFile::GetList");
+		OnFailure.Broadcast(TArray<UOBP_AssetDetails*>(), nullptr);
 	}
 }
 
@@ -460,7 +470,7 @@ void UOBP_AssetFile_StatusByID::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("AssetFile::StatusByID");
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -511,7 +521,7 @@ void UOBP_AssetFile_StatusByName::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("AssetFile::StatusByName");
 		OnFailure.Broadcast(nullptr);
 	}
 }

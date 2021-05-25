@@ -9,11 +9,11 @@
 #include "OBP_Requests_IAP.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FIAP_ConsumePurchase);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FIAP_GetNextProductArrayPage, UOBP_ProductArray*, ProductArray);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FIAP_GetNextPurchaseArrayPage, UOBP_PurchaseArray*, PurchaseArray);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FIAP_GetProductsBySKU, UOBP_ProductArray*, ProductArray);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FIAP_GetViewerPurchases, UOBP_PurchaseArray*, PurchaseArray);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FIAP_GetViewerPurchasesDurableCache, UOBP_PurchaseArray*, PurchaseArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FIAP_GetNextProductArrayPage, const TArray<UOBP_Product*>&, Products, UOBP_ProductArray*, ProductArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FIAP_GetNextPurchaseArrayPage, const TArray<UOBP_Purchase*>&, Purchases, UOBP_PurchaseArray*, PurchaseArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FIAP_GetProductsBySKU, const TArray<UOBP_Product*>&, Products, UOBP_ProductArray*, ProductArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FIAP_GetViewerPurchases, const TArray<UOBP_Purchase*>&, Purchases, UOBP_PurchaseArray*, PurchaseArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FIAP_GetViewerPurchasesDurableCache, const TArray<UOBP_Purchase*>&, Purchases, UOBP_PurchaseArray*, PurchaseArray);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FIAP_LaunchCheckoutFlow, UOBP_Purchase*, Purchase);
 
 // --------------------
