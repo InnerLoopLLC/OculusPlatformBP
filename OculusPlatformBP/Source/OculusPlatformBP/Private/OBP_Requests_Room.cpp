@@ -209,7 +209,7 @@ void UOBP_Room_CreateAndJoinPrivate2::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Room::CreateAndJoinPrivate2");
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -262,7 +262,7 @@ void UOBP_Room_Get::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Room::GetRoom");
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -313,7 +313,7 @@ void UOBP_Room_GetCurrent::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Room::GetCurrentRoom");
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -362,7 +362,7 @@ void UOBP_Room_GetCurrentForUser::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Room::GetCurrentRoomForUser");
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -439,7 +439,7 @@ void UOBP_Room_GetInvitableUsers2::Activate()
 			if (bIsError)
 			{
 				OBP_MessageError("Room::GetInvitableUsers2", Message);
-				OnFailure.Broadcast(nullptr);
+				OnFailure.Broadcast(TArray<UOBP_User*>(), nullptr);
 			}
 			else
 			{
@@ -450,20 +450,30 @@ void UOBP_Room_GetInvitableUsers2::Activate()
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got invitable users."));
 					auto InvitableUsersArray = NewObject<UOBP_UserArray>();
 					InvitableUsersArray->ovrUserArrayHandle = ovr_Message_GetUserArray(Message);
-					OnSuccess.Broadcast(InvitableUsersArray);
+
+					TArray<UOBP_User*> InvitableUsers;
+
+					for (size_t i = 0; i < ovr_UserArray_GetSize(InvitableUsersArray->ovrUserArrayHandle); i++)
+					{
+						auto ThisElement = NewObject<UOBP_User>();
+						ThisElement->ovrUserHandle = ovr_UserArray_GetElement(InvitableUsersArray->ovrUserArrayHandle, i);
+						InvitableUsers.Add(ThisElement);
+					}
+
+					OnSuccess.Broadcast(InvitableUsers, InvitableUsersArray);
 				}
 				else
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get invitable users."));
-					OnFailure.Broadcast(nullptr);
+					OnFailure.Broadcast(TArray<UOBP_User*>(), nullptr);
 				}
 			}
 		}));
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
-		OnFailure.Broadcast(nullptr);
+		OBP_SubsystemError("Room::GetInvitableUsers2");
+		OnFailure.Broadcast(TArray<UOBP_User*>(), nullptr);
 	}
 }
 
@@ -490,7 +500,7 @@ void UOBP_Room_GetModeratedRooms::Activate()
 			if (bIsError)
 			{
 				OBP_MessageError("Room::GetModeratedRooms", Message);
-				OnFailure.Broadcast(nullptr);
+				OnFailure.Broadcast(TArray<UOBP_Room*>(), nullptr);
 			}
 			else
 			{
@@ -501,20 +511,30 @@ void UOBP_Room_GetModeratedRooms::Activate()
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got moderated rooms."));
 					auto ModeratedRoomsArray = NewObject<UOBP_RoomArray>();
 					ModeratedRoomsArray->ovrRoomArrayHandle = ovr_Message_GetRoomArray(Message);
-					OnSuccess.Broadcast(ModeratedRoomsArray);
+
+					TArray<UOBP_Room*> ModeratedRooms;
+
+					for (size_t i = 0; i < ovr_RoomArray_GetSize(ModeratedRoomsArray->ovrRoomArrayHandle); i++)
+					{
+						auto ThisElement = NewObject<UOBP_Room>();
+						ThisElement->ovrRoomHandle = ovr_RoomArray_GetElement(ModeratedRoomsArray->ovrRoomArrayHandle, i);
+						ModeratedRooms.Add(ThisElement);
+					}
+
+					OnSuccess.Broadcast(ModeratedRooms, ModeratedRoomsArray);
 				}
 				else
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get moderated rooms."));
-					OnFailure.Broadcast(nullptr);
+					OnFailure.Broadcast(TArray<UOBP_Room*>(), nullptr);
 				}
 			}
 		}));
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
-		OnFailure.Broadcast(nullptr);
+		OBP_SubsystemError("Room::GetModeratedRooms");
+		OnFailure.Broadcast(TArray<UOBP_Room*>(), nullptr);
 	}
 }
 
@@ -539,7 +559,7 @@ void UOBP_Room_GetNextRoomArrayPage::Activate()
 			if (bIsError)
 			{
 				OBP_MessageError("Room::GetNextRoomArrayPage", Message);
-				OnFailure.Broadcast(nullptr);
+				OnFailure.Broadcast(TArray<UOBP_Room*>(), nullptr);
 			}
 			else
 			{
@@ -550,20 +570,30 @@ void UOBP_Room_GetNextRoomArrayPage::Activate()
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got next room array page."));
 					auto NextRoomArrayPage = NewObject<UOBP_RoomArray>();
 					NextRoomArrayPage->ovrRoomArrayHandle = ovr_Message_GetRoomArray(Message);
-					OnSuccess.Broadcast(NextRoomArrayPage);
+					
+					TArray<UOBP_Room*> NextRooms;
+
+					for (size_t i = 0; i < ovr_RoomArray_GetSize(NextRoomArrayPage->ovrRoomArrayHandle); i++)
+					{
+						auto ThisElement = NewObject<UOBP_Room>();
+						ThisElement->ovrRoomHandle = ovr_RoomArray_GetElement(NextRoomArrayPage->ovrRoomArrayHandle, i);
+						NextRooms.Add(ThisElement);
+					}
+
+					OnSuccess.Broadcast(NextRooms, NextRoomArrayPage);
 				}
 				else
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get next room array page."));
-					OnFailure.Broadcast(nullptr);
+					OnFailure.Broadcast(TArray<UOBP_Room*>(), nullptr);
 				}
 			}
 		}));
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
-		OnFailure.Broadcast(nullptr);
+		OBP_SubsystemError("Room::GetNextRoomArrayPage");
+		OnFailure.Broadcast(TArray<UOBP_Room*>(), nullptr);
 	}
 }
 
@@ -614,7 +644,7 @@ void UOBP_Room_InviteUser::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Room::InviteUser");
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -715,7 +745,7 @@ void UOBP_Room_Join2::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Room::Join2");
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -767,7 +797,7 @@ void UOBP_Room_KickUser::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Room::KickUser");
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -818,7 +848,7 @@ void UOBP_Room_LaunchInvitableUserFlow::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Room::LaunchInvitableUserFlow");
 		OnFailure.Broadcast();
 	}
 }
@@ -869,7 +899,7 @@ void UOBP_Room_Leave::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Room::Leave");
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -920,7 +950,7 @@ void UOBP_Room_SetDescription::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Room::SetDescription");
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -1001,7 +1031,7 @@ void UOBP_Room_UpdateMembershipLockStatus::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Room::UpdateRoomMembershipLockStatus");
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -1051,7 +1081,7 @@ void UOBP_Room_UpdateOwner::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Room::UpdateOwner");
 		OnFailure.Broadcast();
 	}
 }
@@ -1129,7 +1159,7 @@ void UOBP_Room_UpdatePrivateRoomJoinPolicy::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Room::UpdatePrivateRoomJoinPolicy");
 		OnFailure.Broadcast(nullptr);
 	}
 }

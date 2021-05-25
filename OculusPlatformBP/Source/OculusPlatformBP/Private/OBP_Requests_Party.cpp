@@ -54,7 +54,7 @@ void UOBP_Party_GetCurrent::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Party::GetCurrentParty");
 		OnFailure.Broadcast(nullptr);
 	}
 }

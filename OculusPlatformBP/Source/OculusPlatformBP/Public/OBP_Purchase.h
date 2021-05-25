@@ -25,8 +25,13 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|IAP|Purchase")
 		int32 GetGrantTime();
 
-	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|IAP|Purchase")
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|IAP|Purchase", meta = (DeprecatedFunction,
+		DeprecationMessage = "This function has been deprecated! Use Purchase::GetPurchaseStrID node instead."))
 		FString GetPurchaseID();
+
+	// requires OculusPlatfromSDK v28 or later
+	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|IAP|Purchase")
+		FString GetPurchaseStrID();
 
 	UFUNCTION(BlueprintPure, Category = "Oculus Platform BP|IAP|Purchase")
 		FString GetSKU();

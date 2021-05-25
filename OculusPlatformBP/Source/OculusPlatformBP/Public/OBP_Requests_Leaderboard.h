@@ -8,7 +8,7 @@
 #include "OBP_LeaderboardEntryArray.h"
 #include "OBP_Requests_Leaderboard.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FLeaderboard_Get, UOBP_Leaderboard*, Leaderboard, const TArray<UOBP_Leaderboard*>&, Leaderboards, UOBP_LeaderboardArray*, LeaderboardArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLeaderboard_Get, UOBP_Leaderboard*, Leaderboard);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FLeaderboard_GetEntries, const TArray<UOBP_LeaderboardEntry*>&, LeaderboardEntries, UOBP_LeaderboardEntryArray*, LeaderboardEntryArray);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FLeaderboard_GetEntriesAfterRank, const TArray<UOBP_LeaderboardEntry*>&, LeaderboardEntries, UOBP_LeaderboardEntryArray*, LeaderboardEntryArray);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FLeaderboard_GetEntriesByIds, const TArray<UOBP_LeaderboardEntry*>&, LeaderboardEntries, UOBP_LeaderboardEntryArray*, LeaderboardEntryArray);
