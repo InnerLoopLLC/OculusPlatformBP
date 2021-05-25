@@ -41,7 +41,7 @@ void UOBP_Notification_GetNextRoomInviteNotificationArrayPage::Activate()
 			if (bIsError)
 			{
 				OBP_MessageError("Notification::GetNextRoomInviteNotificationArrayPage", Message);
-				OnFailure.Broadcast(nullptr);
+				OnFailure.Broadcast(TArray<UOBP_RoomInviteNotification*>(), nullptr);
 			}
 			else
 			{
@@ -52,20 +52,30 @@ void UOBP_Notification_GetNextRoomInviteNotificationArrayPage::Activate()
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got next RoomInviteNotificationArray page."));
 					auto NextRoomInviteNotificationArrayPage = NewObject<UOBP_RoomInviteNotificationArray>();
 					NextRoomInviteNotificationArrayPage->ovrRoomInviteNotificationArrayHandle = ovr_Message_GetRoomInviteNotificationArray(Message);
-					OnSuccess.Broadcast(NextRoomInviteNotificationArrayPage);
+
+					TArray<UOBP_RoomInviteNotification*> RoomInvites;
+
+					for (size_t i = 0; i < ovr_RoomInviteNotificationArray_GetSize(NextRoomInviteNotificationArrayPage->ovrRoomInviteNotificationArrayHandle); i++)
+					{
+						auto ThisElement = NewObject<UOBP_RoomInviteNotification>();
+						ThisElement->ovrRoomInviteNotificationHandle = ovr_RoomInviteNotificationArray_GetElement(NextRoomInviteNotificationArrayPage->ovrRoomInviteNotificationArrayHandle, i);
+						RoomInvites.Add(ThisElement);
+					}
+
+					OnSuccess.Broadcast(RoomInvites, NextRoomInviteNotificationArrayPage);
 				}
 				else
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get next RoomInviteNotificationArray page."));
-					OnFailure.Broadcast(nullptr);
+					OnFailure.Broadcast(TArray<UOBP_RoomInviteNotification*>(), nullptr);
 				}
 			}
 		}));
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
-		OnFailure.Broadcast(nullptr);
+		OBP_SubsystemError("Notification::GetNextRoomInviteNotificationArrayPage");
+		OnFailure.Broadcast(TArray<UOBP_RoomInviteNotification*>(), nullptr);
 	}
 }
 
@@ -92,7 +102,7 @@ void UOBP_Notification_GetRoomInvites::Activate()
 			if (bIsError)
 			{
 				OBP_MessageError("Notification::GetRoomInvites", Message);
-				OnFailure.Broadcast(nullptr);
+				OnFailure.Broadcast(TArray<UOBP_RoomInviteNotification*>(), nullptr);
 			}
 			else
 			{
@@ -101,22 +111,32 @@ void UOBP_Notification_GetRoomInvites::Activate()
 				if (messageType == ovrMessage_Notification_GetRoomInvites)
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got room invites."));
-					auto RoomInvites = NewObject<UOBP_RoomInviteNotificationArray>();
-					RoomInvites->ovrRoomInviteNotificationArrayHandle = ovr_Message_GetRoomInviteNotificationArray(Message);
-					OnSuccess.Broadcast(RoomInvites);
+					auto RoomInviteNotificationArray = NewObject<UOBP_RoomInviteNotificationArray>();
+					RoomInviteNotificationArray->ovrRoomInviteNotificationArrayHandle = ovr_Message_GetRoomInviteNotificationArray(Message);
+
+					TArray<UOBP_RoomInviteNotification*> RoomInvites;
+
+					for (size_t i = 0; i < ovr_RoomInviteNotificationArray_GetSize(RoomInviteNotificationArray->ovrRoomInviteNotificationArrayHandle); i++)
+					{
+						auto ThisElement = NewObject<UOBP_RoomInviteNotification>();
+						ThisElement->ovrRoomInviteNotificationHandle = ovr_RoomInviteNotificationArray_GetElement(RoomInviteNotificationArray->ovrRoomInviteNotificationArrayHandle, i);
+						RoomInvites.Add(ThisElement);
+					}
+
+					OnSuccess.Broadcast(RoomInvites, RoomInviteNotificationArray);
 				}
 				else
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get room invites."));
-					OnFailure.Broadcast(nullptr);
+					OnFailure.Broadcast(TArray<UOBP_RoomInviteNotification*>(), nullptr);
 				}
 			}
 		}));
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
-		OnFailure.Broadcast(nullptr);
+		OBP_SubsystemError("Notification::GetRoomInvites");
+		OnFailure.Broadcast(TArray<UOBP_RoomInviteNotification*>(), nullptr);
 	}
 }
 
@@ -162,7 +182,7 @@ void UOBP_Notification_MarkAsRead::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Notification::MarkAsRead");
 		OnFailure.Broadcast();
 	}
 }

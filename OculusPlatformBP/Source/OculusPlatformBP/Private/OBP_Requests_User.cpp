@@ -115,7 +115,7 @@ void UOBP_User_GetUser::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("User::GetUser");
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -165,7 +165,7 @@ void UOBP_User_GetAccessToken::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("User::GetAccessToken");
 		OnFailure.Broadcast("");
 	}
 }
@@ -214,7 +214,7 @@ void UOBP_User_GetLoggedInUser::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("User::GetLoggedInUser");
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -240,7 +240,7 @@ void UOBP_User_GetLoggedInUserFriends::Activate()
 			if (bIsError)
 			{
 				OBP_MessageError("User::GetLoggedInUserFriends", Message);
-				OnFailure.Broadcast(nullptr);
+				OnFailure.Broadcast(TArray<UOBP_User*>(), nullptr);
 			}
 			else
 			{
@@ -251,20 +251,30 @@ void UOBP_User_GetLoggedInUserFriends::Activate()
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got logged in user's friends."));
 					auto LoggedInUserFriends = NewObject<UOBP_UserArray>();
 					LoggedInUserFriends->ovrUserArrayHandle = ovr_Message_GetUserArray(Message);
-					OnSuccess.Broadcast(LoggedInUserFriends);
+					
+					TArray<UOBP_User*> Users;
+
+					for (size_t i = 0; i < ovr_UserArray_GetSize(LoggedInUserFriends->ovrUserArrayHandle); i++)
+					{
+						auto ThisElement = NewObject<UOBP_User>();
+						ThisElement->ovrUserHandle = ovr_UserArray_GetElement(LoggedInUserFriends->ovrUserArrayHandle, i);
+						Users.Add(ThisElement);
+					}
+
+					OnSuccess.Broadcast(Users, LoggedInUserFriends);
 				}
 				else
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get logged in user's friends."));
-					OnFailure.Broadcast(nullptr);
+					OnFailure.Broadcast(TArray<UOBP_User*>(), nullptr);
 				}
 			}
 		}));
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
-		OnFailure.Broadcast(nullptr);
+		OBP_SubsystemError("User::GetLoggedInUserFriends");
+		OnFailure.Broadcast(TArray<UOBP_User*>(), nullptr);
 	}
 }
 
@@ -289,7 +299,7 @@ void UOBP_User_GetLoggedInUserFriendsAndRooms::Activate()
 			if (bIsError)
 			{
 				OBP_MessageError("User::GetLoggedInUserFriendsAndRooms", Message);
-				OnFailure.Broadcast(nullptr);
+				OnFailure.Broadcast(TArray<UOBP_UserAndRoom*>(), nullptr);
 			}
 			else
 			{
@@ -300,20 +310,30 @@ void UOBP_User_GetLoggedInUserFriendsAndRooms::Activate()
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got logged in user's friends and rooms."));
 					auto LoggedInUserFriendsAndRooms = NewObject<UOBP_UserAndRoomArray>();
 					LoggedInUserFriendsAndRooms->ovrUserAndRoomArrayHandle = ovr_Message_GetUserAndRoomArray(Message);
-					OnSuccess.Broadcast(LoggedInUserFriendsAndRooms);
+					
+					TArray<UOBP_UserAndRoom*> UsersAndRooms;
+
+					for (size_t i = 0; i < ovr_UserAndRoomArray_GetSize(LoggedInUserFriendsAndRooms->ovrUserAndRoomArrayHandle); i++)
+					{
+						auto ThisElement = NewObject<UOBP_UserAndRoom>();
+						ThisElement->ovrUserAndRoomHandle = ovr_UserAndRoomArray_GetElement(LoggedInUserFriendsAndRooms->ovrUserAndRoomArrayHandle, i);
+						UsersAndRooms.Add(ThisElement);
+					}
+
+					OnSuccess.Broadcast(UsersAndRooms, LoggedInUserFriendsAndRooms);
 				}
 				else
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get logged in user's friends and rooms."));
-					OnFailure.Broadcast(nullptr);
+					OnFailure.Broadcast(TArray<UOBP_UserAndRoom*>(), nullptr);
 				}
 			}
 		}));
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
-		OnFailure.Broadcast(nullptr);
+		OBP_SubsystemError("User::GetLoggedInUserFriendsAndRooms");
+		OnFailure.Broadcast(TArray<UOBP_UserAndRoom*>(), nullptr);
 	}
 }
 
@@ -395,7 +415,7 @@ void UOBP_User_GetLoggedInUserRecentlyMetUsersAndRooms::Activate()
 			if (bIsError)
 			{
 				OBP_MessageError("User::GetLoggedInUserRecentlyMetUsersAndRooms", Message);
-				OnFailure.Broadcast(nullptr);
+				OnFailure.Broadcast(TArray<UOBP_UserAndRoom*>(), nullptr);
 			}
 			else
 			{
@@ -406,20 +426,30 @@ void UOBP_User_GetLoggedInUserRecentlyMetUsersAndRooms::Activate()
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got logged in user's recently met users and rooms."));
 					auto LoggedInUserRecentlyMetUsersAndRooms = NewObject<UOBP_UserAndRoomArray>();
 					LoggedInUserRecentlyMetUsersAndRooms->ovrUserAndRoomArrayHandle = ovr_Message_GetUserAndRoomArray(Message);
-					OnSuccess.Broadcast(LoggedInUserRecentlyMetUsersAndRooms);
+					
+					TArray<UOBP_UserAndRoom*> UsersAndRooms;
+
+					for (size_t i = 0; i < ovr_UserAndRoomArray_GetSize(LoggedInUserRecentlyMetUsersAndRooms->ovrUserAndRoomArrayHandle); i++)
+					{
+						auto ThisElement = NewObject<UOBP_UserAndRoom>();
+						ThisElement->ovrUserAndRoomHandle = ovr_UserAndRoomArray_GetElement(LoggedInUserRecentlyMetUsersAndRooms->ovrUserAndRoomArrayHandle, i);
+						UsersAndRooms.Add(ThisElement);
+					}
+
+					OnSuccess.Broadcast(UsersAndRooms, LoggedInUserRecentlyMetUsersAndRooms);
 				}
 				else
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get logged in user's recently met users and rooms."));
-					OnFailure.Broadcast(nullptr);
+					OnFailure.Broadcast(TArray<UOBP_UserAndRoom*>(), nullptr);
 				}
 			}
 		}));
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
-		OnFailure.Broadcast(nullptr);
+		OBP_SubsystemError("User::GetLoggedInUserRecentlyMetUsersAndRooms");
+		OnFailure.Broadcast(TArray<UOBP_UserAndRoom*>(), nullptr);
 	}
 }
 
@@ -446,7 +476,7 @@ void UOBP_User_GetNextUserAndRoomArrayPage::Activate()
 			if (bIsError)
 			{
 				OBP_MessageError("User::GetNextUserAndRoomArrayPage", Message);
-				OnFailure.Broadcast(nullptr);
+				OnFailure.Broadcast(TArray<UOBP_UserAndRoom*>(), nullptr);
 			}
 			else
 			{
@@ -457,20 +487,30 @@ void UOBP_User_GetNextUserAndRoomArrayPage::Activate()
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got next user and room array page."));
 					auto NextUserAndRoomArrayPage = NewObject<UOBP_UserAndRoomArray>();
 					NextUserAndRoomArrayPage->ovrUserAndRoomArrayHandle = ovr_Message_GetUserAndRoomArray(Message);
-					OnSuccess.Broadcast(NextUserAndRoomArrayPage);
+					
+					TArray<UOBP_UserAndRoom*> UsersAndRooms;
+
+					for (size_t i = 0; i < ovr_UserAndRoomArray_GetSize(NextUserAndRoomArrayPage->ovrUserAndRoomArrayHandle); i++)
+					{
+						auto ThisElement = NewObject<UOBP_UserAndRoom>();
+						ThisElement->ovrUserAndRoomHandle = ovr_UserAndRoomArray_GetElement(NextUserAndRoomArrayPage->ovrUserAndRoomArrayHandle, i);
+						UsersAndRooms.Add(ThisElement);
+					}
+
+					OnSuccess.Broadcast(UsersAndRooms, NextUserAndRoomArrayPage);
 				}
 				else
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get next user and room array page."));
-					OnFailure.Broadcast(nullptr);
+					OnFailure.Broadcast(TArray<UOBP_UserAndRoom*>(), nullptr);
 				}
 			}
 		}));
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
-		OnFailure.Broadcast(nullptr);
+		OBP_SubsystemError("User::GetNextUserAndRoomArrayPage");
+		OnFailure.Broadcast(TArray<UOBP_UserAndRoom*>(), nullptr);
 	}
 }
 
@@ -497,7 +537,7 @@ void UOBP_User_GetNextUserArrayPage::Activate()
 			if (bIsError)
 			{
 				OBP_MessageError("User::GetNextUserArrayPage", Message);
-				OnFailure.Broadcast(nullptr);
+				OnFailure.Broadcast(TArray<UOBP_User*>(), nullptr);
 			}
 			else
 			{
@@ -508,20 +548,30 @@ void UOBP_User_GetNextUserArrayPage::Activate()
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got next user array page."));
 					auto NextUserArrayPage = NewObject<UOBP_UserArray>();
 					NextUserArrayPage->ovrUserArrayHandle = ovr_Message_GetUserArray(Message);
-					OnSuccess.Broadcast(NextUserArrayPage);
+
+					TArray<UOBP_User*> Users;
+
+					for (size_t i = 0; i < ovr_UserArray_GetSize(NextUserArrayPage->ovrUserArrayHandle); i++)
+					{
+						auto ThisElement = NewObject<UOBP_User>();
+						ThisElement->ovrUserHandle = ovr_UserArray_GetElement(NextUserArrayPage->ovrUserArrayHandle, i);
+						Users.Add(ThisElement);
+					}
+
+					OnSuccess.Broadcast(Users, NextUserArrayPage);
 				}
 				else
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get next user array page."));
-					OnFailure.Broadcast(nullptr);
+					OnFailure.Broadcast(TArray<UOBP_User*>(), nullptr);
 				}
 			}
 		}));
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
-		OnFailure.Broadcast(nullptr);
+		OBP_SubsystemError("User::GetNextUserArrayPage");
+		OnFailure.Broadcast(TArray<UOBP_User*>(), nullptr);
 	}
 }
 
@@ -572,7 +622,7 @@ void UOBP_User_GetOrgScopedID::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("User::GetOrgScopedID");
 		OnFailure.Broadcast("");
 	}
 }
@@ -600,7 +650,7 @@ void UOBP_User_GetSdkAccounts::Activate()
 			if (bIsError)
 			{
 				OBP_MessageError("User::GetSdkAccounts", Message);
-				OnFailure.Broadcast(nullptr);
+				OnFailure.Broadcast(TArray<UOBP_SdkAccount*>(), nullptr);
 			}
 			else
 			{
@@ -611,20 +661,30 @@ void UOBP_User_GetSdkAccounts::Activate()
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Successfully got org scoped ID."));
 					auto SdkAccountsArray = NewObject<UOBP_SdkAccountArray>();
 					SdkAccountsArray->ovrSdkAccountArrayHandle = ovr_Message_GetSdkAccountArray(Message);
-					OnSuccess.Broadcast(SdkAccountsArray);
+
+					TArray<UOBP_SdkAccount*> SdkAccounts;
+
+					for (size_t i = 0; i < ovr_SdkAccountArray_GetSize(SdkAccountsArray->ovrSdkAccountArrayHandle); i++)
+					{
+						auto ThisElement = NewObject<UOBP_SdkAccount>();
+						ThisElement->ovrSdkAccountHandle = ovr_SdkAccountArray_GetElement(SdkAccountsArray->ovrSdkAccountArrayHandle, i);
+						SdkAccounts.Add(ThisElement);
+					}
+
+					OnSuccess.Broadcast(SdkAccounts,SdkAccountsArray);
 				}
 				else
 				{
 					UE_LOG(LogOculusPlatformBP, Log, TEXT("Failed to get org scoped ID."));
-					OnFailure.Broadcast(nullptr);
+					OnFailure.Broadcast(TArray<UOBP_SdkAccount*>(), nullptr);
 				}
 			}
 		}));
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
-		OnFailure.Broadcast(nullptr);
+		OBP_SubsystemError("User::GetSdkAccounts");
+		OnFailure.Broadcast(TArray<UOBP_SdkAccount*>(), nullptr);
 	}
 }
 
@@ -671,7 +731,7 @@ void UOBP_User_GetUserProof::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("User::GetUserProof");
 		OnFailure.Broadcast("");
 	}
 }
@@ -722,7 +782,7 @@ void UOBP_User_LaunchFriendRequestFlow::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("User::LaunchFriendRequestFlow");
 		OnFailure.Broadcast(false, false);
 	}
 #else
@@ -775,7 +835,7 @@ void UOBP_User_LaunchProfile::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("User::LaunchProfile");
 		OnFailure.Broadcast();
 	}
 }

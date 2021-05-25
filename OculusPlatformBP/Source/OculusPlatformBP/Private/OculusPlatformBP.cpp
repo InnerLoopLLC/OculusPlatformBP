@@ -32,6 +32,13 @@ void OBP_PlatformVersionError(FString NodeName, FString RequiredPlatformVersion)
 	UE_LOG(LogOculusPlatformBP, Warning, TEXT("%s"), *ErrorString);
 }
 
+/* Log errors caused by OnlineSubsystemOculus not being active */
+void OBP_SubsystemError(FString NodeName)
+{
+	FString ErrorString = FString("Unable to use ") + NodeName + FString(" node. Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured.");
+	UE_LOG(LogOculusPlatformBP, Warning, TEXT("%s"), *ErrorString);
+}
+
 /* Log ovr message errors.*/
 void OBP_MessageError(FString NodeName, ovrMessageHandle Message)
 {

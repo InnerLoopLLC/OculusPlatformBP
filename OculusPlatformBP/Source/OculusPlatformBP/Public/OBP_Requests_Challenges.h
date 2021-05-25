@@ -9,15 +9,15 @@
 #include "OBP_Requests_Challenges.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChallenges_DeclineInvite, UOBP_Challenge*, Challenge);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChallenges_Get, UOBP_Challenge*, Challenges);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChallenges_GetEntries, UOBP_ChallengeEntryArray*, ChallengeEntries);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChallenges_GetEntriesAfterRank, UOBP_ChallengeEntryArray*, ChallengeEntriesAfterRank);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChallenges_GetEntriesByIds, UOBP_ChallengeEntryArray*, ChallengeEntriesByIds);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChallenges_GetList, UOBP_ChallengeArray*, ChallengeList);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChallenges_GetNextChallenges, UOBP_ChallengeArray*, NextChallenges);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChallenges_GetNextEntries, UOBP_ChallengeEntryArray*, NextChallengeEntries);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChallenges_GetPreviousChallenges, UOBP_ChallengeArray*, PreviousChallenges);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChallenges_GetPreviousEntries, UOBP_ChallengeEntryArray*, PreviousChallengeEntries);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChallenges_Get, UOBP_Challenge*, Challenge);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FChallenges_GetEntries, const TArray<UOBP_ChallengeEntry*>&, ChallengeEntries, UOBP_ChallengeEntryArray*, ChallengeEntryArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FChallenges_GetEntriesAfterRank, const TArray<UOBP_ChallengeEntry*>&, ChallengeEntries, UOBP_ChallengeEntryArray*, ChallengeEntryArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FChallenges_GetEntriesByIds, const TArray<UOBP_ChallengeEntry*>&, ChallengeEntries, UOBP_ChallengeEntryArray*, ChallengeEntryArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FChallenges_GetList, const TArray<UOBP_Challenge*>&, Challenges, UOBP_ChallengeArray*, ChallengeArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FChallenges_GetNextChallenges, const TArray<UOBP_Challenge*>&, Challenges, UOBP_ChallengeArray*, ChallengeArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FChallenges_GetNextEntries, const TArray<UOBP_ChallengeEntry*>&, ChallengeEntries, UOBP_ChallengeEntryArray*, ChallengeEntryArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FChallenges_GetPreviousChallenges, const TArray<UOBP_Challenge*>&, Challenges, UOBP_ChallengeArray*, ChallengeArray);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FChallenges_GetPreviousEntries, const TArray<UOBP_ChallengeEntry*>&, ChallengeEntries, UOBP_ChallengeEntryArray*, ChallengeEntryArray);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChallenges_Join, UOBP_Challenge*, Challenge);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChallenges_Leave, UOBP_Challenge*, Challenge);
 

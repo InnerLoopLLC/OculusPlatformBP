@@ -59,7 +59,7 @@ void UOBP_Application_GetVersion::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Application::GetVersion");
 		OnFailure.Broadcast(nullptr);
 	}
 }
@@ -87,7 +87,7 @@ void UOBP_Application_LaunchOtherApp::Activate()
 		{
 			if (bIsError)
 			{
-				OBP_MessageError("Application::LauchOtherApp", Message);
+				OBP_MessageError("Application::LaunchOtherApp", Message);
 				OnFailure.Broadcast(FString());
 			}
 			else
@@ -110,7 +110,7 @@ void UOBP_Application_LaunchOtherApp::Activate()
 	}
 	else
 	{
-		UE_LOG(LogOculusPlatformBP, Warning, TEXT("Oculus platform service not available. Ensure OnlineSubsystemOculus is enabled and DefaultEngine.ini is properly configured."));
+		OBP_SubsystemError("Application::LaunchOtherApp");
 		OnFailure.Broadcast(FString());
 	}
 }
