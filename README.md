@@ -33,10 +33,8 @@ An Unreal Engine 4 plugin featuring a library of **300+ Blueprint nodes** for Oc
 This means you'll find blueprint nodes for the functions included in the [*Oculus Platform SDK*](https://developer.oculus.com/reference/platform/latest/), but that's pretty much it. Please refer to the [*Oculus Platform documentation*](https://developer.oculus.com/documentation/unreal/ps-platform-intro/) for explanations of usage. Please refer to the [*Unreal Engine 4*](https://github.com/EpicGames/UnrealEngine) GitHub for links and resources related to UE4. Oculus App Lab is supported for Oculus Quest.
 
 ## Updates
+*6/14/21* - Surprise update! Since most of the questions that I field about this plugin are related to the setup process, I've streamlined it a bit. **There is now a Settings menu in `Project Settings` which helps configure your Oculus Platform ini settings!** Your config files will be checked on load to ensure they're properly setup. If the config sections/keys do not exist, they'll be created. You'll see warnings in your `Output Log` if the values are not set properly. This should make setting up your project to use the Oculus Platform a lot less confusing. There's also a new node, `GetOculusPlatformSettings()`, which exposes the AppIds to Blueprints. <br><br>
 *5/24/21* - Updated to support Oculus Platform SDK v28. Finished exposing blueprint arrays for request nodes. Also, added a FAQ to this README to clear up some common questions. Next: a basic demo project which provides examples of how to use common features.
-*5/16/21* - Fixed a leftover bug from the last update, which would cause a crash on load for source-built engine users who have updated the Oculus Platform SDK. No release for this update, since it doesn't impact launcher engine users.<br><br>
-*5/7/21* - Fixed a rather nasty crash which would occur when the Oculus App was not present. Also added an experimental workflow improvement to request nodes which return arrays *(e.g. Leaderboard::GetEntries())*. Array items will now be returned as a blueprint array, which should make the workflow more intuitive. v28 support is on the way, but I wanted to rush out this crash fix. An example project is also in progress.<br><br>
-*4/15/21* - Updated to support Oculus Platform SDK v27. Removed deprecated nodes. Deprecated a few more nodes (per SDK v27). Fixed bug where CloudStorage2::GetUserDirectoryPath() would always fail. Switched version numbering to be consistent with the Oculus Platform SDK version numbering.
 
 ## Requirements
 * **Recommended Unreal Engine Version** - [4.26-Oculus](https://github.com/Oculus-VR/UnrealEngine/tree/4.26)
@@ -51,8 +49,8 @@ This means you'll find blueprint nodes for the functions included in the [*Oculu
 1) Place the `OculusPlatformBP` folder in `Engine\Plugins\Marketplace` or your project's `Plugins` folder
 2) Regenerate project files
 3) Compile engine
-4) Configure `DefaultEngine.ini` and `Android/AndroidEngine.ini` [*(instructions)*](https://developer.oculus.com/documentation/unreal/ps-setup/)
-5) Enable the `OculusVR`, `OnlineSubsystemOculus`, and `OculusPlatformBP` plugins in your project
+4) Enable the `OculusVR`, `OnlineSubsystemOculus`, and `OculusPlatformBP` plugins in your project
+5) Set the AppIDs via `Project Settings->OculusPlatformBP` or by manually editing the config files. [*(instructions)*](https://developer.oculus.com/documentation/unreal/ps-setup/)
 6) Check Oculus Entitlement
 7) Use *OculusPlatformBP* to do cool stuff<br>
 
@@ -68,7 +66,7 @@ This means you'll find blueprint nodes for the functions included in the [*Oculu
 > #### This plugin fails to compile for unmodified installations of the Oculus fork of UE4.25 or later.<br>
 Oculus updated the include files for the Oculus Platform SDK, but the Win64 libraries are outdated. This tricks the plugin into thinking certain classes are available which are not. To solve this, please manually update the Oculus Platform SDK using the steps outlined above.
 > #### My app fails to load on Oculus Quest with this plugin enabled.<br>
-Most likely, this is due to a configuration issue. Please follow the Oculus documentation carefully. The most commonly missed step is to add the config file `Android/AndroidEngine.ini`.
+Most likely, this is due to a configuration issue. Please check your configuration settings in `Project Settings->OculusPlatformBP`. Additionally, please follow the Oculus documentation carefully. The most commonly missed step is to add the config file `Android/AndroidEngine.ini`. *(NOTE: As of OculusPlatformBP v28.1, the settings menu will create this file for you, if it does not already exist. Setting your `DefaultPlatformService` via this menu will update that value in both required config files.)*
 > #### My app fails the entitlement check but some platform features work.<br>
 I don't recommend placing the `Verify Entitlement` node in your Game Instance blueprint. The game instance can sometimes fire `Event Init` prior to `OnlineSubsystemOculus` loading. This would cause the check to always fail. Instead, I recommend executing the entitlement check on `Begin Play` in a blueprint actor.
 > #### My app passes the entitlement check but some platform features do not work.<br>
@@ -76,7 +74,7 @@ In this case, please check that you have completed all requisite setup steps. A 
 > #### In-App Purchases are returning error messages about user permissions.<br>
 Currently, App Lab titles are only permitted to offer free IAP. This is not an issue with the plugin, but a limitation set by Oculus. Similarly, Subscriptions are not available for App Lab projects at this time. If your app has been approved for the Oculus Store and you still have this issue, please contact me.
 > #### How can I access the UE4 logs for my Quest project?<br>
-By default, UE4 does not generate logs in shipping configuration. In order to access logs (which are extremely helpful in isolating these issues), please build your app in development configuration while testing. Alternatively, you can follow the steps outlined in [this post](https://forums.unrealengine.com/t/how-to-add-buselogginginshipping-to-my-project/125651/2) to enable logs in shipping configuration. Please note that you should not include the line `bUseChecksInShipping` as it will cause issues uploading your build to an Oculus release channel.
+By default, UE4 does not generate logs in shipping configuration. In order to access logs (which are extremely helpful in isolating these issues), please build your app in development configuration while testing. Alternatively, you can follow the steps outlined in [this post](https://forums.unrealengine.com/t/how-to-add-buselogginginshipping-to-my-project/125651/2) to enable logs in shipping configuration. Please note that you should not include the line `bUseChecksInShipping` as it will cause issues uploading your build to an Oculus release channel. Run the app to generate logs, then pull the logs with the following adb command: `adb pull /storage/emulated/0/Android/data/com.[your_company].[your_project]/files/UE4Game/[your_project]/[your_project]/Saved/Logs`.
 > #### Can my App Lab project share Leaderboards or other features with Rift store titles?<br>
 No, this feature is not currently available to App Lab projects. If your app has been accepted as an official Oculus Store app, then you can do this with App Groupings.
 > #### Can the same UE4 project be used to create builds for both Rift and Quest?<br>
