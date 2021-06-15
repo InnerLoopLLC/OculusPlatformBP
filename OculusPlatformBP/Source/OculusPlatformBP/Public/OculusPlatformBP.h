@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "OculusPlatformBPSettings.h"
+
 #include "CoreGlobals.h"
 #include "CoreMinimal.h"
 #include "EngineGlobals.h"
@@ -21,18 +23,25 @@
 
 #include "OculusPlatformBP.generated.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(LogOculusPlatformBP, Log, All);
-
 // Used to prevent incomplete functions from being compiled
 #define OBP_IS_NOT_IMPLEMENTED 1
 
-class IOculusPlatformBP : public IModuleInterface
+class FOculusPlatformBP : public IModuleInterface
 {
 public:
 
-	static inline IOculusPlatformBP& Get()
+	/** IModuleInterface implementation */
+	virtual void StartupModule() override;
+	virtual void ShutdownModule() override;
+
+#if WITH_EDITOR
+	void RegisterSettings(TWeakObjectPtr<UObject> UObject);
+	void UnregisterSettings();
+#endif //WITH_EDITOR
+
+	static inline FOculusPlatformBP& Get()
 	{
-		return FModuleManager::LoadModuleChecked< IOculusPlatformBP >("OculusPlatformBP");
+		return FModuleManager::LoadModuleChecked< FOculusPlatformBP >("OculusPlatformBP");
 	}
 
 	static inline bool IsAvailable()
@@ -42,7 +51,7 @@ public:
 };
 
 // --------------------
-// Enums - UEnums have to be declared here, I guess? They don't work when declared in each OBP_xxx.h file
+// OculusPlatformBP Enums
 // --------------------
 
 /* ovr_AchievementType.h */
