@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "v28",
+	"VersionName": "v28.1",
 	"FriendlyName": "OculusPlatformBP",
 	"Description": "Oculus Platform SDK features exposed to Blueprints.",
 	"Category": "Online Platform",
@@ -10,7 +10,6 @@
 	"DocsURL": "https://www.innerloopllc.com/oculusplatformbp",
 	"MarketplaceURL": "",
 	"SupportURL": "https://discord.gg/AxxpQ8h",
-	"EngineVersion": "4.22",
 	"CanContainContent": false,
 	"Installed": true,
 	"Modules": [
