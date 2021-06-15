@@ -2,24 +2,61 @@
 
 #include "OculusPlatformBP.h"
 
-DEFINE_LOG_CATEGORY(LogOculusPlatformBP);
-
-class FOculusPlatformBP : public IOculusPlatformBP
-{
-	/** IModuleInterface implementation */
-	virtual void StartupModule() override;
-	virtual void ShutdownModule() override;
-};
+#if WITH_EDITOR
+#include "ISettingsModule.h"
+#include "Developer/Settings/Public/ISettingsContainer.h"
+#endif //WITH_EDITOR
 
 IMPLEMENT_MODULE(FOculusPlatformBP, OculusPlatformBP)
 
 void FOculusPlatformBP::StartupModule()
 {
+	// Get the settings object ready.
+	UOculusPlatformBPSettings* OculusPlatformBPSettings = GetMutableDefault<UOculusPlatformBPSettings>();
+
+#if WITH_EDITOR
+	// Only registers the settings panel if we're in Editor
+	RegisterSettings(OculusPlatformBPSettings);
+#endif //WITH_EDITOR
+
+	// Load settings in editor (or game, so we can access AppID in blueprints)
+	OculusPlatformBPSettings->LoadSettings();
 }
 
 void FOculusPlatformBP::ShutdownModule()
 {
+#if WITH_EDITOR
+	UnregisterSettings();
+#endif //WITH_EDITOR
 }
+
+#if WITH_EDITOR
+void FOculusPlatformBP::RegisterSettings(TWeakObjectPtr<UObject> UObject)
+{
+	ISettingsModule* SettingsModule = FModuleManager::GetModulePtr<ISettingsModule>("Settings");
+	if (SettingsModule)
+	{
+		TSharedPtr<ISettingsContainer> ProjectSettingsContainer = SettingsModule->GetContainer("Project");
+
+		SettingsModule->RegisterSettings("Project", "Plugins", "OculusPlatformBP",
+			FText::FromString("OculusPlatformBP"),
+			FText::FromString("Configure OculusPlatformBP Settings"),
+			UObject
+		);
+	}
+}
+#endif //WITH_EDITOR
+
+#if WITH_EDITOR
+void FOculusPlatformBP::UnregisterSettings()
+{
+	ISettingsModule* SettingsModule = FModuleManager::GetModulePtr<ISettingsModule>("Settings");
+	if (SettingsModule)
+	{
+		SettingsModule->UnregisterSettings("Project", "Plugins", "OculusPlatformBP");
+	}
+}
+#endif //WITH_EDITOR
 
 // --------------------
 // Logging Functions
