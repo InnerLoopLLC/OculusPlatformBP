@@ -2,8 +2,8 @@
 
 An Unreal Engine 4 plugin featuring a library of **300+ Blueprint nodes** for Oculus Platform functions.
 
-*If you enjoy this plugin and want to see it improve, please consider helping me buy some caffeine. *Or [hire me.](mailto:brian@superhockeyball.com)*<br>
-[**Donate via PayPal**](https://paypal.me/bhicks85)*
+*If you enjoy this plugin and want to see it improve, please consider helping me buy some caffeine. [Donate via PayPal](https://paypal.me/bhicks85).<br>
+Or you could buy the full version on the [Unreal Marketplace](https://www.unrealengine.com/marketplace/en-US/product/3dd4be07fc1e47e88987713958ab5933).*
 
 ## Features
 + [Achievements](https://developer.oculus.com/documentation/unreal/ps-achievements)
